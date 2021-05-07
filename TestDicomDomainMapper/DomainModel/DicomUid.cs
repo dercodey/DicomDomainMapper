@@ -1,5 +1,8 @@
 ﻿namespace TestDicomDomainMapper.DomainModel
 {
+    /// <summary>
+    /// value object representing Dicom UID
+    /// </summary>
     class DicomUid : IValueObject
     {
         private string _uidString;
