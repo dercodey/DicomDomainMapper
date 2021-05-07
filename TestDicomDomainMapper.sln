@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDicomDomainMapper", "TestDicomDomainMapper\TestDicomDomainMapper.csproj", "{2EE6BFF1-43D7-4364-9A43-3CDACAC02FDB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EE6BFF1-43D7-4364-9A43-3CDACAC02FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE6BFF1-43D7-4364-9A43-3CDACAC02FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE6BFF1-43D7-4364-9A43-3CDACAC02FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE6BFF1-43D7-4364-9A43-3CDACAC02FDB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2103FEA6-BE71-4BB5-ACAF-58C5D15C51BC}
+	EndGlobalSection
+EndGlobal
