@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TestDicomDomainMapper.DomainModel
+﻿namespace TestDicomDomainMapper.DomainModel
 {
     class DicomUid : IValueObject
     {
-        public string UidString { get; private set; }
+        private string _uidString;
+
+        public override string ToString()
+        {
+            return _uidString;
+        }
 
         public static DicomUid Create(string uidString)
         {
+            // test to see if string is in proper format
+
             // validate string is correct
-            return new DicomUid { UidString = uidString };
+            var newDicomUid = new DicomUid();
+            newDicomUid._uidString = uidString;
+            return newDicomUid;
         }
     }
 }

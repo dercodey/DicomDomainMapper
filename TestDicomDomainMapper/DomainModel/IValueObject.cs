@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TestDicomDomainMapper.DomainModel
+﻿namespace TestDicomDomainMapper.DomainModel
 {
+    /// <summary>
+    /// sentinal to indicate value type
+    /// </summary>
     interface IValueObject
     {
     }

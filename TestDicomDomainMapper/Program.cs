@@ -89,14 +89,14 @@ namespace TestDicomDomainMapper
             // see if series is already present
             var matchSeries = 
                 context.DicomSeries.Where(series => 
-                    series.SeriesInstanceUid.CompareTo(fromSeries.SeriesInstanceUid.UidString) == 0)
+                    series.SeriesInstanceUid.CompareTo(fromSeries.SeriesInstanceUid.ToString()) == 0)
                     .SingleOrDefault();
             if (matchSeries == null)
             {
                 matchSeries = 
                     new EFModel.DicomSeries() 
                     { 
-                        SeriesInstanceUid = fromSeries.SeriesInstanceUid.UidString,
+                        SeriesInstanceUid = fromSeries.SeriesInstanceUid.ToString(),
                         AcquisitionDateTime = fromSeries.AcquisitionDateTime,
                         Modality = fromSeries.Modality,
                         PatientID = fromSeries.PatientId,
@@ -113,14 +113,14 @@ namespace TestDicomDomainMapper
             {
                 var matchInstance =
                         context.DicomInstances.Where(instance =>
-                            instance.SopInstanceUid.CompareTo(fromInstance.SopInstanceUid.UidString) == 0)
+                            instance.SopInstanceUid.CompareTo(fromInstance.SopInstanceUid.ToString()) == 0)
                             .SingleOrDefault();
                 if (matchInstance == null)
                 {
                     var newInstance =
                         new EFModel.DicomInstance()
                         {
-                            SopInstanceUid = fromInstance.SopInstanceUid.UidString,
+                            SopInstanceUid = fromInstance.SopInstanceUid.ToString(),
                             DicomSeries = matchSeries,
                         };
 
@@ -193,7 +193,7 @@ namespace TestDicomDomainMapper
 
                 var newSeriesEFModel =
                     context.DicomSeries.First(series =>
-                        series.SeriesInstanceUid.CompareTo(newSeriesUid.UidString) == 0);
+                        series.SeriesInstanceUid.CompareTo(newSeriesUid.ToString()) == 0);
                 var newSeriesDomainModel = MapEFModelToAggregate(newSeriesEFModel);
 
                 AddInstancesToSeries(newSeriesDomainModel);
