@@ -90,26 +90,30 @@ namespace TestDicomDomainMapper
             return matchSeries;
         }
 
+        public static DomainModel.DicomAttribute ToDomainModel(this EFModel.DicomAttribute fromAttribute)
+        {
+            return DomainModel.DicomAttribute.Create(
+                fromAttribute.DicomTag,
+                fromAttribute.Value);
+        }
+
+        public static DomainModel.DicomInstance ToDomainModel(this EFModel.DicomInstance fromInstance)
+        {
+            return DomainModel.DicomInstance.Create(
+                fromInstance.SopInstanceUid,
+                fromInstance.DicomAttributes?.Select(fromAttribute => 
+                    fromAttribute.ToDomainModel()));
+        }
+
         public static DomainModel.DicomSeries ToDomainModel(this EFModel.DicomSeries fromSeries)
         {
-            var instances =
-                fromSeries.DicomInstances?.Select(fromInstance =>
-                    DomainModel.DicomInstance.Create(
-                        fromInstance.SopInstanceUid,
-                        fromInstance.DicomAttributes?.Select(fromAttribute =>
-                            DomainModel.DicomAttribute.Create(
-                                fromAttribute.DicomTag,
-                                fromAttribute.Value))));
-
-            var newSeries =
-                DomainModel.DicomSeries.Create(
-                    fromSeries.SeriesInstanceUid,
-                    fromSeries.PatientID,
-                    fromSeries.Modality,
-                    fromSeries.AcquisitionDateTime,
-                    instances);
-
-            return newSeries;
+            return DomainModel.DicomSeries.Create(
+                fromSeries.SeriesInstanceUid,
+                fromSeries.PatientID,
+                fromSeries.Modality,
+                fromSeries.AcquisitionDateTime,
+                fromSeries.DicomInstances?.Select(fromInstance => 
+                    fromInstance.ToDomainModel()));
         }
     }
 }
