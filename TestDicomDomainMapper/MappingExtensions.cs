@@ -7,6 +7,50 @@ namespace TestDicomDomainMapper
 {
     static class MappingExtensions
     {
+        public static EFModel.DicomAttribute ToEFModel(this DomainModel.DicomAttribute fromAttribute,
+            EFModel.MyContext context, EFModel.DicomInstance forInstance)
+        {
+            var convertedAttribute = 
+                new EFModel.DicomAttribute()
+                {
+                    DicomTag = fromAttribute.DicomTag.ToString(),
+                    Value = fromAttribute.Value,
+                    DicomInstance = forInstance,
+                };
+            context.DicomAttributes.Add(convertedAttribute);
+
+            return convertedAttribute;
+        }
+
+        public static EFModel.DicomInstance ToEFModel(this DomainModel.DicomInstance fromInstance, 
+            EFModel.MyContext context, EFModel.DicomSeries forSeries)
+        {
+            var matchInstance =
+                    context.DicomInstances.Where(instance =>
+                        instance.SopInstanceUid.CompareTo(fromInstance.SopInstanceUid.ToString()) == 0)
+                        .SingleOrDefault();
+            if (matchInstance != null)
+            {
+                // can't modify an existing DicomInstance
+                throw new NotSupportedException();
+            }
+
+            var newInstance =
+                new EFModel.DicomInstance()
+                {
+                    SopInstanceUid = fromInstance.SopInstanceUid.ToString(),
+                    DicomSeries = forSeries,
+                };
+            context.DicomInstances.Add(newInstance);
+
+            var convertedAttributes =
+                fromInstance.DicomAttributes.Select(fromAttribute =>
+                    fromAttribute.ToEFModel(context, newInstance)).ToList();
+            newInstance.DicomAttributes = convertedAttributes;
+
+            return newInstance;
+        }
+
         /// <summary>
         /// maps from the domail model to the EF model
         /// </summary>
@@ -39,34 +83,8 @@ namespace TestDicomDomainMapper
             // see if instances need mapping
             foreach (var fromInstance in fromSeries.DicomInstances)
             {
-                var matchInstance =
-                        context.DicomInstances.Where(instance =>
-                            instance.SopInstanceUid.CompareTo(fromInstance.SopInstanceUid.ToString()) == 0)
-                            .SingleOrDefault();
-                if (matchInstance != null)
-                {
-                    // can't modify an existing DicomInstance
-                    throw new NotSupportedException();
-                }
-
                 var newInstance =
-                    new EFModel.DicomInstance()
-                    {
-                        SopInstanceUid = fromInstance.SopInstanceUid.ToString(),
-                        DicomSeries = matchSeries,
-                    };
-                context.DicomInstances.Add(newInstance);
-
-                var convertedAttributes =
-                    fromInstance.DicomAttributes.Select(fromAttribute =>
-                        new EFModel.DicomAttribute()
-                        {
-                            DicomTag = fromAttribute.DicomTag.ToString(),
-                            Value = fromAttribute.Value,
-                            DicomInstance = newInstance,
-                        }).ToList();
-                newInstance.DicomAttributes = convertedAttributes;
-                context.DicomAttributes.AddRange(convertedAttributes);
+                    fromInstance.ToEFModel(context, matchSeries);
             }
 
             return matchSeries;
