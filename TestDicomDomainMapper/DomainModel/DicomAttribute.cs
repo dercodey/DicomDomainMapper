@@ -8,11 +8,11 @@ namespace TestDicomDomainMapper.DomainModel
     /// </summary>
     class DicomAttribute : IValueObject, IEquatable<DicomAttribute>
     {
-        public DicomTag DicomTag { get; private set; }
+        public string DicomTag { get; set; }
 
-        public string Value { get; private set; }
+        public string Value { get; set; }
 
-        public static DicomAttribute Create(DicomTag tag, string value)
+        public static DicomAttribute Create(string tag, string value)
         {
             // validate value???
             return new DicomAttribute() 

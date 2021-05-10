@@ -4,15 +4,19 @@ using System.Text;
 
 namespace TestDicomDomainMapper.DomainModel
 {
-    class DicomInstance : IEntity<DicomUid>
+    class DicomInstance : IEntity<string>
     {
-        public DicomUid EntityId => SopInstanceUid;
+        public string EntityId => SopInstanceUid;
 
-        public DicomUid SopInstanceUid { get; private set; }
+        public string SopInstanceUid { get; set; }
 
-        public IEnumerable<DicomAttribute> DicomAttributes { get; private set; }
+        public IEnumerable<DicomAttribute> DicomAttributes 
+        { 
+            get; 
+            set; 
+        }
 
-        public static DicomInstance Create(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> attributes)
+        public static DicomInstance Create(string sopInstanceUid, IEnumerable<DicomAttribute> attributes)
         {
             return new DicomInstance()
             {

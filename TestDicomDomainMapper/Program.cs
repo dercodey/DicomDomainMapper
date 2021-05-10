@@ -1,12 +1,26 @@
-﻿using System;
+﻿using AutoMapper;
+using AutoMapper.EntityFrameworkCore;
+using AutoMapper.EquivalencyExpression;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace TestDicomDomainMapper
 {
 
     class Program
     {
+        static IMapper CreateMapper(Action<IMapperConfigurationExpression> cfg)
+        {
+            var map = new MapperConfiguration(cfg);
+            map.CompileMappings();
+
+            var mapper = map.CreateMapper();
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            return mapper;
+        }
+
         static void CreatePopulateEFModel()
         {
             var context = new EFModel.MyContext();
@@ -51,7 +65,7 @@ namespace TestDicomDomainMapper
         {
             var series =
                 DomainModel.DicomSeries.Create(
-                    DomainModel.DicomUid.Create("1.2.3.7"),
+                    "1.2.3.7",
                     "98765",
                     "CT",
                     new DateTime(2021, 01, 02),
@@ -70,14 +84,14 @@ namespace TestDicomDomainMapper
             {
                 var attributes = new List<DomainModel.DicomAttribute>()
                 {
-                    DomainModel.DicomAttribute.Create(DomainModel.DicomTag.PATIENTID, "98765"),
-                    DomainModel.DicomAttribute.Create(DomainModel.DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
-                    DomainModel.DicomAttribute.Create(DomainModel.DicomTag.MODALITY, "CT"),
+                    DomainModel.DicomAttribute.Create("PATIENTID", "98765"),
+                    DomainModel.DicomAttribute.Create("ACQUISITIONDATETIME", (new DateTime(2021,01,02)).ToString()),
+                    DomainModel.DicomAttribute.Create("MODALITY", "CT"),
                 };
 
                 var instance =
                     DomainModel.DicomInstance.Create(
-                        DomainModel.DicomUid.Create($"1.2.3.{n + 7}"),
+                        $"1.2.3.{n + 7}",
                         attributes);
 
                 series.AddInstance(instance);
@@ -86,17 +100,25 @@ namespace TestDicomDomainMapper
 
         static void Main(string[] args)
         {
+            var mapper = CreateMapper(cfg => {
+                // cfg.AddCollectionMappers();
+                cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>().ReverseMap();
+                cfg.CreateMap<EFModel.DicomInstance, DomainModel.DicomInstance>().ReverseMap();
+                cfg.CreateMap<EFModel.DicomSeries, DomainModel.DicomSeries>().ReverseMap();
+                // cfg.UseEntityFrameworkCoreModel<EFModel.MyContext>();
+            });
+
             // 1. try just creating an EF model
             // CreatePopulateEFModel();
 
             // 2.
-            DomainModel.DicomUid newSeriesUid = null;
+            string newSeriesUid = null;
             {
                 var context = new EFModel.MyContext();
 
                 var newSeriesDomainModel = CreateSeries();
-
-                var newSeriesEFModel = newSeriesDomainModel.ToEFModel(context);
+                var newSeriesEFModel = mapper.Map<EFModel.DicomSeries>(newSeriesDomainModel);
+                context.DicomSeries.Add(newSeriesEFModel);
 
                 context.SaveChanges();
 
@@ -108,14 +130,18 @@ namespace TestDicomDomainMapper
             {
                 var context = new EFModel.MyContext();
 
-                var newSeriesEFModel =
+                var existingSeriesEFModel =
                     context.DicomSeries.First(series =>
                         series.SeriesInstanceUid.CompareTo(newSeriesUid.ToString()) == 0);
-                var newSeriesDomainModel = newSeriesEFModel.ToDomainModel();
+                var updateSeriesDomainModel = 
+                    mapper.Map<DomainModel.DicomSeries>(existingSeriesEFModel);
 
-                AddInstancesToSeries(newSeriesDomainModel);
+                AddInstancesToSeries(updateSeriesDomainModel);
 
-                var updatedSeriesEFModel = newSeriesDomainModel.ToEFModel(context);
+                var updatedSeriesEFModel = 
+                    mapper.Map<EFModel.DicomSeries>(updateSeriesDomainModel);
+                context.DicomSeries.Remove(existingSeriesEFModel);
+                context.DicomSeries.Add(updatedSeriesEFModel);
                 context.SaveChanges();
             }
         }

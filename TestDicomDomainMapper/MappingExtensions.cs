@@ -37,7 +37,7 @@ namespace TestDicomDomainMapper
             }
 
             // see if instances need mapping
-            foreach (var fromInstance in fromSeries.Instances)
+            foreach (var fromInstance in fromSeries.DicomInstances)
             {
                 var matchInstance =
                         context.DicomInstances.Where(instance =>
@@ -61,11 +61,11 @@ namespace TestDicomDomainMapper
                     fromInstance.DicomAttributes.Select(fromAttribute =>
                         new EFModel.DicomAttribute()
                         {
-                            Tag = fromAttribute.DicomTag.ToString(),
+                            DicomTag = fromAttribute.DicomTag.ToString(),
                             Value = fromAttribute.Value,
                             DicomInstance = newInstance,
                         }).ToList();
-                newInstance.Attributes = convertedAttributes;
+                newInstance.DicomAttributes = convertedAttributes;
                 context.DicomAttributes.AddRange(convertedAttributes);
             }
 
@@ -75,17 +75,17 @@ namespace TestDicomDomainMapper
         public static DomainModel.DicomSeries ToDomainModel(this EFModel.DicomSeries fromSeries)
         {
             var instances =
-                fromSeries.Instances?.Select(fromInstance =>
+                fromSeries.DicomInstances?.Select(fromInstance =>
                     DomainModel.DicomInstance.Create(
-                        DomainModel.DicomUid.Create(fromInstance.SopInstanceUid),
-                        fromInstance.Attributes?.Select(fromAttribute =>
+                        fromInstance.SopInstanceUid,
+                        fromInstance.DicomAttributes?.Select(fromAttribute =>
                             DomainModel.DicomAttribute.Create(
-                                DomainModel.DicomTag.Create(fromAttribute.Tag),
+                                fromAttribute.DicomTag,
                                 fromAttribute.Value))));
 
             var newSeries =
                 DomainModel.DicomSeries.Create(
-                    DomainModel.DicomUid.Create(fromSeries.SeriesInstanceUid),
+                    fromSeries.SeriesInstanceUid,
                     fromSeries.PatientID,
                     fromSeries.Modality,
                     fromSeries.AcquisitionDateTime,

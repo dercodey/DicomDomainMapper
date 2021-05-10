@@ -1,21 +1,28 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TestDicomDomainMapper.DomainModel
 {
-    class DicomSeries : IAggregateRoot<DicomUid>
+    class DicomSeries : IAggregateRoot<string>
     {
-        public DicomUid RootId => SeriesInstanceUid;
+        public string RootId => SeriesInstanceUid;
 
-        public DicomUid SeriesInstanceUid { get; private set; }
-        public string PatientId { get; private set; }
-        public string Modality { get; private set; }
-        public DateTime AcquisitionDateTime { get; private set; }
+        public string SeriesInstanceUid { get; set; }
+        public string PatientId { get; set; }
+        public string Modality { get; set; }
+        public DateTime AcquisitionDateTime { get; set; }
 
-        public IEnumerable<DicomInstance> Instances { get { return _instances; } }
+        [IgnoreMap]
+        public List<DicomInstance> DicomInstances 
+        { 
+            get { return _instances; } 
+            set { _instances = value.ToList(); }
+        }
 
-        private List<DicomInstance> _instances;
+        private List<DicomInstance> _instances = new List<DicomInstance>();
 
         public bool AddInstance(DicomInstance newInstance)
         {
@@ -27,7 +34,7 @@ namespace TestDicomDomainMapper.DomainModel
             return true;
         }
 
-        public static DicomSeries Create(DicomUid seriesInstanceUid, string patientId, string modality, DateTime acquisitionDateTime, IEnumerable<DicomInstance> instances)
+        public static DicomSeries Create(string seriesInstanceUid, string patientId, string modality, DateTime acquisitionDateTime, IEnumerable<DicomInstance> instances)
         {
             var newSeries = new DicomSeries()
             {
