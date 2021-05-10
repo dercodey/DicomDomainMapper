@@ -81,11 +81,9 @@ namespace TestDicomDomainMapper
             }
 
             // see if instances need mapping
-            foreach (var fromInstance in fromSeries.DicomInstances)
-            {
-                var newInstance =
-                    fromInstance.ToEFModel(context, matchSeries);
-            }
+            var convertedInstances = 
+                fromSeries.DicomInstances.Select(fromInstance =>
+                    fromInstance.ToEFModel(context, matchSeries));
 
             return matchSeries;
         }
