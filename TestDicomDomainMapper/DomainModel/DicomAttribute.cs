@@ -1,9 +1,12 @@
-﻿namespace TestDicomDomainMapper.DomainModel
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace TestDicomDomainMapper.DomainModel
 {
     /// <summary>
     /// value object representing a DICOM attribute
     /// </summary>
-    class DicomAttribute : IValueObject
+    class DicomAttribute : IValueObject, IEquatable<DicomAttribute>
     {
         public DicomTag DicomTag { get; private set; }
 
@@ -17,6 +20,11 @@
                 DicomTag = tag, 
                 Value = value 
             };
+        }
+
+        public bool Equals([AllowNull] DicomAttribute other)
+        {
+            return DicomTag == other.DicomTag && Value == other.Value;
         }
     }
 }

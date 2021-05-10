@@ -1,9 +1,12 @@
-﻿namespace TestDicomDomainMapper.DomainModel
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace TestDicomDomainMapper.DomainModel
 {
     /// <summary>
     /// value object representing Dicom UID
     /// </summary>
-    class DicomUid : IValueObject
+    class DicomUid : IValueObject, IEquatable<DicomUid>
     {
         private string _uidString;
 
@@ -20,6 +23,11 @@
             var newDicomUid = new DicomUid();
             newDicomUid._uidString = uidString;
             return newDicomUid;
+        }
+
+        public bool Equals([AllowNull] DicomUid other)
+        {
+            return _uidString.CompareTo(other._uidString) == 0;
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace TestDicomDomainMapper.DomainModel
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace TestDicomDomainMapper.DomainModel
 {
-    public class DicomTag : IValueObject
+    public class DicomTag : IValueObject, IEquatable<DicomTag>
     {
         public ushort Group { get; private set; }
         public ushort Element { get; private set; }
@@ -22,6 +25,11 @@
         public static DicomTag SOPINSTANCEUID= Create(0x0010, 0x0010);
         public static DicomTag SERIESINSTANCEUID = Create(0x0010, 0x0010);
         public static DicomTag ACQUISITIONDATETIME = Create(0x0010, 0x0010);
+
+        public bool Equals([AllowNull] DicomTag other)
+        {
+            return Group == other.Group && Element == other.Element;
+        }
 
         public override string ToString()
         {
