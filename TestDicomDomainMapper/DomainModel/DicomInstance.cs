@@ -1,14 +1,16 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace TestDicomDomainMapper.DomainModel
 {
-    class DicomInstance : IEntity<string>
+    class DicomInstance : IEntity<DicomUid>
     {
-        public string EntityId => SopInstanceUid;
+        public DicomUid EntityId => SopInstanceUid;
 
-        public string SopInstanceUid { get; private set; }
+        [IgnoreMap]
+        public DicomUid SopInstanceUid { get; private set; }
 
         public IEnumerable<DicomAttribute> DicomAttributes 
         { 
@@ -16,7 +18,7 @@ namespace TestDicomDomainMapper.DomainModel
             private set;
         }
 
-        public DicomInstance(string sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
+        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
         {
             SopInstanceUid = sopInstanceUid;
             DicomAttributes = dicomAttributes;

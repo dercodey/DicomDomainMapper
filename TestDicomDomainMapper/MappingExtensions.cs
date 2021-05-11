@@ -6,6 +6,14 @@ using System.Text;
 
 namespace TestDicomDomainMapper
 {
+    class ToStringFormatter<T> : IValueConverter<T, string>
+    {
+        string IValueConverter<T, string>.Convert(T sourceMember, ResolutionContext context)
+        {
+            return sourceMember.ToString();
+        }
+    }
+
     static class MappingExtensions
     {
         static IMapper CreateMapper(Action<IMapperConfigurationExpression> cfg)
@@ -28,10 +36,31 @@ namespace TestDicomDomainMapper
         }
 
         static IMapper mapper = CreateMapper(cfg => {
+            cfg.AllowNullCollections = true;
             // cfg.AddCollectionMappers();
-            cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>().ReverseMap();
-            cfg.CreateMap<EFModel.DicomInstance, DomainModel.DicomInstance>().ReverseMap();
-            cfg.CreateMap<EFModel.DicomSeries, DomainModel.DicomSeries>().ReverseMap();
+            cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>()
+                .ForMember(s => s.DicomTag,
+                    opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
+            cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
+                .ForCtorParam("dicomTag",
+                    opt => opt.MapFrom(src =>
+                        new DomainModel.DicomTag(src.DicomTag)));
+
+            cfg.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>()
+                .ForMember(s => s.SopInstanceUid,
+                    opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
+            cfg.CreateMap<EFModel.DicomInstance, DomainModel.DicomInstance>()
+                .ForCtorParam("sopInstanceUid",
+                    opt => opt.MapFrom(src =>
+                        new DomainModel.DicomUid(src.SopInstanceUid)));
+
+            cfg.CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>()
+                .ForMember(s => s.SeriesInstanceUid,
+                    opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
+            cfg.CreateMap<EFModel.DicomSeries, DomainModel.DicomSeries>()
+                .ForCtorParam("seriesInstanceUid",
+                    opt => opt.MapFrom(src =>
+                        new DomainModel.DicomUid(src.SeriesInstanceUid)));
             // cfg.UseEntityFrameworkCoreModel<EFModel.MyContext>();
         });
 
@@ -40,6 +69,7 @@ namespace TestDicomDomainMapper
         {
             var convertedAttribute = GetMapper().Map<EFModel.DicomAttribute>(fromAttribute);
             context.DicomAttributes.Add(convertedAttribute);
+            context.Entry(convertedAttribute).State = Microsoft.EntityFrameworkCore.EntityState.Added;
 
             return convertedAttribute;
         }
@@ -61,6 +91,7 @@ namespace TestDicomDomainMapper
             newInstance.DicomSeries = forSeries;
             forSeries.DicomInstances.Add(newInstance);
             context.DicomInstances.Add(newInstance);
+            context.Entry(newInstance).State = Microsoft.EntityFrameworkCore.EntityState.Added;
 
             var convertedAttributes =
                 fromInstance.DicomAttributes.Select(fromAttribute =>
@@ -108,7 +139,7 @@ namespace TestDicomDomainMapper
         public static DomainModel.DicomInstance ToDomainModel(this EFModel.DicomInstance fromInstance)
         {
             return new DomainModel.DicomInstance(
-                fromInstance.SopInstanceUid,
+                new DomainModel.DicomUid(fromInstance.SopInstanceUid),
                 fromInstance.DicomAttributes?.Select(fromAttribute => 
                     fromAttribute.ToDomainModel()));
         }
@@ -116,7 +147,7 @@ namespace TestDicomDomainMapper
         public static DomainModel.DicomSeries ToDomainModel(this EFModel.DicomSeries fromSeries)
         {
             return new DomainModel.DicomSeries(
-                fromSeries.SeriesInstanceUid,
+                new DomainModel.DicomUid(fromSeries.SeriesInstanceUid),
                 fromSeries.PatientID,
                 fromSeries.Modality,
                 fromSeries.AcquisitionDateTime,

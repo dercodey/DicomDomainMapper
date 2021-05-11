@@ -55,7 +55,7 @@ namespace TestDicomDomainMapper
         {
             var series =
                 new DomainModel.DicomSeries(
-                    "1.2.3.7",
+                    new DomainModel.DicomUid("1.2.3.7"),
                     "98765",
                     "CT",
                     new DateTime(2021, 01, 02),
@@ -74,14 +74,14 @@ namespace TestDicomDomainMapper
             {
                 var attributes = new List<DomainModel.DicomAttribute>()
                 {
-                    new DomainModel.DicomAttribute("PATIENTID", "98765"),
-                    new DomainModel.DicomAttribute("ACQUISITIONDATETIME", (new DateTime(2021,01,02)).ToString()),
-                    new DomainModel .DicomAttribute("MODALITY", "CT"),
+                    new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTID, "98765"),
+                    new DomainModel.DicomAttribute(DomainModel.DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
+                    new DomainModel.DicomAttribute(DomainModel.DicomTag.MODALITY, "CT"),
                 };
 
                 var instance =
                     new DomainModel.DicomInstance(
-                        $"1.2.3.{n + 7}",
+                        new DomainModel.DicomUid($"1.2.3.{n + 7}"),
                         attributes);
 
                 series.AddInstance(instance);
@@ -107,7 +107,7 @@ namespace TestDicomDomainMapper
                 context.SaveChanges();
 
                 // capture new series ID
-                newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
+                newSeriesUid = newSeriesDomainModel.SeriesInstanceUid.ToString();
             }
 
             // 3.

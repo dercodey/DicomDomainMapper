@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace TestDicomDomainMapper.DomainModel
@@ -8,11 +9,12 @@ namespace TestDicomDomainMapper.DomainModel
     /// </summary>
     class DicomAttribute : IValueObject, IEquatable<DicomAttribute>
     {
-        public string DicomTag { get; private set; }
+        [IgnoreMap]
+        public DicomTag DicomTag { get; private set; }
 
         public string Value { get; private set; }
 
-        public DicomAttribute(string dicomTag, string value)
+        public DicomAttribute(DicomTag dicomTag, string value)
         {
             DicomTag = dicomTag;
             Value = value;

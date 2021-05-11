@@ -6,11 +6,12 @@ using System.Text;
 
 namespace TestDicomDomainMapper.DomainModel
 {
-    class DicomSeries : IAggregateRoot<string>
+    class DicomSeries : IAggregateRoot<DicomUid>
     {
-        public string RootId => SeriesInstanceUid;
+        public DicomUid RootId => SeriesInstanceUid;
 
-        public string SeriesInstanceUid { get; private set; }
+        [IgnoreMap]
+        public DicomUid SeriesInstanceUid { get; private set; }
         public string PatientId { get; private set; }
         public string Modality { get; private set; }
         public DateTime AcquisitionDateTime { get; private set; }
@@ -34,7 +35,7 @@ namespace TestDicomDomainMapper.DomainModel
             return true;
         }
 
-        public DicomSeries(string seriesInstanceUid, string patientId, string modality, DateTime acquisitionDateTime, IEnumerable<DicomInstance> dicomInstances)
+        public DicomSeries(DicomUid seriesInstanceUid, string patientId, string modality, DateTime acquisitionDateTime, IEnumerable<DicomInstance> dicomInstances)
         {
             SeriesInstanceUid = seriesInstanceUid;
             PatientId = patientId;
