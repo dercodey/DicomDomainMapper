@@ -8,21 +8,18 @@ namespace TestDicomDomainMapper.DomainModel
     {
         public string EntityId => SopInstanceUid;
 
-        public string SopInstanceUid { get; set; }
+        public string SopInstanceUid { get; private set; }
 
         public IEnumerable<DicomAttribute> DicomAttributes 
         { 
-            get; 
-            set; 
+            get;
+            private set;
         }
 
-        public static DicomInstance Create(string sopInstanceUid, IEnumerable<DicomAttribute> attributes)
+        public DicomInstance(string sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
         {
-            return new DicomInstance()
-            {
-                SopInstanceUid = sopInstanceUid,
-                DicomAttributes = attributes,
-            };
+            SopInstanceUid = sopInstanceUid;
+            DicomAttributes = dicomAttributes;
         }
     }
 }

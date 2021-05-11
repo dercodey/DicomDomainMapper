@@ -10,16 +10,16 @@ namespace TestDicomDomainMapper.DomainModel
     {
         public string RootId => SeriesInstanceUid;
 
-        public string SeriesInstanceUid { get; set; }
-        public string PatientId { get; set; }
-        public string Modality { get; set; }
-        public DateTime AcquisitionDateTime { get; set; }
+        public string SeriesInstanceUid { get; private set; }
+        public string PatientId { get; private set; }
+        public string Modality { get; private set; }
+        public DateTime AcquisitionDateTime { get; private set; }
 
         [IgnoreMap]
         public List<DicomInstance> DicomInstances 
         { 
-            get { return _instances; } 
-            set { _instances = value.ToList(); }
+            get { return _instances; }
+            private set { _instances = value.ToList(); }
         }
 
         private List<DicomInstance> _instances = new List<DicomInstance>();
@@ -34,20 +34,16 @@ namespace TestDicomDomainMapper.DomainModel
             return true;
         }
 
-        public static DicomSeries Create(string seriesInstanceUid, string patientId, string modality, DateTime acquisitionDateTime, IEnumerable<DicomInstance> instances)
+        public DicomSeries(string seriesInstanceUid, string patientId, string modality, DateTime acquisitionDateTime, IEnumerable<DicomInstance> dicomInstances)
         {
-            var newSeries = new DicomSeries()
-            {
-                SeriesInstanceUid = seriesInstanceUid,
-                PatientId = patientId,
-                Modality = modality,
-                AcquisitionDateTime = acquisitionDateTime,
-            };
-            newSeries._instances =
-                instances != null 
-                    ? new List<DicomInstance>(instances) 
+            SeriesInstanceUid = seriesInstanceUid;
+            PatientId = patientId;
+            Modality = modality;
+            AcquisitionDateTime = acquisitionDateTime;
+            _instances =
+                dicomInstances != null 
+                    ? new List<DicomInstance>(dicomInstances) 
                     : new List<DicomInstance>();
-            return newSeries;
         }
     }
 }

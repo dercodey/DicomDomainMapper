@@ -8,23 +8,23 @@ namespace TestDicomDomainMapper.DomainModel
         public ushort Group { get; private set; }
         public ushort Element { get; private set; }
 
-        public static DicomTag Create(ushort group, ushort element)
+        public DicomTag(ushort group, ushort element)
         {
-            // validate group and element values are valid
-
-            return new DicomTag() { Group = group, Element = element };
+            Group = group;
+            Element = element;
         }
 
-        public static DicomTag Create(string strTag)
+        public DicomTag(string strTag)
         {
-            return new DicomTag();
+            Group = 0;
+            Element = 0;
         }
 
-        public static DicomTag PATIENTID = Create(0x0010, 0x0010);
-        public static DicomTag MODALITY = Create(0x0010, 0x0010);
-        public static DicomTag SOPINSTANCEUID= Create(0x0010, 0x0010);
-        public static DicomTag SERIESINSTANCEUID = Create(0x0010, 0x0010);
-        public static DicomTag ACQUISITIONDATETIME = Create(0x0010, 0x0010);
+        public static DicomTag PATIENTID = new DicomTag(0x0010, 0x0010);
+        public static DicomTag MODALITY = new DicomTag(0x0010, 0x0010);
+        public static DicomTag SOPINSTANCEUID= new DicomTag(0x0010, 0x0010);
+        public static DicomTag SERIESINSTANCEUID = new DicomTag(0x0010, 0x0010);
+        public static DicomTag ACQUISITIONDATETIME = new DicomTag(0x0010, 0x0010);
 
         public bool Equals([AllowNull] DicomTag other)
         {

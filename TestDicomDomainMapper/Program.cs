@@ -54,7 +54,7 @@ namespace TestDicomDomainMapper
         static DomainModel.DicomSeries CreateSeries()
         {
             var series =
-                DomainModel.DicomSeries.Create(
+                new DomainModel.DicomSeries(
                     "1.2.3.7",
                     "98765",
                     "CT",
@@ -74,13 +74,13 @@ namespace TestDicomDomainMapper
             {
                 var attributes = new List<DomainModel.DicomAttribute>()
                 {
-                    DomainModel.DicomAttribute.Create("PATIENTID", "98765"),
-                    DomainModel.DicomAttribute.Create("ACQUISITIONDATETIME", (new DateTime(2021,01,02)).ToString()),
-                    DomainModel.DicomAttribute.Create("MODALITY", "CT"),
+                    new DomainModel.DicomAttribute("PATIENTID", "98765"),
+                    new DomainModel.DicomAttribute("ACQUISITIONDATETIME", (new DateTime(2021,01,02)).ToString()),
+                    new DomainModel .DicomAttribute("MODALITY", "CT"),
                 };
 
                 var instance =
-                    DomainModel.DicomInstance.Create(
+                    new DomainModel.DicomInstance(
                         $"1.2.3.{n + 7}",
                         attributes);
 

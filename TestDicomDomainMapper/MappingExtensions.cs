@@ -107,7 +107,7 @@ namespace TestDicomDomainMapper
 
         public static DomainModel.DicomInstance ToDomainModel(this EFModel.DicomInstance fromInstance)
         {
-            return DomainModel.DicomInstance.Create(
+            return new DomainModel.DicomInstance(
                 fromInstance.SopInstanceUid,
                 fromInstance.DicomAttributes?.Select(fromAttribute => 
                     fromAttribute.ToDomainModel()));
@@ -115,7 +115,7 @@ namespace TestDicomDomainMapper
 
         public static DomainModel.DicomSeries ToDomainModel(this EFModel.DicomSeries fromSeries)
         {
-            return DomainModel.DicomSeries.Create(
+            return new DomainModel.DicomSeries(
                 fromSeries.SeriesInstanceUid,
                 fromSeries.PatientID,
                 fromSeries.Modality,
