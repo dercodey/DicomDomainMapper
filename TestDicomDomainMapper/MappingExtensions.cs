@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,16 +8,37 @@ namespace TestDicomDomainMapper
 {
     static class MappingExtensions
     {
+        static IMapper CreateMapper(Action<IMapperConfigurationExpression> cfg)
+        {
+            var map = new MapperConfiguration(cfg);
+            map.CompileMappings();
+
+            var mapper = map.CreateMapper();
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            return mapper;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static IMapper GetMapper()
+        {
+            return mapper;
+        }
+
+        static IMapper mapper = CreateMapper(cfg => {
+            // cfg.AddCollectionMappers();
+            cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>().ReverseMap();
+            cfg.CreateMap<EFModel.DicomInstance, DomainModel.DicomInstance>().ReverseMap();
+            cfg.CreateMap<EFModel.DicomSeries, DomainModel.DicomSeries>().ReverseMap();
+            // cfg.UseEntityFrameworkCoreModel<EFModel.MyContext>();
+        });
+
         public static EFModel.DicomAttribute ToEFModel(this DomainModel.DicomAttribute fromAttribute,
             EFModel.MyContext context, EFModel.DicomInstance forInstance)
         {
-            var convertedAttribute = 
-                new EFModel.DicomAttribute()
-                {
-                    DicomTag = fromAttribute.DicomTag.ToString(),
-                    Value = fromAttribute.Value,
-                    DicomInstance = forInstance,
-                };
+            var convertedAttribute = GetMapper().Map<EFModel.DicomAttribute>(fromAttribute);
             context.DicomAttributes.Add(convertedAttribute);
 
             return convertedAttribute;
@@ -35,12 +57,9 @@ namespace TestDicomDomainMapper
                 throw new NotSupportedException();
             }
 
-            var newInstance =
-                new EFModel.DicomInstance()
-                {
-                    SopInstanceUid = fromInstance.SopInstanceUid.ToString(),
-                    DicomSeries = forSeries,
-                };
+            var newInstance = GetMapper().Map<EFModel.DicomInstance>(fromInstance);
+            newInstance.DicomSeries = forSeries;
+            forSeries.DicomInstances.Add(newInstance);
             context.DicomInstances.Add(newInstance);
 
             var convertedAttributes =
@@ -65,14 +84,7 @@ namespace TestDicomDomainMapper
                     .SingleOrDefault();
             if (matchSeries == null)
             {
-                matchSeries =
-                    new EFModel.DicomSeries()
-                    {
-                        SeriesInstanceUid = fromSeries.SeriesInstanceUid.ToString(),
-                        AcquisitionDateTime = fromSeries.AcquisitionDateTime,
-                        Modality = fromSeries.Modality,
-                        PatientID = fromSeries.PatientId,
-                    };
+                matchSeries = GetMapper().Map<EFModel.DicomSeries>(fromSeries);
                 context.DicomSeries.Add(matchSeries);
             }
             else
@@ -83,16 +95,14 @@ namespace TestDicomDomainMapper
             // see if instances need mapping
             var convertedInstances = 
                 fromSeries.DicomInstances.Select(fromInstance =>
-                    fromInstance.ToEFModel(context, matchSeries));
+                    fromInstance.ToEFModel(context, matchSeries)).ToList();
 
             return matchSeries;
         }
 
         public static DomainModel.DicomAttribute ToDomainModel(this EFModel.DicomAttribute fromAttribute)
         {
-            return DomainModel.DicomAttribute.Create(
-                fromAttribute.DicomTag,
-                fromAttribute.Value);
+            return GetMapper().Map<DomainModel.DicomAttribute>(fromAttribute);
         }
 
         public static DomainModel.DicomInstance ToDomainModel(this EFModel.DicomInstance fromInstance)

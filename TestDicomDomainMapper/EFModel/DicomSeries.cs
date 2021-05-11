@@ -12,6 +12,7 @@ namespace TestDicomDomainMapper.EFModel
         public string PatientID { get; set; }
         public DateTime AcquisitionDateTime { get; set; }
         public string Modality { get; set; }
-        public List<DicomInstance> DicomInstances { get; set; }
+        public List<DicomInstance> DicomInstances { get; set; } = 
+            new List<DicomInstance>();
     }
 }

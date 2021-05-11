@@ -12,6 +12,7 @@ namespace TestDicomDomainMapper.EFModel
         public string SopInstanceUid { get; set; }
         [IgnoreMap]
         public DicomSeries DicomSeries { get; set; }
-        public List<DicomAttribute> DicomAttributes { get; set; }
+        public List<DicomAttribute> DicomAttributes { get; set; } =
+            new List<DicomAttribute>();
     }
 }
