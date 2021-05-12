@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
+using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
 {
     /// <summary>
     /// value type for a Dicom Tag
     /// </summary>
-    public class DicomTag : Seedwork.IValueObject, IEquatable<DicomTag>
+    public class DicomTag : IValueObject, IEquatable<DicomTag>
     {
         /// <summary>
         /// construct a tag from the group/element representation

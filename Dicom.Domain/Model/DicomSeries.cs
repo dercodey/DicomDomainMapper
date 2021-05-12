@@ -1,15 +1,15 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using AutoMapper;
+using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
 {
     /// <summary>
     /// aggregate entity for a dicom series
     /// </summary>
-    public class DicomSeries : Seedwork.IAggregateRoot<DicomUid>
+    public class DicomSeries : IAggregateRoot<DicomUid>
     {
         /// <summary>
         /// construct a series entity
@@ -78,11 +78,9 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// collection of DICOM instances that belong to the series
         /// </summary>
-        [IgnoreMap]
-        public List<DicomInstance> DicomInstances 
+        public IEnumerable<DicomInstance> DicomInstances 
         { 
             get { return _instances; }
-            private set { _instances = value.ToList(); }
         }
 
         private List<DicomInstance> _instances = new List<DicomInstance>();
@@ -110,14 +108,13 @@ namespace Dicom.Domain.Model
                 throw new ArgumentException();
             }
 
-#if CHECK_DATETIME
             var acquisitionDateTimeAttribute =
                 newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
-            if (modalityAttribute.Value.CompareTo(AcquisitionDateTime.ToString()) != 0)
+            var acquisitionDateTime = DateTime.Parse(acquisitionDateTimeAttribute.Value);
+            if (acquisitionDateTime.CompareTo(AcquisitionDateTime) != 0)
             {
                 throw new ArgumentException();
             }
-#endif
 
             // everything is OK, so add to the collection
             _instances.Add(newInstance);

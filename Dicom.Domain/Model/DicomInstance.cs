@@ -1,14 +1,15 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
 {
     /// <summary>
     /// entity representing a dicom instance
     /// </summary>
-    public class DicomInstance : Seedwork.IEntity<DicomUid>
+    public class DicomInstance : IEntity<DicomUid>
     {
         /// <summary>
         /// construct an instance with the given instance UID and the corresponding attributes

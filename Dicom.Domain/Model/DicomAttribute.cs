@@ -1,13 +1,14 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
+using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
 {
     /// <summary>
     /// value object representing a DICOM attribute
     /// </summary>
-    public class DicomAttribute : Seedwork.IValueObject, IEquatable<DicomAttribute>
+    public class DicomAttribute : IValueObject, IEquatable<DicomAttribute>
     {
         /// <summary>
         /// construct an attribute from a tag and value
