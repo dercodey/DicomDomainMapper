@@ -10,7 +10,7 @@ using TestDicomDomainMapper.EFModel;
 namespace TestDicomDomainMapper.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20210507180347_Initial")]
+    [Migration("20210512170914_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace TestDicomDomainMapper.Migrations
                     b.Property<int>("DicomInstanceId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tag")
+                    b.Property<string>("DicomTag")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
@@ -91,7 +91,7 @@ namespace TestDicomDomainMapper.Migrations
             modelBuilder.Entity("TestDicomDomainMapper.EFModel.DicomAttribute", b =>
                 {
                     b.HasOne("TestDicomDomainMapper.EFModel.DicomInstance", "DicomInstance")
-                        .WithMany("Attributes")
+                        .WithMany("DicomAttributes")
                         .HasForeignKey("DicomInstanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -102,7 +102,7 @@ namespace TestDicomDomainMapper.Migrations
             modelBuilder.Entity("TestDicomDomainMapper.EFModel.DicomInstance", b =>
                 {
                     b.HasOne("TestDicomDomainMapper.EFModel.DicomSeries", "DicomSeries")
-                        .WithMany("Instances")
+                        .WithMany("DicomInstances")
                         .HasForeignKey("DicomSeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -112,12 +112,12 @@ namespace TestDicomDomainMapper.Migrations
 
             modelBuilder.Entity("TestDicomDomainMapper.EFModel.DicomInstance", b =>
                 {
-                    b.Navigation("Attributes");
+                    b.Navigation("DicomAttributes");
                 });
 
             modelBuilder.Entity("TestDicomDomainMapper.EFModel.DicomSeries", b =>
                 {
-                    b.Navigation("Instances");
+                    b.Navigation("DicomInstances");
                 });
 #pragma warning restore 612, 618
         }

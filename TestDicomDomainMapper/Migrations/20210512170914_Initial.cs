@@ -50,7 +50,7 @@ namespace TestDicomDomainMapper.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DicomInstanceId = table.Column<int>(type: "int", nullable: false),
-                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DicomTag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

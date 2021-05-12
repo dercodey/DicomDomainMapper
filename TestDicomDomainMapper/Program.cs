@@ -11,121 +11,35 @@ namespace TestDicomDomainMapper
 
     class Program
     {
-        static void CreatePopulateEFModel()
-        {
-            var context = new EFModel.MyContext();
-            var series = new EFModel.DicomSeries()
-            {
-                SeriesInstanceUid = "1.2.5.4",
-                PatientID = "12345",
-                Modality = "CT",
-                AcquisitionDateTime = DateTime.Now
-            };
-            context.DicomSeries.Add(series);
-
-            context.DicomInstances.Add(
-                new EFModel.DicomInstance()
-                {
-                    DicomSeries = series,
-                    SopInstanceUid = "1.2.5.5",
-                });
-
-            context.DicomInstances.Add(
-                new EFModel.DicomInstance()
-                {
-                    DicomSeries = series,
-                    SopInstanceUid = "1.2.5.6",
-                });
-
-            context.DicomInstances.Add(
-                new EFModel.DicomInstance()
-                {
-                    DicomSeries = series,
-                    SopInstanceUid = "1.2.5.7",
-                });
-
-            context.SaveChanges();
-        }
-
-        /// <summary>
-        /// creates a new series aggregate
-        /// </summary>
-        /// <returns></returns>
-        static DomainModel.DicomSeries CreateSeries()
-        {
-            var series =
-                new DomainModel.DicomSeries(
-                    new DomainModel.DicomUid("1.2.3.7"),
-                    "98765",
-                    "CT",
-                    new DateTime(2021, 01, 02),
-                    new List<DomainModel.DicomInstance>());
-
-            return series;
-        }
-
-        /// <summary>
-        /// creates a few new instances and adds to the series
-        /// </summary>
-        /// <param name="series"></param>
-        static void AddInstancesToSeries(DomainModel.DicomSeries series)
-        {
-            for (int n = 0; n < 3; n++)
-            {
-                var attributes = new List<DomainModel.DicomAttribute>()
-                {
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTID, "98765"),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.MODALITY, "CT"),
-                };
-
-                var instance =
-                    new DomainModel.DicomInstance(
-                        new DomainModel.DicomUid($"1.2.3.{n + 7}"),
-                        attributes);
-
-                series.AddInstance(instance);
-            }
-        }
-
         static void Main(string[] args)
         {
-            var mapper = MappingExtensions.GetMapper();
-
             // 1. try just creating an EF model
-            // CreatePopulateEFModel();
+            // TestData.CreatePopulateEFModel();
 
             // 2.
-            string newSeriesUid = null;
+            DomainModel.DicomUid newSeriesUid = null;
             {
                 var context = new EFModel.MyContext();
+                var repository = new DicomSeriesRepository(context);
 
-                var newSeriesDomainModel = CreateSeries();
-                var newSeriesEFModel = newSeriesDomainModel.ToEFModel(context);
-                context.DicomSeries.Add(newSeriesEFModel);
+                var newSeriesDomainModel = TestData.CreateSeries();
 
-                context.SaveChanges();
+                repository.UpdateAsync(newSeriesDomainModel).Wait();
 
                 // capture new series ID
-                newSeriesUid = newSeriesDomainModel.SeriesInstanceUid.ToString();
+                newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
             }
 
             // 3.
             {
                 var context = new EFModel.MyContext();
+                var repository = new DicomSeriesRepository(context);
 
-                var existingSeriesEFModel =
-                    context.DicomSeries.First(series =>
-                        series.SeriesInstanceUid.CompareTo(newSeriesUid.ToString()) == 0);
-                var updateSeriesDomainModel = existingSeriesEFModel.ToDomainModel();
+                var updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
 
-                AddInstancesToSeries(updateSeriesDomainModel);
+                TestData.AddInstancesToSeries(updateSeriesDomainModel);
 
-                var updatedSeriesEFModel = updateSeriesDomainModel.ToEFModel(context);
-                context.DicomSeries.Remove(existingSeriesEFModel);
-                context.DicomSeries.Add(updatedSeriesEFModel);
-                context.Entry(updatedSeriesEFModel).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();
+                repository.UpdateAsync(updateSeriesDomainModel).Wait();
             }
         }
     }
