@@ -32,16 +32,19 @@ namespace TestDicomDomainMapper
         {
             for (int n = 0; n < 3; n++)
             {
+                var sopInstanceUid = new DomainModel.DicomUid($"1.2.3.{n + 7}");
                 var attributes = new List<DomainModel.DicomAttribute>()
                 {
                     new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTID, "98765"),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
+                    new DomainModel.DicomAttribute(DomainModel.DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
                     new DomainModel.DicomAttribute(DomainModel.DicomTag.MODALITY, "CT"),
+                    new DomainModel.DicomAttribute(DomainModel.DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
+                    new DomainModel.DicomAttribute(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
                 };
 
                 var instance =
                     new DomainModel.DicomInstance(
-                        new DomainModel.DicomUid($"1.2.3.{n + 7}"),
+                        sopInstanceUid,
                         attributes);
 
                 series.AddInstance(instance);
