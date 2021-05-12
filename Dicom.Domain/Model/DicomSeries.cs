@@ -97,7 +97,7 @@ namespace Dicom.Domain.Model
                 newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.PATIENTID));
             if (patientIdAttribute.Value.CompareTo(PatientId.ToString()) != 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("DICOM instance doesn't match series PatientID");
             }
 
             // perform checks by extracting relevent attributes
@@ -105,7 +105,7 @@ namespace Dicom.Domain.Model
                 newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.MODALITY));
             if (modalityAttribute.Value.CompareTo(Modality) != 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("DICOM instance doesn't match series modality");
             }
 
             var acquisitionDateTimeAttribute =
@@ -113,7 +113,7 @@ namespace Dicom.Domain.Model
             var acquisitionDateTime = DateTime.Parse(acquisitionDateTimeAttribute.Value);
             if (acquisitionDateTime.CompareTo(AcquisitionDateTime) != 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("DICOM instance doesn't match series acquistion date time");
             }
 
             // everything is OK, so add to the collection

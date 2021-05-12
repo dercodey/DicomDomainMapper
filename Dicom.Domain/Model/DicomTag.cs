@@ -30,6 +30,12 @@ namespace Dicom.Domain.Model
             var pattern = @"\((?<group>[0-9A-F]{4}),(?<element>[0-9A-F]{4})\)";
             var matches = Regex.Match(strTag, pattern);
             
+            if (!matches.Groups.ContainsKey("group")
+                || !matches.Groups.ContainsKey("element"))
+            {
+                throw new ArgumentException("Incorrect format for DICOM tag");
+            }
+
             // get the group and element from matches
             Group = 
                 ushort.Parse(matches.Groups["group"].Value, 

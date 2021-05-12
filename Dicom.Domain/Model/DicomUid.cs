@@ -24,7 +24,7 @@ namespace Dicom.Domain.Model
             var matches = Regex.Matches(uidString, pattern);
             if (matches.Count != 1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Incorrect format for DICOM UID");
             }
 
             _uidString = uidString;

@@ -23,12 +23,12 @@ namespace Dicom.Domain.Model
             if (embeddedSopInstanceUid == null)
             {
                 // the SOP instance UID is missing
-                throw new ArgumentException();
+                throw new ArgumentException("Missing SOP Instance UID in DICOM instance");
             }
             else if (embeddedSopInstanceUid.Value.CompareTo(sopInstanceUid.ToString()) != 0)
             {
                 // the SOP instance UID doesn't match
-                throw new ArgumentException();
+                throw new ArgumentException("Mismatched SOP instance UID in DICOM instance");
             }
 
             SopInstanceUid = sopInstanceUid;
