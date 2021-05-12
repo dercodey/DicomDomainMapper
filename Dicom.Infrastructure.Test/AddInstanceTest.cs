@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DomainModel = Dicom.Domain.Model;
 
@@ -25,7 +26,37 @@ namespace Dicom.Infrastructure.Test
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
 
+                string connectionString = 
+                    @"Data Source=(localdb)\ProjectsV13;Initial Catalog=MyStoreDB;";
+
                 // check that the new series exists
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string queryString = $"select PatientId, Modality, AcquisitionDateTime from DicomSeries where SeriesInstanceUID = '{newSeriesUid.ToString()}'";
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        int rowCount = 0;
+
+                        while (reader.Read())
+                        {
+                            rowCount++;
+
+                            var patientId = reader["PatientId"].ToString();
+                            Assert.AreEqual(newSeriesDomainModel.PatientId, patientId);
+
+                            var modality = reader["Modality"].ToString();
+                            Assert.AreEqual(newSeriesDomainModel.Modality, modality);
+
+                            var acquisitionDateTime = System.DateTime.Parse(reader["AcquisitionDateTime"].ToString());
+                            Assert.AreEqual(newSeriesDomainModel.AcquisitionDateTime, acquisitionDateTime);
+                        }
+
+                        // should only have returned one row
+                        Assert.AreEqual(rowCount, 1);
+                    }
+                }
             }
         }
 
