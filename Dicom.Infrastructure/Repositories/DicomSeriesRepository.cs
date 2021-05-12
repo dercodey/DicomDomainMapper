@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DomainModel = Dicom.Domain.Model;
@@ -8,7 +9,7 @@ namespace Dicom.Infrastructure.Repositories
     /// <summary>
     /// an aggregate repository for DICOM series aggregates
     /// </summary>
-    public class DicomSeriesRepository : IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>
+    public class DicomSeriesRepository : IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>, IDisposable
     {
         private readonly EFModel.MyContext _context;
 
@@ -20,7 +21,7 @@ namespace Dicom.Infrastructure.Repositories
         {
             this._context = context;
         }
-        
+
         /// <summary>
         /// gets the DICOM series for the given series instance UID
         /// </summary>
@@ -93,5 +94,18 @@ namespace Dicom.Infrastructure.Repositories
             // now perform the save
             await _context.SaveChangesAsync();
         }
+
+        #region IDisposable
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
+        #endregion
+
     }
 }
