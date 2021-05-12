@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TestDicomDomainMapper.DomainModel
+namespace Dicom.Domain.Model
 {
     /// <summary>
     /// aggregate entity for a dicom series
     /// </summary>
-    public class DicomSeries : Seedworks.IAggregateRoot<DicomUid>
+    public class DicomSeries : Seedwork.IAggregateRoot<DicomUid>
     {
         /// <summary>
         /// construct a series entity

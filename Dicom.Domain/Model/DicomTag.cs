@@ -2,12 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace TestDicomDomainMapper.DomainModel
+namespace Dicom.Domain.Model
 {
     /// <summary>
     /// value type for a Dicom Tag
     /// </summary>
-    public class DicomTag : Seedworks.IValueObject, IEquatable<DicomTag>
+    public class DicomTag : Seedwork.IValueObject, IEquatable<DicomTag>
     {
         /// <summary>
         /// construct a tag from the group/element representation

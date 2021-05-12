@@ -2,12 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace TestDicomDomainMapper.DomainModel
+namespace Dicom.Domain.Model
 {
     /// <summary>
     /// value object representing Dicom UID
     /// </summary>
-    public class DicomUid : Seedworks.IValueObject, IEquatable<DicomUid>
+    public class DicomUid : Seedwork.IValueObject, IEquatable<DicomUid>
     {
         private string _uidString;
 

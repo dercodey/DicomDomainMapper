@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Seedwork = Dicom.Domain.Seedwork;
 
 namespace TestDicomDomainMapper.Repositories
 {
@@ -8,7 +9,7 @@ namespace TestDicomDomainMapper.Repositories
     /// <typeparam name="TEntity">aggregate entity type</typeparam>
     /// <typeparam name="TKey">aggregate key type</typeparam>
     public interface IAggregateRepository<TEntity, TKey> 
-        where TEntity : Seedworks.IAggregateRoot<TKey>
+        where TEntity : Seedwork.IAggregateRoot<TKey>
     {
         /// <summary>
         /// gets the aggregate with the given key

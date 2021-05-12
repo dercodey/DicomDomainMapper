@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using DomainModel = Dicom.Domain.Model;
 
 namespace TestDicomDomainMapper.EFModel
 {

@@ -1,4 +1,4 @@
-﻿namespace TestDicomDomainMapper.Seedworks
+﻿namespace Dicom.Domain.Seedwork
 {
     /// <summary>
     /// interface representing an ordinary (non-aggregate) entity

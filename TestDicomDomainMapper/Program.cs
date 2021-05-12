@@ -1,6 +1,7 @@
-﻿namespace TestDicomDomainMapper
-{
+﻿using DomainModel = Dicom.Domain.Model;
 
+namespace TestDicomDomainMapper
+{
     class Program
     {
         static void Main(string[] args)

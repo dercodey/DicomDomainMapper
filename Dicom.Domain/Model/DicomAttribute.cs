@@ -2,12 +2,12 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TestDicomDomainMapper.DomainModel
+namespace Dicom.Domain.Model
 {
     /// <summary>
     /// value object representing a DICOM attribute
     /// </summary>
-    public class DicomAttribute : Seedworks.IValueObject, IEquatable<DicomAttribute>
+    public class DicomAttribute : Seedwork.IValueObject, IEquatable<DicomAttribute>
     {
         /// <summary>
         /// construct an attribute from a tag and value

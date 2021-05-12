@@ -2,14 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace TestDicomDomainMapper.DomainModel
+namespace Dicom.Domain.Model
 {
     /// <summary>
     /// entity representing a dicom instance
     /// </summary>
-    public class DicomInstance : Seedworks.IEntity<DicomUid>
+    public class DicomInstance : Seedwork.IEntity<DicomUid>
     {
         /// <summary>
         /// construct an instance with the given instance UID and the corresponding attributes
