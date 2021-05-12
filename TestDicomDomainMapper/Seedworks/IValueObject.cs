@@ -1,9 +1,9 @@
-﻿namespace TestDicomDomainMapper.DomainModel
+﻿namespace TestDicomDomainMapper.Seedworks
 {
     /// <summary>
     /// sentinal to indicate value type
     /// </summary>
-    interface IValueObject
+    public interface IValueObject
     {
     }
 }

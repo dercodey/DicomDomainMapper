@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestDicomDomainMapper
+namespace TestDicomDomainMapper.Repositories
 {
     /// <summary>
     /// 
@@ -60,7 +60,7 @@ namespace TestDicomDomainMapper
             // trigger load of all entities
             var matchSeries =
                 _context.DicomSeries.Where(series =>
-                    series.SeriesInstanceUid.CompareTo(updatedSeries.RootId.ToString()) == 0)
+                    series.SeriesInstanceUid.CompareTo(updatedSeries.RootKey.ToString()) == 0)
                 .SingleOrDefault();
             if (matchSeries == null)
             {

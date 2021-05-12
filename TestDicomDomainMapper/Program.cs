@@ -1,12 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.EntityFrameworkCore;
-using AutoMapper.EquivalencyExpression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-namespace TestDicomDomainMapper
+﻿namespace TestDicomDomainMapper
 {
 
     class Program
@@ -20,7 +12,7 @@ namespace TestDicomDomainMapper
             DomainModel.DicomUid newSeriesUid = null;
             {
                 var context = new EFModel.MyContext();
-                var repository = new DicomSeriesRepository(context);
+                var repository = new Repositories.DicomSeriesRepository(context);
 
                 var newSeriesDomainModel = TestData.CreateSeries();
 
@@ -33,7 +25,7 @@ namespace TestDicomDomainMapper
             // 3.
             {
                 var context = new EFModel.MyContext();
-                var repository = new DicomSeriesRepository(context);
+                var repository = new Repositories.DicomSeriesRepository(context);
 
                 var updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
 

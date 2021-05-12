@@ -7,22 +7,42 @@ namespace TestDicomDomainMapper.DomainModel
     /// <summary>
     /// value object representing a DICOM attribute
     /// </summary>
-    class DicomAttribute : IValueObject, IEquatable<DicomAttribute>
+    public class DicomAttribute : Seedworks.IValueObject, IEquatable<DicomAttribute>
     {
-        [IgnoreMap]
-        public DicomTag DicomTag { get; private set; }
-
-        public string Value { get; private set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dicomTag"></param>
+        /// <param name="value"></param>
         public DicomAttribute(DicomTag dicomTag, string value)
         {
             DicomTag = dicomTag;
             Value = value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [IgnoreMap]
+        public DicomTag DicomTag { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Value { get; private set; }
+
+        #region IEquatable
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool Equals([AllowNull] DicomAttribute other)
         {
             return DicomTag == other.DicomTag && Value == other.Value;
         }
+
+        #endregion
     }
 }

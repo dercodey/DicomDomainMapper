@@ -5,23 +5,40 @@ using System.Text;
 
 namespace TestDicomDomainMapper.DomainModel
 {
-    class DicomInstance : IEntity<DicomUid>
+    /// <summary>
+    /// 
+    /// </summary>
+    public class DicomInstance : Seedworks.IEntity<DicomUid>
     {
-        public DicomUid EntityId => SopInstanceUid;
-
-        [IgnoreMap]
-        public DicomUid SopInstanceUid { get; private set; }
-
-        public IEnumerable<DicomAttribute> DicomAttributes 
-        { 
-            get;
-            private set;
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sopInstanceUid"></param>
+        /// <param name="dicomAttributes"></param>
         public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
         {
             SopInstanceUid = sopInstanceUid;
             DicomAttributes = dicomAttributes;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DicomUid EntityKey => SopInstanceUid;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [IgnoreMap]
+        public DicomUid SopInstanceUid { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<DicomAttribute> DicomAttributes 
+        { 
+            get;
+            private set;
         }
     }
 }
