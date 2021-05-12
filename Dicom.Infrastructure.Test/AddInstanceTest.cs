@@ -1,5 +1,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using DomainModel = Dicom.Domain.Model;
 
@@ -44,35 +45,23 @@ namespace Dicom.Infrastructure.Test
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
             }
 
-            // check that the new series exists
-            using (var connection = new SqlConnection(connectionString))
+            var queryString = "select PatientId, Modality, AcquisitionDateTime "
+                + $"from DicomSeries where SeriesInstanceUID = '{newSeriesUid.ToString()}'";
+
+            int rowCount = QueryAndTest(queryString, reader =>
             {
-                var queryString = "select PatientId, Modality, AcquisitionDateTime "
-                    + $"from DicomSeries where SeriesInstanceUID = '{newSeriesUid.ToString()}'";
-                var command = new SqlCommand(queryString, connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    int rowCount = 0;
+                var patientId = reader["PatientId"].ToString();
+                Assert.AreEqual(newSeriesDomainModel.PatientId, patientId);
 
-                    while (reader.Read())
-                    {
-                        rowCount++;
+                var modality = reader["Modality"].ToString();
+                Assert.AreEqual(newSeriesDomainModel.Modality, modality);
 
-                        var patientId = reader["PatientId"].ToString();
-                        Assert.AreEqual(newSeriesDomainModel.PatientId, patientId);
+                var acquisitionDateTime = System.DateTime.Parse(reader["AcquisitionDateTime"].ToString());
+                Assert.AreEqual(newSeriesDomainModel.AcquisitionDateTime, acquisitionDateTime);
+            });
 
-                        var modality = reader["Modality"].ToString();
-                        Assert.AreEqual(newSeriesDomainModel.Modality, modality);
-
-                        var acquisitionDateTime = System.DateTime.Parse(reader["AcquisitionDateTime"].ToString());
-                        Assert.AreEqual(newSeriesDomainModel.AcquisitionDateTime, acquisitionDateTime);
-                    }
-
-                    // should only have returned one row
-                    Assert.AreEqual(rowCount, 1);
-                }
-            }
+            // should only have returned one row
+            Assert.AreEqual(rowCount, 1);
         }
 
         [TestMethod]
@@ -109,38 +98,47 @@ namespace Dicom.Infrastructure.Test
             }
 
             // check that the updated data is present
+            var queryString = "select SopInstanceUid "
+                + "from DicomInstances inner join DicomSeries on DicomSeries.ID = DicomInstances.DicomSeriesId "
+                + $"where DicomSeries.SeriesInstanceUID = '{newSeriesUid.ToString()}'";
+            var rowsReturned = QueryAndTest(queryString, reader =>
+            {
+                var sopInstanceUid = reader["SopInstanceUid"].ToString();
+
+                // there should be a single instance that matches the SOP instance UID
+                var matchInstances =
+                    updateSeriesDomainModel.DicomInstances.Where(instance =>
+                        instance.SopInstanceUid.ToString().CompareTo(sopInstanceUid) == 0)
+                        .ToList();
+                Assert.AreEqual(matchInstances.Count, 1);
+            });
+
+            // should only have returned one row
+            Assert.AreEqual(rowsReturned, 3);
+        }
+
+        int QueryAndTest(string queryString, Action<SqlDataReader> testAction)
+        {
+            int rowCount = 0;
+
             // check that the new series exists
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                var queryString = "select SopInstanceUid "
-                    + "from DicomInstances inner join DicomSeries on DicomSeries.ID = DicomInstances.DicomSeriesId "
-                    + $"where DicomSeries.SeriesInstanceUID = '{newSeriesUid.ToString()}'";
-
                 var command = new SqlCommand(queryString, connection);
                 using (var reader = command.ExecuteReader())
                 {
-                    int rowCount = 0;
-
                     while (reader.Read())
                     {
                         rowCount++;
 
-                        var sopInstanceUid = reader["SopInstanceUid"].ToString();
-
-                        // there should be a single instance that matches the SOP instance UID
-                        var matchInstances =
-                            updateSeriesDomainModel.DicomInstances.Where(instance => 
-                                instance.SopInstanceUid.ToString().CompareTo(sopInstanceUid) == 0)
-                                .ToList();
-                        Assert.AreEqual(matchInstances.Count, 1);
+                        testAction(reader);
                     }
-
-                    // should only have returned one row
-                    Assert.AreEqual(rowCount, 3);
                 }
             }
+
+            return rowCount;
         }
     }
 }
