@@ -11,17 +11,17 @@ namespace TestDicomDomainMapper.Repositories
         where TEntity : Seedworks.IAggregateRoot<TKey>
     {
         /// <summary>
-        /// 
+        /// gets the aggregate with the given key
         /// </summary>
-        /// <param name="forKey"></param>
-        /// <returns></returns>
+        /// <param name="forKey">key to match</param>
+        /// <returns>the matching aggregate</returns>
         TEntity GetAggregateForKey(TKey forKey);
 
         /// <summary>
-        /// 
+        /// updates an aggregate (or creates if it is new)
         /// </summary>
-        /// <param name="updatedAggregate"></param>
-        /// <returns></returns>
+        /// <param name="updatedAggregate">aggregate to be updated</param>
+        /// <returns>Task representing the updation operation</returns>
         Task UpdateAsync(TEntity updatedAggregate);
     }
 }

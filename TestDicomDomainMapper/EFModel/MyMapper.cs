@@ -5,14 +5,9 @@ using System.Text;
 
 namespace TestDicomDomainMapper.EFModel
 {
-    class ToStringFormatter<T> : IValueConverter<T, string>
-    {
-        string IValueConverter<T, string>.Convert(T sourceMember, ResolutionContext context)
-        {
-            return sourceMember.ToString();
-        }
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
     static class MyMapper
     {
         /// <summary>
@@ -68,5 +63,17 @@ namespace TestDicomDomainMapper.EFModel
         }
 
         static IMapper mapper = null;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    class ToStringFormatter<T> : IValueConverter<T, string>
+    {
+        string IValueConverter<T, string>.Convert(T sourceMember, ResolutionContext context)
+        {
+            return sourceMember.ToString();
+        }
     }
 }
