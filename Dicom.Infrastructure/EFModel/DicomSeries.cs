@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Dicom.Infrastructure.EFModel
 {
     public class DicomSeries
     {
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public int ID { get; set; }
 
         public string SeriesInstanceUid { get; set; }

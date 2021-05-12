@@ -1,20 +1,18 @@
-﻿using AutoMapper;
-
-namespace Dicom.Infrastructure.EFModel
+﻿namespace Dicom.Infrastructure.EFModel
 {
     public class DicomAttribute
     {
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public int ID { get; set; }
 
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public int DicomInstanceId{ get; set; }
 
         public string DicomTag { get; set; }
 
         public string Value { get; set; }
 
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public DicomInstance DicomInstance { get; set; }
     }
 }

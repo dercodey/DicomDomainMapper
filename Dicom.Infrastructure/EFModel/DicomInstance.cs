@@ -1,19 +1,18 @@
-﻿using AutoMapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Dicom.Infrastructure.EFModel
 {
     public class DicomInstance
     {
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public int ID { get; set; }
 
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public int DicomSeriesId { get; set; }
 
         public string SopInstanceUid { get; set; }
 
-        [IgnoreMap]
+        [AutoMapper.IgnoreMap]
         public DicomSeries DicomSeries { get; set; }
 
         public List<DicomAttribute> DicomAttributes { get; set; } =
