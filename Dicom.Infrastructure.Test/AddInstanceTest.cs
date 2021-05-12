@@ -18,13 +18,13 @@ namespace Dicom.Infrastructure.Test
             {
                 connection.Open();
 
-                SqlCommand deleteAttributes = new SqlCommand("delete from DicomAttributes", connection);
+                var deleteAttributes = new SqlCommand("delete from DicomAttributes", connection);
                 deleteAttributes.ExecuteNonQuery();
 
-                SqlCommand deleteInstances = new SqlCommand("delete from DicomInstances", connection);
+                var deleteInstances = new SqlCommand("delete from DicomInstances", connection);
                 deleteInstances.ExecuteNonQuery();
 
-                SqlCommand deleteSeries = new SqlCommand("delete from DicomSeries", connection);
+                var deleteSeries = new SqlCommand("delete from DicomSeries", connection);
                 deleteSeries.ExecuteNonQuery();
             }
         }
@@ -45,13 +45,13 @@ namespace Dicom.Infrastructure.Test
             }
 
             // check that the new series exists
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
-                string queryString = "select PatientId, Modality, AcquisitionDateTime "
+                var queryString = "select PatientId, Modality, AcquisitionDateTime "
                     + $"from DicomSeries where SeriesInstanceUID = '{newSeriesUid.ToString()}'";
-                SqlCommand command = new SqlCommand(queryString, connection);
+                var command = new SqlCommand(queryString, connection);
                 connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     int rowCount = 0;
 
@@ -92,7 +92,6 @@ namespace Dicom.Infrastructure.Test
                 // check that the new series exists
             }
 
-
             DomainModel.DicomSeries updateSeriesDomainModel = null;
 
             // now generate a new context / repository
@@ -111,15 +110,16 @@ namespace Dicom.Infrastructure.Test
 
             // check that the updated data is present
             // check that the new series exists
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
-                string queryString = "select SopInstanceUid "
+                connection.Open();
+
+                var queryString = "select SopInstanceUid "
                     + "from DicomInstances inner join DicomSeries on DicomSeries.ID = DicomInstances.DicomSeriesId "
                     + $"where DicomSeries.SeriesInstanceUID = '{newSeriesUid.ToString()}'";
 
-                SqlCommand command = new SqlCommand(queryString, connection);
-                connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                var command = new SqlCommand(queryString, connection);
+                using (var reader = command.ExecuteReader())
                 {
                     int rowCount = 0;
 
