@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace TestDicomDomainMapper.EFModel
+namespace Dicom.Infrastructure.EFModel
 {
     public class DicomAttribute
     {

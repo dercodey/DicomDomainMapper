@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TestDicomDomainMapper.EFModel
+namespace Dicom.Infrastructure.EFModel
 {
     public class DicomSeries
     {

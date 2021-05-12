@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dicom.Domain\Dicom.Domain.csproj" />
+    <ProjectReference Include="..\Dicom.Infrastructure\Dicom.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

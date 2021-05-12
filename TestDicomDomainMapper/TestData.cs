@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DomainModel = Dicom.Domain.Model;
+using EFModel = Dicom.Infrastructure.EFModel;
 
 namespace TestDicomDomainMapper
 {

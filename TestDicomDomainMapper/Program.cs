@@ -1,4 +1,6 @@
 ﻿using DomainModel = Dicom.Domain.Model;
+using EFModel = Dicom.Infrastructure.EFModel;
+using Repositories = Dicom.Infrastructure.Repositories;
 
 namespace TestDicomDomainMapper
 {

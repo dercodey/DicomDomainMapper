@@ -2,7 +2,7 @@
 using System;
 using DomainModel = Dicom.Domain.Model;
 
-namespace TestDicomDomainMapper.EFModel
+namespace Dicom.Infrastructure.EFModel
 {
     /// <summary>
     /// 

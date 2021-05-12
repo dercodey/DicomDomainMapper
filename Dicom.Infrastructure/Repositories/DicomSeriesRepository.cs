@@ -3,12 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using DomainModel = Dicom.Domain.Model;
 
-namespace TestDicomDomainMapper.Repositories
+namespace Dicom.Infrastructure.Repositories
 {
     /// <summary>
     /// an aggregate repository for DICOM series aggregates
     /// </summary>
-    class DicomSeriesRepository : IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>
+    public class DicomSeriesRepository : IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>
     {
         private readonly EFModel.MyContext _context;
 

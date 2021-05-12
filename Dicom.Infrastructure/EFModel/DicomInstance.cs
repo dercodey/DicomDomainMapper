@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
 
-namespace TestDicomDomainMapper.EFModel
+namespace Dicom.Infrastructure.EFModel
 {
     public class DicomInstance
     {

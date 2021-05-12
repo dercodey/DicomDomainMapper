@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestDicomDomainMapper", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dicom.Domain", "Dicom.Domain\Dicom.Domain.csproj", "{B17A43C8-DDF7-419E-AFFB-25A373823020}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dicom.Infrastructure", "Dicom.Infrastructure\Dicom.Infrastructure.csproj", "{944FA3FF-D9E1-4C1F-882B-E36E864262D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B17A43C8-DDF7-419E-AFFB-25A373823020}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B17A43C8-DDF7-419E-AFFB-25A373823020}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B17A43C8-DDF7-419E-AFFB-25A373823020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{944FA3FF-D9E1-4C1F-882B-E36E864262D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{944FA3FF-D9E1-4C1F-882B-E36E864262D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{944FA3FF-D9E1-4C1F-882B-E36E864262D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{944FA3FF-D9E1-4C1F-882B-E36E864262D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
