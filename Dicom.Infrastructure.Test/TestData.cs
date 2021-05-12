@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DomainModel = Dicom.Domain.Model;
-using EFModel = Dicom.Infrastructure.EFModel;
+using Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.Test
 {
@@ -11,15 +10,15 @@ namespace Dicom.Infrastructure.Test
         /// creates a new series aggregate
         /// </summary>
         /// <returns></returns>
-        internal static DomainModel.DicomSeries CreateSeries()
+        internal static DicomSeries CreateSeries()
         {
             var series =
-                new DomainModel.DicomSeries(
-                    new DomainModel.DicomUid("1.2.3.7"),
+                new DicomSeries(
+                    new DicomUid("1.2.3.7"),
                     "98765",
                     "CT",
                     new DateTime(2021, 01, 02),
-                    new List<DomainModel.DicomInstance>());
+                    new List<DicomInstance>());
 
             return series;
         }
@@ -28,22 +27,22 @@ namespace Dicom.Infrastructure.Test
         /// creates a few new instances and adds to the series
         /// </summary>
         /// <param name="series"></param>
-        internal static void AddInstancesToSeries(DomainModel.DicomSeries series)
+        internal static void AddInstancesToSeries(DicomSeries series)
         {
             for (int n = 0; n < 3; n++)
             {
-                var sopInstanceUid = new DomainModel.DicomUid($"1.2.3.{n + 7}");
-                var attributes = new List<DomainModel.DicomAttribute>()
+                var sopInstanceUid = new DicomUid($"1.2.3.{n + 7}");
+                var attributes = new List<DicomAttribute>()
                 {
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTID, "98765"),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.MODALITY, "CT"),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
-                    new DomainModel.DicomAttribute(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
+                    new DicomAttribute(DicomTag.PATIENTID, "98765"),
+                    new DicomAttribute(DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
+                    new DicomAttribute(DicomTag.MODALITY, "CT"),
+                    new DicomAttribute(DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
+                    new DicomAttribute(DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
                 };
 
                 var instance =
-                    new DomainModel.DicomInstance(
+                    new DicomInstance(
                         sopInstanceUid,
                         attributes);
 
