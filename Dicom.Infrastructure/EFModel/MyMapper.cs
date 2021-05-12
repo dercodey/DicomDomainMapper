@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 using System;
 using DomainModel = Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.EFModel
 {
     /// <summary>
-    /// 
+    /// wrapper for Automapper configured to map between domain model and EF model
     /// </summary>
     static class MyMapper
     {
         /// <summary>
-        /// 
+        /// gets (and creates) the mapper
         /// </summary>
         /// <returns></returns>
         public static IMapper GetMapper()
@@ -20,7 +21,7 @@ namespace Dicom.Infrastructure.EFModel
                 mapper = CreateMapper(cfg =>
                 {
                     cfg.AllowNullCollections = true;
-                    // cfg.AddCollectionMappers();
+                    cfg.AddCollectionMappers();
                     cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>()
                         .ForMember(s => s.DicomTag,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
@@ -65,7 +66,7 @@ namespace Dicom.Infrastructure.EFModel
     }
 
     /// <summary>
-    /// 
+    /// formatter to use ToString
     /// </summary>
     /// <typeparam name="T"></typeparam>
     class ToStringFormatter<T> : IValueConverter<T, string>
