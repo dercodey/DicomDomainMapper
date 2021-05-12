@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace TestDicomDomainMapper.DomainModel
 {
@@ -10,11 +11,20 @@ namespace TestDicomDomainMapper.DomainModel
     {
         private string _uidString;
 
+        /// <summary>
+        /// constructs from a string representing the UID.
+        /// this example requires the string to have four numeric fields
+        /// </summary>
+        /// <param name="uidString"></param>
         public DicomUid(string uidString)
         {
-            // TODO: test to see if string is in proper format
-
-            // TODO: validate string is correct
+            // validate string is correct
+            var pattern = "[0-9]*\\.[0-9]*\\.[0-9]*\\.[0-9]*";
+            var matches = Regex.Matches(uidString, pattern);
+            if (matches.Count != 1)
+            {
+                throw new ArgumentException();
+            }
 
             _uidString = uidString;
         }
@@ -22,10 +32,10 @@ namespace TestDicomDomainMapper.DomainModel
         #region IEquatable
 
         /// <summary>
-        /// 
+        /// perform equality test on two UIDs by comparing their string representation
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">the other UID to compare</param>
+        /// <returns>true if the are equal</returns>
         public bool Equals([AllowNull] DicomUid other)
         {
             return _uidString.CompareTo(other._uidString) == 0;
@@ -34,9 +44,9 @@ namespace TestDicomDomainMapper.DomainModel
         #endregion
 
         /// <summary>
-        /// 
+        /// string representation of the UID
         /// </summary>
-        /// <returns></returns>
+        /// <returns>UID as a string</returns>
         public override string ToString()
         {
             return _uidString;
