@@ -37,6 +37,9 @@ namespace Dicom.Infrastructure.Test
             }
         }
 
+        /// <summary>
+        /// testing creating a new series
+        /// </summary>
         [TestMethod]
         public void TestCreatingSeries()
         {
@@ -71,6 +74,9 @@ namespace Dicom.Infrastructure.Test
             Assert.AreEqual(rowCount, 1);
         }
 
+        /// <summary>
+        /// test creating a series and adding instances to the series
+        /// </summary>
         [TestMethod]
         public void TestAddingInstances()
         {
@@ -143,6 +149,12 @@ namespace Dicom.Infrastructure.Test
             }
         }
 
+        /// <summary>
+        /// helper to perform a query and then call a test action on the resulting reader
+        /// </summary>
+        /// <param name="queryString">the query to be executed</param>
+        /// <param name="testAction">action of SqlDataReader that will test each row</param>
+        /// <returns>number of rows returned by the query</returns>
         int QueryAndTest(string queryString, Action<SqlDataReader> testAction)
         {
             int rowCount = 0;
