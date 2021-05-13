@@ -10,24 +10,30 @@ namespace Dicom.Infrastructure.Test
     [TestClass]
     public class AddInstanceTest
     {
-        string connectionString =
+        private string connectionString =
             @"Data Source=(localdb)\ProjectsV13;Initial Catalog=MyStoreDB;";
+
+        private string[] tableNames = 
+            new string[] 
+            { 
+                "DicomAttributes", 
+                "DicomInstances", 
+                "DicomSeries" 
+            };
 
         [TestInitialize]
         public void SetupTest()
-        {
+        {            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                var deleteAttributes = new SqlCommand("delete from DicomAttributes", connection);
-                deleteAttributes.ExecuteNonQuery();
-
-                var deleteInstances = new SqlCommand("delete from DicomInstances", connection);
-                deleteInstances.ExecuteNonQuery();
-
-                var deleteSeries = new SqlCommand("delete from DicomSeries", connection);
-                deleteSeries.ExecuteNonQuery();
+                foreach (var tableName in tableNames)
+                {
+                    // delete any existing rows from the tables
+                    var deleteCommand = new SqlCommand($"delete from {tableName}", connection);
+                    deleteCommand.ExecuteNonQuery();
+                }
             }
         }
 
