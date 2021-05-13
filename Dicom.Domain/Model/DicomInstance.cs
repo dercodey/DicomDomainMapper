@@ -38,6 +38,13 @@ namespace Dicom.Domain.Model
                 throw new ArgumentException("Mismatched SOP instance UID in DICOM instance");
             }
 
+            var distinctAttributes = dicomAttributes.Select(attribute => attribute.DicomTag).Distinct();
+            if (distinctAttributes.Count() < dicomAttributes.Count())
+            {
+                // found duplicate DICOM tags
+                throw new ArgumentException("Duplicate DICOM tags");
+            }
+
             SopInstanceUid = sopInstanceUid;
             DicomAttributes = dicomAttributes;
         }
