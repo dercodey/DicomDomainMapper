@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using DomainModel = Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.Repositories
@@ -35,11 +36,16 @@ namespace Dicom.Infrastructure.Repositories
         /// <returns>the matching DicomSeries</returns>
         public DomainModel.DicomSeries GetAggregateForKey(DomainModel.DicomUid forKey)
         {
+            // TODO: investigate if this populates all the entities
+            _context.DicomSeries
+                .Include(series => series.DicomInstances)
+                .ThenInclude(instance => instance.DicomAttributes);
+
             // get the matching series
             var matchSeries = 
                 _context.DicomSeries.Where(series =>
-                    series.SeriesInstanceUid.CompareTo(forKey.ToString()) == 0)
-                .SingleOrDefault();
+                        series.SeriesInstanceUid.CompareTo(forKey.ToString()) == 0)
+                    .SingleOrDefault();
 
             // did an entity get found?
             if (matchSeries == null)
