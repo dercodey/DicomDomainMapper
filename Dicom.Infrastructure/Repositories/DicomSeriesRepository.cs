@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Dicom.Application.Repositories;
 using DomainModel = Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.Repositories

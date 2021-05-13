@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Seedwork = Dicom.Domain.Seedwork;
 
-namespace Dicom.Infrastructure.Repositories
+namespace Dicom.Application.Repositories
 {
     /// <summary>
     /// interface that represents an aggregate repository
