@@ -29,7 +29,7 @@ namespace Dicom.Application.Services
             await _repository.UpdateAsync(dicomSeries);
         }
 
-        public void AddInstance(string seriesInstanceUid, string modality, DateTime acquisitionDateTime, string sopInstanceUid)
+        public async Task AddInstanceAsync(string seriesInstanceUid, string modality, DateTime acquisitionDateTime, string sopInstanceUid)
         {
             throw new NotImplementedException();
         }
