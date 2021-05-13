@@ -22,7 +22,10 @@ namespace Dicom.Domain.Model
                 throw new ArgumentNullException("DICOM Tag must be provided");
             }
 
-            // TODO: check that values is consistent with tag VR
+            if (!dicomTag.CheckValue(value))
+            {
+                throw new ArgumentException($"Invalid value for DICOM Tag {dicomTag}");
+            }
 
             DicomTag = dicomTag;
             Value = value;

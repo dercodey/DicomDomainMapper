@@ -28,7 +28,8 @@ namespace Dicom.Infrastructure.EFModel
                     cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
                         .ForCtorParam("dicomTag",
                             opt => opt.MapFrom(src =>
-                                new DomainModel.DicomTag(src.DicomTag, false)));
+                                // TODO: need to look up the actual tag to get a proper value representation
+                                new DomainModel.DicomTag(src.DicomTag, typeof(string), false)));
 
                     cfg.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>()
                         .ForMember(s => s.SopInstanceUid,
