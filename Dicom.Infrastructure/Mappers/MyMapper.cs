@@ -44,6 +44,10 @@ namespace Dicom.Infrastructure.Mappers
                             efdi.SopInstanceUid == dmdi.SopInstanceUid.ToString())
                         .ForMember(s => s.ID,
                             opt => opt.Ignore())
+                        .ForMember(s => s.DicomSeriesId,
+                            opt => opt.Ignore())
+                        .ForMember(s => s.DicomSeries,
+                            opt => opt.Ignore())
                         .ForMember(s => s.SopInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
