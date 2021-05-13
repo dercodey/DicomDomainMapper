@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DomainModel = Dicom.Domain.Model;
 
@@ -97,11 +98,13 @@ namespace Dicom.Infrastructure.Test
                 repository.UpdateAsync(updateSeriesDomainModel).Wait();
             }
 
+            List<string> sopInstanceUids = new List<string>();
+
             // check that the updated data is present
             var queryString = "select SopInstanceUid "
                 + "from DicomInstances inner join DicomSeries on DicomSeries.ID = DicomInstances.DicomSeriesId "
                 + $"where DicomSeries.SeriesInstanceUID = '{newSeriesUid.ToString()}'";
-            var rowsReturned = QueryAndTest(queryString, reader =>
+            QueryAndTest(queryString, reader =>
             {
                 var sopInstanceUid = reader["SopInstanceUid"].ToString();
 
@@ -111,10 +114,27 @@ namespace Dicom.Infrastructure.Test
                         instance.SopInstanceUid.ToString().CompareTo(sopInstanceUid) == 0)
                         .ToList();
                 Assert.AreEqual(matchInstances.Count, 1);
+                Console.WriteLine($"Found instance = {sopInstanceUid}");
+
+                sopInstanceUids.Add(matchInstances.Single().SopInstanceUid.ToString());
             });
 
             // should only have returned one row
-            Assert.AreEqual(rowsReturned, 3);
+            Assert.AreEqual(sopInstanceUids.Count, 3);
+
+            foreach (var sopInstanceUid in sopInstanceUids)
+            {
+                var queryAttributeString = "select DicomTag "
+                    + "from DicomAttributes inner join DicomInstances on DicomInstances.ID = DicomAttributes.DicomInstanceId "
+                    + $"where DicomInstances.SopInstanceUid = '{sopInstanceUid}'";
+                int attributeRowsFound = QueryAndTest(queryAttributeString, reader =>
+                {
+                    var dicomTag = reader["DicomTag"];
+                    Console.WriteLine($"Found tag = {dicomTag}");
+                });
+
+                Assert.AreEqual(attributeRowsFound, 5);
+            }
         }
 
         int QueryAndTest(string queryString, Action<SqlDataReader> testAction)
