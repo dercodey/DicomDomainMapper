@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using Dicom.Domain.Seedwork;
@@ -161,5 +162,32 @@ namespace Dicom.Domain.Model
         public static DicomTag SOPINSTANCEUID = new DicomTag("(0008,0018)", typeof(DicomUid), false);
         public static DicomTag SERIESINSTANCEUID = new DicomTag("(0020,000E)", typeof(DicomUid), false);
         public static DicomTag ACQUISITIONDATETIME = new DicomTag("(0008,002A)", typeof(DateTime), false);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="matchTag"></param>
+        /// <returns></returns>
+        public static DicomTag GetTag(string matchTag)
+        {
+            var listOfTags = new List<DicomTag>
+            {
+                MODALITY,
+                PATIENTID,
+                SOPINSTANCEUID,
+                SERIESINSTANCEUID,
+                ACQUISITIONDATETIME
+            };
+
+            foreach (var tag in listOfTags)
+            {
+                if (tag.ToString().CompareTo(matchTag) == 0)
+                {
+                    return tag;
+                }
+            }
+
+            return null;
+        }
     }
 }
