@@ -47,9 +47,11 @@ namespace Dicom.Infrastructure.Test
             var newSeriesDomainModel = TestData.CreateSeries();
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
+            var mapper = Mappers.MyMapper.GetMapper();
+
             // NOTE that the database needs to be clean to run the test
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
@@ -84,9 +86,11 @@ namespace Dicom.Infrastructure.Test
             var newSeriesDomainModel = TestData.CreateSeries();
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
+            var mapper = Mappers.MyMapper.GetMapper();
+
             // NOTE that the database needs to be clean to run the test
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
@@ -98,7 +102,7 @@ namespace Dicom.Infrastructure.Test
 
             // now generate a new context / repository
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // now retreive the series domain model from the repository
                 updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
