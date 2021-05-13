@@ -2,7 +2,6 @@
 {
     public class DicomAttribute
     {
-        [AutoMapper.IgnoreMap]
         public int ID { get; set; }
 
         [AutoMapper.IgnoreMap]

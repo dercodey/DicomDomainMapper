@@ -26,10 +26,13 @@ namespace Dicom.Infrastructure.Mappers
                     cfg.AddCollectionMappers();
 
                     cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>()
-                        .EqualityComparison((dmda, efda) => 
+                        .EqualityComparison((dmda, efda) =>
                             efda.DicomTag == dmda.DicomTag.ToString())
+                        .ForMember(s => s.ID,
+                            opt => opt.Ignore())
                         .ForMember(s => s.DicomTag,
-                            opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
+                            opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()))
+;
 
                     cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
                         .ForCtorParam("dicomTag",
@@ -39,6 +42,8 @@ namespace Dicom.Infrastructure.Mappers
                     cfg.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>()
                         .EqualityComparison((dmdi, efdi) => 
                             efdi.SopInstanceUid == dmdi.SopInstanceUid.ToString())
+                        .ForMember(s => s.ID,
+                            opt => opt.Ignore())
                         .ForMember(s => s.SopInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
@@ -50,6 +55,8 @@ namespace Dicom.Infrastructure.Mappers
                     cfg.CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>()
                         .EqualityComparison((dmds, efds) => 
                             efds.SeriesInstanceUid == dmds.SeriesInstanceUid.ToString())
+                        .ForMember(s => s.ID,
+                            opt => opt.Ignore())
                         .ForMember(s => s.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 

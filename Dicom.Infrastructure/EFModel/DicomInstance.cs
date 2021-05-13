@@ -4,7 +4,6 @@ namespace Dicom.Infrastructure.EFModel
 {
     public class DicomInstance
     {
-        [AutoMapper.IgnoreMap]
         public int ID { get; set; }
 
         [AutoMapper.IgnoreMap]

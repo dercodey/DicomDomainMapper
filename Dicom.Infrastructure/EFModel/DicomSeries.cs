@@ -5,7 +5,6 @@ namespace Dicom.Infrastructure.EFModel
 {
     public class DicomSeries
     {
-        [AutoMapper.IgnoreMap]
         public int ID { get; set; }
 
         public string SeriesInstanceUid { get; set; }
