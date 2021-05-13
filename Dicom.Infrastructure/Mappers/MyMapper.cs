@@ -3,7 +3,7 @@ using AutoMapper.EquivalencyExpression;
 using System;
 using DomainModel = Dicom.Domain.Model;
 
-namespace Dicom.Infrastructure.EFModel
+namespace Dicom.Infrastructure.Mappers
 {
     /// <summary>
     /// wrapper for Automapper configured to map between domain model and EF model

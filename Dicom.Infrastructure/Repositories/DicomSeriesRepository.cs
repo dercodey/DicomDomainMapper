@@ -30,7 +30,7 @@ namespace Dicom.Infrastructure.Repositories
         public DomainModel.DicomSeries GetAggregateForKey(DomainModel.DicomUid forKey)
         {
             // get the mapper to help
-            var mapper = EFModel.MyMapper.GetMapper();
+            var mapper = Mappers.MyMapper.GetMapper();
 
             // get the matching series
             var matchSeries = 
@@ -62,7 +62,7 @@ namespace Dicom.Infrastructure.Repositories
         /// <returns>task representing the work</returns>
         public async Task UpdateAsync(DomainModel.DicomSeries updatedSeries)
         {
-            var mapper = EFModel.MyMapper.GetMapper();
+            var mapper = Mappers.MyMapper.GetMapper();
 
             // trigger load of all entities
             var matchSeries =
