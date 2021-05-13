@@ -22,12 +22,11 @@ namespace Dicom.Infrastructure.Mappers
             {
                 mapper = CreateMapper(cfg =>
                 {
-                    // cfg.AllowNullCollections = true;
                     cfg.AddCollectionMappers();
 
                     cfg.CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>()
-                        .EqualityComparison((dmds, efds) => 
-                            efds.SeriesInstanceUid == dmds.SeriesInstanceUid.ToString())
+                        .EqualityComparison((dmDicomSeries, efDicomSeries) =>
+                            efDicomSeries.SeriesInstanceUid == dmDicomSeries.SeriesInstanceUid.ToString())
                         .ForMember(s => s.ID, opt => opt.Ignore())
                         .ForMember(s => s.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
@@ -38,8 +37,8 @@ namespace Dicom.Infrastructure.Mappers
                                 new DomainModel.DicomUid(src.SeriesInstanceUid)));
 
                     cfg.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>()
-                        .EqualityComparison((dmdi, efdi) =>
-                            efdi.SopInstanceUid == dmdi.SopInstanceUid.ToString())
+                        .EqualityComparison((dmDicomInstance, efDicomInstance) =>
+                            efDicomInstance.SopInstanceUid == dmDicomInstance.SopInstanceUid.ToString())
                         .ForMember(s => s.ID, opt => opt.Ignore())
                         .ForMember(s => s.DicomSeriesId, opt => opt.Ignore())
                         .ForMember(s => s.DicomSeries, opt => opt.Ignore())
@@ -52,8 +51,8 @@ namespace Dicom.Infrastructure.Mappers
                                 new DomainModel.DicomUid(src.SopInstanceUid)));
 
                     cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>()
-                        .EqualityComparison((dmda, efda) =>
-                            efda.DicomTag == dmda.DicomTag.ToString())
+                        .EqualityComparison((dmDicomAttribute, efDicomAttribute) =>
+                            efDicomAttribute.DicomTag == dmDicomAttribute.DicomTag.ToString())
                         .ForMember(s => s.ID, opt => opt.Ignore())
                         .ForMember(s => s.DicomInstanceId, opt => opt.Ignore())
                         .ForMember(s => s.DicomInstance, opt => opt.Ignore())
