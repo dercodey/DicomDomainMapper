@@ -28,7 +28,7 @@ namespace Dicom.Infrastructure.EFModel
                     cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
                         .ForCtorParam("dicomTag",
                             opt => opt.MapFrom(src =>
-                                new DomainModel.DicomTag(src.DicomTag)));
+                                new DomainModel.DicomTag(src.DicomTag, false)));
 
                     cfg.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>()
                         .ForMember(s => s.SopInstanceUid,
