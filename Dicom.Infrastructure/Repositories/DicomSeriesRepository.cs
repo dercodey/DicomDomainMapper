@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,7 +45,8 @@ namespace Dicom.Infrastructure.Repositories
                 throw new KeyNotFoundException();
             }
 
-            // ensure other entities are selected -- is there a more efficient way to do this?
+            // ensure other entities are selected\
+            // TODO: is there a more efficient way to do this?
             _context.DicomInstances.ToList();
             _context.DicomAttributes.ToList();
 
@@ -64,6 +66,9 @@ namespace Dicom.Infrastructure.Repositories
         {
             var mapper = Mappers.MyMapper.GetMapper();
 
+#if USE_AUTOMAPPER
+            _context.DicomSeries.Persist(mapper).InsertOrUpdate(updatedSeries);
+#else
             // trigger load of all entities
             var matchSeries =
                 _context.DicomSeries.Where(series =>
@@ -90,12 +95,12 @@ namespace Dicom.Infrastructure.Repositories
                 // set the entity state
                 _context.Entry(matchSeries).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             }
-
+#endif
             // now perform the save
             await _context.SaveChangesAsync();
         }
 
-        #region IDisposable
+#region IDisposable
 
         /// <summary>
         /// 
@@ -105,7 +110,7 @@ namespace Dicom.Infrastructure.Repositories
             _context.Dispose();
         }
 
-        #endregion
+#endregion
 
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Collection" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
   </ItemGroup>
 
