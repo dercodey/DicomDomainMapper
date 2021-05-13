@@ -18,13 +18,20 @@ namespace Dicom.Domain.Model
         /// <param name="dicomAttributes"></param>
         public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
         {
+            if (sopInstanceUid == null)
+            {
+                throw new ArgumentNullException("SOP Instance UID must be provided");
+            }
+
             var embeddedSopInstanceUid = 
                 dicomAttributes.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.SOPINSTANCEUID));
+
             if (embeddedSopInstanceUid == null)
             {
                 // the SOP instance UID is missing
                 throw new ArgumentException("Missing SOP Instance UID in DICOM instance");
             }
+
             else if (embeddedSopInstanceUid.Value.CompareTo(sopInstanceUid.ToString()) != 0)
             {
                 // the SOP instance UID doesn't match

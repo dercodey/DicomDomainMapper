@@ -13,10 +13,17 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// construct a tag from the group/element representation
         /// </summary>
-        /// <param name="group"></param>
-        /// <param name="element"></param>
-        public DicomTag(ushort group, ushort element)
+        /// <param name="group">group number for the tag</param>
+        /// <param name="element">element number for the tag</param>
+        /// <param name="allowPrivate">indicates whether private is allowed</param>
+        public DicomTag(ushort group, ushort element, bool allowPrivate = false)
         {
+            if (!allowPrivate
+                && group % 2 == 1)
+            {
+                throw new ArgumentException("DICOM Tag group must be even for non-private tags");
+            }
+
             Group = group;
             Element = element;
         }
@@ -25,7 +32,8 @@ namespace Dicom.Domain.Model
         /// converts a string to tag value
         /// </summary>
         /// <param name="strTag">tag in '(xxxx,xxxx)' format</param>
-        public DicomTag(string strTag)
+        /// <param name="allowPrivate">indicates whether private is allowed</param>
+        public DicomTag(string strTag, bool allowPrivate = false)
         {
             var pattern = @"\((?<group>[0-9A-F]{4}),(?<element>[0-9A-F]{4})\)";
             var matches = Regex.Match(strTag, pattern);
@@ -36,12 +44,17 @@ namespace Dicom.Domain.Model
                 throw new ArgumentException("Incorrect format for DICOM tag");
             }
 
-            // get the group and element from matches
-            Group = 
-                ushort.Parse(matches.Groups["group"].Value, 
+            var group = ushort.Parse(matches.Groups["group"].Value,
                     System.Globalization.NumberStyles.HexNumber);
-            Element = 
-                ushort.Parse(matches.Groups["element"].Value, 
+            if (!allowPrivate
+                && group % 2 == 1)
+            {
+                throw new ArgumentException("DICOM Tag group must be even for non-private tags");
+            }
+
+            // get the group and element from matches
+            Group = group;
+            Element = ushort.Parse(matches.Groups["element"].Value, 
                     System.Globalization.NumberStyles.HexNumber);
         }
 

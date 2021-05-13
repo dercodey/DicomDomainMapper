@@ -23,6 +23,26 @@ namespace Dicom.Domain.Model
             DateTime acquisitionDateTime, 
             IEnumerable<DicomInstance> dicomInstances)
         {
+            if (seriesInstanceUid == null)
+            {
+                throw new ArgumentNullException("A Series Instance UID must be provided");
+            }
+
+            if (string.IsNullOrWhiteSpace(patientId))
+            {
+                throw new ArgumentException("PatientID must be a non-empty string");
+            }
+
+            if (string.IsNullOrWhiteSpace(modality))
+            {
+                throw new ArgumentException("Modality must be a non-empty string");
+            }
+
+            if (acquisitionDateTime == null)
+            {
+                throw new ArgumentNullException("Series Acquistion DateTime must be provided");
+            }
+
             SeriesInstanceUid = seriesInstanceUid;
             PatientId = patientId;
             Modality = modality;

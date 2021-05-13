@@ -17,6 +17,11 @@ namespace Dicom.Domain.Model
         /// <param name="value"></param>
         public DicomAttribute(DicomTag dicomTag, string value)
         {
+            if (dicomTag == null)
+            {
+                throw new ArgumentNullException("DICOM Tag must be provided");
+            }
+
             // TODO: check that values is consistent with tag VR
 
             DicomTag = dicomTag;
