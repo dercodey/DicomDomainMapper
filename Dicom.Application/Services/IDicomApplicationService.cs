@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Dicom.Application.Services
 {
     public interface IDicomApplicationService
     {
-        public void CreateSeries(string seriesInstanceUid, string modality, DateTime acquisitionDateTime);
+        Task CreateSeriesAsync(string patientId, string seriesInstanceUid, string modality, DateTime acquisitionDateTime);
 
-        void AddInstance(string seriesInstanceUid, string modality, DateTime acqusitionDateTime, string sopInstanceUid);
+        Task AddInstanceAsync(string seriesInstanceUid, string modality, DateTime acqusitionDateTime, string sopInstanceUid);
     }
 }
