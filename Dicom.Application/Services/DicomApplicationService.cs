@@ -15,6 +15,16 @@ namespace Dicom.Application.Services
         {
             _repository = repository;
         }
+        public DomainModel.DicomSeries GetAllSeries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DomainModel.DicomSeries GetSeriesByUid(DomainModel.DicomUid seriesInstanceUid)
+        {
+            var seriesDomainModel = _repository.GetAggregateForKey(seriesInstanceUid);
+            return seriesDomainModel;
+        }
 
         public async Task CreateSeriesAsync(string patientName, string patientId, string seriesInstanceUid, string modality, int expectedInstanceCount, DateTime acquisitionDateTime)
         {

@@ -14,10 +14,12 @@ namespace Dicom.Api.Controllers
     public class DicomController : ControllerBase
     {
         private readonly ILogger<DicomController> _logger;
+        private readonly IDicomApplicationService _application;
 
         public DicomController(IDicomApplicationService application, ILogger<DicomController> logger)
         {
             _logger = logger;
+            _application = application;
         }
 
         [HttpGet("series")]
@@ -43,19 +45,28 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public IEnumerable<DicomSeries> GetSeries(string seriesInstanceUid)
+        public ActionResult<DicomSeries> GetSeries(string seriesInstanceUid)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 1).Select(index => new DicomSeries
+            try
             {
-                PatientId = "98765",
-                PatientName = "Last, First",
-                StudyUid = $"1.2.3.9",
-                SeriesUid = $"1.2.3.{index}",
-                Modality = "CT",
-                ExpectedInstanceCount = 3,
-            })
-            .ToArray();
+                var seriesInstanceDicomUid = new Domain.Model.DicomUid(seriesInstanceUid);
+                var seriesDomainModel = _application.GetSeriesByUid(seriesInstanceDicomUid);
+                var seriesAbstraction =
+                    new DicomSeries()
+                    {
+                        PatientId = seriesDomainModel.PatientId,
+                        PatientName = seriesDomainModel.PatientName,
+                        StudyUid = $"1.2.3.9",
+                        SeriesUid = seriesDomainModel.SeriesInstanceUid.ToString(),
+                        Modality = seriesDomainModel.Modality,
+                        ExpectedInstanceCount = seriesDomainModel.ExpectedInstanceCount,
+                    };
+                return Ok(seriesAbstraction);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
         }
     }
 }
