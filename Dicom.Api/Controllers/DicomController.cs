@@ -26,10 +26,10 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public IEnumerable<DicomSeries> GetAllDicomSeries()
+        public IEnumerable<Abstractions.DicomSeries> GetAllDicomSeries()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new DicomSeries
+            return Enumerable.Range(1, 5).Select(index => new Abstractions.DicomSeries
             {
                 PatientId = "98765",
                 PatientName = "Last, First",
@@ -45,14 +45,14 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<DicomSeries> GetDicomSeries(string seriesInstanceUid)
+        public ActionResult<Abstractions.DicomSeries> GetDicomSeries(string seriesInstanceUid)
         {
             try
             {
                 var seriesInstanceDicomUid = new Domain.Model.DicomUid(seriesInstanceUid);
                 var seriesDomainModel = _application.GetSeriesByUid(seriesInstanceDicomUid);
                 var seriesAbstraction =
-                    new DicomSeries()
+                    new Abstractions.DicomSeries()
                     {
                         PatientId = seriesDomainModel.PatientId,
                         PatientName = seriesDomainModel.PatientName,
@@ -74,7 +74,7 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> CreateDicomSeries([FromBody] DicomSeries dicomSeries)
+        public async Task<ActionResult> CreateDicomSeries([FromBody] Abstractions.DicomSeries dicomSeries)
         {
             var seriesInstanceDicomUid = new Domain.Model.DicomUid(dicomSeries.SeriesUid);
 

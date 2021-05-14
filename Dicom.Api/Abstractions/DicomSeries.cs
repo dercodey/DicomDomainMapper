@@ -1,6 +1,6 @@
 using System;
 
-namespace Dicom.Api
+namespace Dicom.Api.Abstractions
 {
     public class DicomSeries
     {
