@@ -10,8 +10,7 @@ namespace Dicom.Application.Services
 
         DomainModel.DicomSeries GetSeriesByUid(DomainModel.DicomUid seriesInstanceUid);
 
-        Task CreateSeriesAsync(string patientName, string patientId, 
-            string seriesInstanceUid, string modality, int expectedInstanceCount, DateTime acquisitionDateTime);
+        Task CreateSeriesAsync(DomainModel.DicomSeries newSeries);
 
         Task AddInstanceAsync(string seriesInstanceUid, string modality, DateTime acqusitionDateTime, string sopInstanceUid);
 

@@ -26,7 +26,7 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public IEnumerable<DicomSeries> GetAllSeries()
+        public IEnumerable<DicomSeries> GetAllDicomSeries()
         {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new DicomSeries
@@ -45,7 +45,7 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<DicomSeries> GetSeries(string seriesInstanceUid)
+        public ActionResult<DicomSeries> GetDicomSeries(string seriesInstanceUid)
         {
             try
             {
@@ -67,6 +67,26 @@ namespace Dicom.Api.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost("studies/{studyUid}/series")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
+        public async Task<ActionResult> CreateDicomSeries([FromBody] DicomSeries dicomSeries)
+        {
+            var seriesInstanceDicomUid = new Domain.Model.DicomUid(dicomSeries.SeriesUid);
+
+            var seriesDomainModel = 
+                new Domain.Model.DicomSeries(
+                    seriesInstanceDicomUid, 
+                    dicomSeries.PatientName, dicomSeries.PatientId, dicomSeries.Modality, 
+                    DateTime.Now, dicomSeries.ExpectedInstanceCount, null);
+
+            await _application.CreateSeriesAsync(seriesDomainModel);
+
+            return Ok();
         }
     }
 }
