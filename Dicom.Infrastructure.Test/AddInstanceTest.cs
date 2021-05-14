@@ -138,12 +138,14 @@ namespace Dicom.Infrastructure.Test
                 repository.UpdateAsync(updateSeriesDomainModel).Wait();
             }
 
+            DomainModel.DicomSeries refetchSeriesDomainModel = null;
+
             // now generate a new context / repository
             using (var context = new EFModel.MyContext())
             using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // now retreive the series domain model from the repository
-                var refetchSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
+                refetchSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
             }
 
             List<string> sopInstanceUids = new List<string>();
@@ -158,7 +160,7 @@ namespace Dicom.Infrastructure.Test
 
                 // there should be a single instance that matches the SOP instance UID
                 var matchInstances =
-                    updateSeriesDomainModel.DicomInstances.Where(instance =>
+                    refetchSeriesDomainModel.DicomInstances.Where(instance =>
                         instance.SopInstanceUid.ToString().CompareTo(sopInstanceUid) == 0)
                         .ToList();
                 Assert.AreEqual(matchInstances.Count, 1);
