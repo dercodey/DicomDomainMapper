@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Dicom.Domain\Dicom.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Generated\" />
+  </ItemGroup>
+
 </Project>
