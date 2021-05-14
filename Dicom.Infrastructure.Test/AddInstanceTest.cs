@@ -157,7 +157,7 @@ namespace Dicom.Infrastructure.Test
                     Console.WriteLine($"Found tag = {dicomTag}");
                 });
 
-                Assert.AreEqual(attributeRowsFound, 5);
+                Assert.AreEqual(attributeRowsFound, 6);
             }
         }
 

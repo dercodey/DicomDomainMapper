@@ -15,9 +15,11 @@ namespace Dicom.Infrastructure.Test
             var series =
                 new DicomSeries(
                     new DicomUid("1.2.3.7"),
+                    "Last, First",
                     "98765",
                     "CT",
                     new DateTime(2021, 01, 02),
+                    3, // expected instance count
                     new List<DicomInstance>());
 
             return series;
@@ -34,6 +36,7 @@ namespace Dicom.Infrastructure.Test
                 var sopInstanceUid = new DicomUid($"1.2.3.{n + 7}");
                 var attributes = new List<DicomAttribute>()
                 {
+                    new DicomAttribute(DicomTag.PATIENTNAME, "Last, First"),
                     new DicomAttribute(DicomTag.PATIENTID, "98765"),
                     new DicomAttribute(DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
                     new DicomAttribute(DicomTag.MODALITY, "CT"),

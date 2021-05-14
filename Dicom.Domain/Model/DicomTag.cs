@@ -118,7 +118,7 @@ namespace Dicom.Domain.Model
                 {
                     new DicomUid(value);
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
                     return false;
                 }
@@ -158,6 +158,7 @@ namespace Dicom.Domain.Model
 
         // a few common tags
         public static DicomTag MODALITY = new DicomTag(0x0008, 0x0060, typeof(string), false);
+        public static DicomTag PATIENTNAME = new DicomTag(0x0010, 0x0010, typeof(string), false);
         public static DicomTag PATIENTID = new DicomTag(0x0010, 0x0020, typeof(string), false);
         public static DicomTag SOPINSTANCEUID = new DicomTag("(0008,0018)", typeof(DicomUid), false);
         public static DicomTag SERIESINSTANCEUID = new DicomTag("(0020,000E)", typeof(DicomUid), false);
@@ -173,6 +174,7 @@ namespace Dicom.Domain.Model
             var listOfTags = new List<DicomTag>
             {
                 MODALITY,
+                PATIENTNAME,
                 PATIENTID,
                 SOPINSTANCEUID,
                 SERIESINSTANCEUID,

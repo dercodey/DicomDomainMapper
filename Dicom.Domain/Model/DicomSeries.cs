@@ -15,12 +15,15 @@ namespace Dicom.Domain.Model
         /// construct a series entity
         /// </summary>
         /// <param name="seriesInstanceUid">UID identifying the series</param>
+        /// <param name="patientName">patient name that the series belongs to</param>/// 
         /// <param name="patientId">patient ID that the series belongs to</param>
         /// <param name="modality">series modality</param>
         /// <param name="acquisitionDateTime">when did the series get acquired</param>
         /// <param name="dicomInstances">collection of initial dicom instances</param>
-        public DicomSeries(DicomUid seriesInstanceUid, string patientId, string modality, 
+        public DicomSeries(DicomUid seriesInstanceUid, 
+            string patientName, string patientId, string modality, 
             DateTime acquisitionDateTime, 
+            int expectedInstanceCount,
             IEnumerable<DicomInstance> dicomInstances)
         {
             if (seriesInstanceUid == null)
@@ -44,6 +47,7 @@ namespace Dicom.Domain.Model
             }
 
             SeriesInstanceUid = seriesInstanceUid;
+            PatientName = patientName;
             PatientId = patientId;
             Modality = modality;
             AcquisitionDateTime = acquisitionDateTime;
@@ -66,6 +70,15 @@ namespace Dicom.Domain.Model
         { 
             get; 
             private set; 
+        }
+
+        /// <summary>
+        /// patient name to whom the series belongs
+        /// </summary>
+        public string PatientName
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -93,6 +106,41 @@ namespace Dicom.Domain.Model
         { 
             get; 
             private set; 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ExpectedInstanceCount
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// current state of the series
+        /// </summary>
+        public SeriesState CurrentState
+        {
+            get
+            {
+                if (_instances == null
+                    || _instances.Count == 0)
+                {
+                    return SeriesState.Created;
+                }
+
+                if (_instances.Count < ExpectedInstanceCount)
+                {
+                    return SeriesState.Incomplete;
+                }
+                else if (_instances.Count > ExpectedInstanceCount)
+                {
+                    return SeriesState.TooManyInstances;
+                }
+
+                return SeriesState.Complete;
+            }
         }
 
         /// <summary>
@@ -140,6 +188,32 @@ namespace Dicom.Domain.Model
             _instances.Add(newInstance);
 
             // TODO: send an event that the instance was added
+
+            return true;
+        }
+
+        /// <summary>
+        /// reconciles a series by updating the patient name
+        /// </summary>
+        /// <param name="oldPatientName"></param>
+        /// <param name="newPatientName"></param>
+        /// <returns></returns>
+        public bool ReconcilePatientName(string oldPatientName, string newPatientName)
+        {
+            if (CurrentState != SeriesState.Complete)
+            {
+                throw new InvalidOperationException("Can not reconcile patient for incomplete series");
+            }
+
+            var updatedInstances =
+                _instances.Select(instance =>
+                    new DicomInstance(instance.SopInstanceUid,
+                        instance.DicomAttributes.Select(attribute =>
+                            attribute.DicomTag.Equals(DicomTag.PATIENTNAME)
+                                ? new DicomAttribute(DicomTag.PATIENTNAME, newPatientName)
+                                : attribute)));
+
+            _instances = updatedInstances.ToList();
 
             return true;
         }

@@ -16,7 +16,7 @@ namespace Dicom.Application.Services
             _repository = repository;
         }
 
-        public async Task CreateSeriesAsync(string patientId, string seriesInstanceUid, string modality, DateTime acquisitionDateTime)
+        public async Task CreateSeriesAsync(string patientName, string patientId, string seriesInstanceUid, string modality, int expectedInstanceCount, DateTime acquisitionDateTime)
         {
             var seriesInstanceDicomUid = new DomainModel.DicomUid(seriesInstanceUid);
             var existingSeries = _repository.GetAggregateForKey(seriesInstanceDicomUid);
@@ -25,11 +25,16 @@ namespace Dicom.Application.Services
                 throw new ArgumentException();
             }
 
-            var dicomSeries = new DomainModel.DicomSeries(seriesInstanceDicomUid, modality, patientId, acquisitionDateTime, null);
+            var dicomSeries = new DomainModel.DicomSeries(seriesInstanceDicomUid, patientName, patientId, modality, acquisitionDateTime, expectedInstanceCount, null);
             await _repository.UpdateAsync(dicomSeries);
         }
 
         public async Task AddInstanceAsync(string seriesInstanceUid, string modality, DateTime acquisitionDateTime, string sopInstanceUid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ReconcilePatientName(string seriesInstanceUid, string oldPatientName, string newPatientName)
         {
             throw new NotImplementedException();
         }
