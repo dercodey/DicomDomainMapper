@@ -57,8 +57,7 @@ namespace Dicom.Infrastructure.Mappers
                         .ForMember(s => s.DicomInstanceId, opt => opt.Ignore())
                         .ForMember(s => s.DicomInstance, opt => opt.Ignore())
                         .ForMember(s => s.DicomTag,
-                            opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()))
-;
+                            opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
 
                     cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
                         .ForCtorParam("dicomTag",

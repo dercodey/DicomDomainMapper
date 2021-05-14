@@ -51,6 +51,7 @@ namespace Dicom.Domain.Model
             PatientId = patientId;
             Modality = modality;
             AcquisitionDateTime = acquisitionDateTime;
+            ExpectedInstanceCount = expectedInstanceCount;
             _instances =
                 dicomInstances != null
                     ? new List<DicomInstance>(dicomInstances)

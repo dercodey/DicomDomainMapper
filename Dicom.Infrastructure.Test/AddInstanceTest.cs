@@ -94,9 +94,27 @@ namespace Dicom.Infrastructure.Test
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
-
-                // check that the new series exists
             }
+
+            // check that the new series exists
+
+            var createdSeriesQueryString = "select PatientId, Modality, AcquisitionDateTime, ExpectedInstanceCount "
+                + $"from DicomSeries where SeriesInstanceUID = '{newSeriesUid.ToString()}'";
+
+            int rowCount = QueryAndTest(createdSeriesQueryString, reader =>
+            {
+                var patientId = reader["PatientId"].ToString();
+                Assert.AreEqual(newSeriesDomainModel.PatientId, patientId);
+
+                var modality = reader["Modality"].ToString();
+                Assert.AreEqual(newSeriesDomainModel.Modality, modality);
+
+                var acquisitionDateTime = System.DateTime.Parse(reader["AcquisitionDateTime"].ToString());
+                Assert.AreEqual(newSeriesDomainModel.AcquisitionDateTime, acquisitionDateTime);
+
+                var expectedInstanceCount = (int)reader["ExpectedInstanceCount"];
+                Assert.AreEqual(newSeriesDomainModel.ExpectedInstanceCount, expectedInstanceCount);
+            });
 
             DomainModel.DicomSeries updateSeriesDomainModel = null;
 
@@ -107,8 +125,14 @@ namespace Dicom.Infrastructure.Test
                 // now retreive the series domain model from the repository
                 updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
 
+                // check that the re-constituted series is created, not complete
+                Assert.AreEqual(DomainModel.SeriesState.Created, updateSeriesDomainModel.CurrentState);
+
                 // and instances to the series
                 TestData.AddInstancesToSeries(updateSeriesDomainModel);
+
+                // check that the re-constituted series is created, not complete
+                Assert.AreEqual(DomainModel.SeriesState.Complete, updateSeriesDomainModel.CurrentState);
 
                 // and update the result
                 repository.UpdateAsync(updateSeriesDomainModel).Wait();
