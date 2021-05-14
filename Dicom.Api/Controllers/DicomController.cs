@@ -24,7 +24,6 @@ namespace Dicom.Api.Controllers
 
         [HttpGet("series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public IEnumerable<Abstractions.DicomSeries> GetAllDicomSeries()
         {
@@ -43,7 +42,7 @@ namespace Dicom.Api.Controllers
 
         [HttpGet("series/{seriesInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public ActionResult<Abstractions.DicomSeries> GetDicomSeries(string seriesInstanceUid)
         {
