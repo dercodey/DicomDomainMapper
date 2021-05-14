@@ -51,16 +51,10 @@ namespace Dicom.Api.Controllers
             {
                 var seriesInstanceDicomUid = new Domain.Model.DicomUid(seriesInstanceUid);
                 var seriesDomainModel = _application.GetSeriesByUid(seriesInstanceDicomUid);
-                var seriesAbstraction =
-                    new Abstractions.DicomSeries()
-                    {
-                        PatientId = seriesDomainModel.PatientId,
-                        PatientName = seriesDomainModel.PatientName,
-                        StudyUid = $"1.2.3.9",
-                        SeriesUid = seriesDomainModel.SeriesInstanceUid.ToString(),
-                        Modality = seriesDomainModel.Modality,
-                        ExpectedInstanceCount = seriesDomainModel.ExpectedInstanceCount,
-                    };
+
+                var mapper = Mappers.AbstractionMapper.GetMapper();
+                var seriesAbstraction = mapper.Map<Abstractions.DicomSeries>(seriesDomainModel);
+
                 return Ok(seriesAbstraction);
             }
             catch (ArgumentException)
@@ -76,13 +70,8 @@ namespace Dicom.Api.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> CreateDicomSeries([FromBody] Abstractions.DicomSeries dicomSeries)
         {
-            var seriesInstanceDicomUid = new Domain.Model.DicomUid(dicomSeries.SeriesUid);
-
-            var seriesDomainModel = 
-                new Domain.Model.DicomSeries(
-                    seriesInstanceDicomUid, 
-                    dicomSeries.PatientName, dicomSeries.PatientId, dicomSeries.Modality, 
-                    DateTime.Now, dicomSeries.ExpectedInstanceCount, null);
+            var mapper = Mappers.AbstractionMapper.GetMapper();
+            var seriesDomainModel = mapper.Map<Domain.Model.DicomSeries>(dicomSeries);
 
             await _application.CreateSeriesAsync(seriesDomainModel);
 
