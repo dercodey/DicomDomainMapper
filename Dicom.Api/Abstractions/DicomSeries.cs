@@ -12,7 +12,7 @@ namespace Dicom.Api.Abstractions
 
         public string Modality { get; set; }
 
-        public DateTime AcquistionDateTime { get; set; }
+        public DateTime AcquisitionDateTime { get; set; }
 
         public int ExpectedInstanceCount { get; set; }
     }
