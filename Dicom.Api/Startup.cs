@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Dicom.Application.Repositories;
 using Dicom.Application.Services;
 using DomainModel = Dicom.Domain.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dicom.Api
 {
@@ -28,10 +29,17 @@ namespace Dicom.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddDbContext<Infrastructure.EFModel.MyContext>(options =>
+            {
+                options.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=MyStoreDB;");
+            },
+            ServiceLifetime.Scoped);
 
+            services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>, 
+                Infrastructure.Repositories.DicomSeriesRepository>();
             services.AddScoped<IDicomApplicationService, DicomApplicationService>();
-            services.AddTransient<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>>();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

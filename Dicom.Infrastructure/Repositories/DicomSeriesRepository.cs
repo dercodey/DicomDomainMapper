@@ -22,10 +22,10 @@ namespace Dicom.Infrastructure.Repositories
         /// construct a new repository with the given DB context
         /// </summary>
         /// <param name="context">the DB context to use for query/update</param>
-        public DicomSeriesRepository(EFModel.MyContext context, IMapper mapper)
+        public DicomSeriesRepository(EFModel.MyContext context)
         {
             _context = context;
-            _mapper = mapper;
+            _mapper = Mappers.MyMapper.GetMapper();
         }
 
         #region IAggregateRepository

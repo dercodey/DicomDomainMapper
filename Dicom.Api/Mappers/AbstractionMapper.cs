@@ -20,16 +20,16 @@ namespace Dicom.Api.Mappers
             {
                 mapper = CreateMapper(cfg =>
                 {
-                    cfg.AddCollectionMappers();
+                    // cfg.AddCollectionMappers();
 
                     cfg.CreateMap<DomainModel.DicomSeries, Abstractions.DicomSeries>()
                         .ForMember(s => s.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
-                    cfg.CreateMap<Abstractions.DicomSeries, DomainModel.DicomSeries>()
-                        .ForCtorParam("seriesInstanceUid",
-                            opt => opt.MapFrom(src =>
-                                new DomainModel.DicomUid(src.SeriesInstanceUid)));
+                    //cfg.CreateMap<Abstractions.DicomSeries, DomainModel.DicomSeries>()
+                    //    .ForCtorParam("seriesInstanceUid",
+                    //        opt => opt.MapFrom(src =>
+                    //            new DomainModel.DicomUid(src.SeriesInstanceUid)));
                 });
             }
 

@@ -47,11 +47,9 @@ namespace Dicom.Infrastructure.Test
             var newSeriesDomainModel = TestData.CreateSeries();
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
-            var mapper = Mappers.MyMapper.GetMapper();
-
             // NOTE that the database needs to be clean to run the test
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
+            using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
@@ -86,11 +84,9 @@ namespace Dicom.Infrastructure.Test
             var newSeriesDomainModel = TestData.CreateSeries();
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
-            var mapper = Mappers.MyMapper.GetMapper();
-
             // NOTE that the database needs to be clean to run the test
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
+            using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
@@ -120,7 +116,7 @@ namespace Dicom.Infrastructure.Test
 
             // now generate a new context / repository
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
+            using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // now retreive the series domain model from the repository
                 updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
@@ -142,7 +138,7 @@ namespace Dicom.Infrastructure.Test
 
             // now generate a new context / repository
             using (var context = new EFModel.MyContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
+            using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // now retreive the series domain model from the repository
                 refetchSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);

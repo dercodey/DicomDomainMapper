@@ -32,8 +32,7 @@ namespace Dicom.Api.Controllers
             {
                 PatientId = "98765",
                 PatientName = "Last, First",
-                StudyUid = $"1.2.3.9",
-                SeriesUid = $"1.2.3.{index}",
+                SeriesInstanceUid = $"1.2.3.{index}",
                 Modality = "CT",
                 ExpectedInstanceCount = 3,
             })
