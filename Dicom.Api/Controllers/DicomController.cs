@@ -137,7 +137,7 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetDicomAttributes(string instanceUid)
+        public async Task<ActionResult> GetDicomInstance(string instanceUid)
         {
             if (string.IsNullOrWhiteSpace(instanceUid))
             {
@@ -151,6 +151,7 @@ namespace Dicom.Api.Controllers
 
             if (!Request.Query.ContainsKey("query"))
             {
+                // TODO: or should this just return all attributes?
                 return BadRequest($"Query does not contain key 'query'.");
             }
 
