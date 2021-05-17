@@ -23,7 +23,7 @@ namespace Dicom.Domain.Model
             string patientName, string patientId, Modality modality, 
             DateTime acquisitionDateTime, 
             int expectedInstanceCount,
-            IEnumerable<DicomInstance> dicomInstances)
+            IEnumerable<DicomInstance> dicomInstances = null)
         {
             if (seriesInstanceUid == null)
             {

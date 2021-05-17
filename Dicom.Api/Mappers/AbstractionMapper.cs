@@ -24,6 +24,7 @@ namespace Dicom.Api.Mappers
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
                     cfg.CreateMap<Abstractions.DicomSeries, DomainModel.DicomSeries>()
+                        .ForMember(dmDicomSeries => dmDicomSeries.SeriesInstanceUid, opt => opt.Ignore())
                         .ForMember(dmDicomSeries => dmDicomSeries.DicomInstances, opt => opt.Ignore())
                         .ForCtorParam("seriesInstanceUid",
                             opt => opt.MapFrom(src =>
