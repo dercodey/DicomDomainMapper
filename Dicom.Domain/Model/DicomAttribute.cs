@@ -34,7 +34,6 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// tag for the attribute
         /// </summary>
-        [IgnoreMap]
         public DicomTag DicomTag 
         { 
             get; 

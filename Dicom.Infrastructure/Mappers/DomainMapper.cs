@@ -60,6 +60,7 @@ namespace Dicom.Infrastructure.Mappers
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
 
                     cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
+                        .ForMember(dmDicomAttribute => dmDicomAttribute.DicomTag, opt => opt.Ignore())
                         .ForCtorParam("dicomTag",
                             opt => opt.MapFrom(src =>
                                 DomainModel.DicomTag.GetTag(src.DicomTag)));
