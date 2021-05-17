@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dicom.Api.Test
 {
@@ -15,17 +16,28 @@ namespace Dicom.Api.Test
         [TestMethod]
         public void TestGetDicomSeries()
         {
+            var testPatientName = "Last, First";
+            var testPatientId = "98765";
             var testSeriesInstanceUid = new DomainModel.DicomUid("1.2.3.7");
-            var testDicomSeries = 
+            var testAcquistionDateTime = DateTime.Now;
+            var testDicomSeries =
                 new DomainModel.DicomSeries(testSeriesInstanceUid, 
-                    "Last, First", "98765", DomainModel.Modality.CT, DateTime.Now, 3, null);
+                    testPatientName, testPatientId, DomainModel.Modality.CT, testAcquistionDateTime, 3, null);
 
             var _mockService = new Mock<IDicomApplicationService>();
-            _mockService.Setup(svc => svc.GetSeriesByUid(testSeriesInstanceUid)).Returns(testDicomSeries);
+            _mockService.Setup(svc => svc.GetSeriesByUid(It.Is<DomainModel.DicomUid>(s => s.Equals(testSeriesInstanceUid)))).Returns(testDicomSeries);
 
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
 
-            var result = _testController.GetDicomSeries(testSeriesInstanceUid.ToString());
+            var okObjectResult = (OkObjectResult)_testController.GetDicomSeries(testSeriesInstanceUid.ToString()).Result;
+            var abDicomSeries = (Abstractions.DicomSeries)okObjectResult.Value;
+
+            Assert.AreEqual(testSeriesInstanceUid.ToString(), abDicomSeries.SeriesInstanceUid);
+            Assert.AreEqual(testPatientName, abDicomSeries.PatientName);
+            Assert.AreEqual(testPatientId, abDicomSeries.PatientId);
+            Assert.AreEqual(DomainModel.Modality.CT.ToString(), abDicomSeries.Modality);
+            Assert.AreEqual(testAcquistionDateTime, abDicomSeries.AcquisitionDateTime);
+            Assert.AreEqual(3, abDicomSeries.ExpectedInstanceCount);
         }
 
 
