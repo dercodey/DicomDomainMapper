@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
@@ -57,7 +56,6 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// the SOP Instance UID
         /// </summary>
-        [IgnoreMap]
         public DicomUid SopInstanceUid 
         { 
             get; 

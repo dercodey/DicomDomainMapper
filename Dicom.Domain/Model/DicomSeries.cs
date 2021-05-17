@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
@@ -58,40 +57,6 @@ namespace Dicom.Domain.Model
                     : new List<DicomInstance>();
         }
 
-        public DicomSeries(DicomUid seriesInstanceUid,
-            string patientName, string patientId, string modality,
-            DateTime acquisitionDateTime,
-            int expectedInstanceCount)
-        {
-            if (seriesInstanceUid == null)
-            {
-                throw new ArgumentNullException("A Series Instance UID must be provided");
-            }
-
-            if (string.IsNullOrWhiteSpace(patientId))
-            {
-                throw new ArgumentException("PatientID must be a non-empty string");
-            }
-
-            if (string.IsNullOrWhiteSpace(modality))
-            {
-                throw new ArgumentException("Modality must be a non-empty string");
-            }
-
-            if (acquisitionDateTime == null)
-            {
-                throw new ArgumentNullException("Series Acquistion DateTime must be provided");
-            }
-
-            SeriesInstanceUid = seriesInstanceUid;
-            PatientName = patientName;
-            PatientId = patientId;
-            Modality = modality;
-            AcquisitionDateTime = acquisitionDateTime;
-            ExpectedInstanceCount = expectedInstanceCount;
-            _instances = new List<DicomInstance>();
-        }
-
         /// <summary>
         /// aggregate root key is the series instance UID
         /// </summary>
@@ -100,7 +65,6 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// this represents the key for the series in the domain model
         /// </summary>
-        [IgnoreMap]
         public DicomUid SeriesInstanceUid 
         { 
             get; 

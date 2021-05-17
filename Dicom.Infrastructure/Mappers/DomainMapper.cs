@@ -27,43 +27,45 @@ namespace Dicom.Infrastructure.Mappers
                     cfg.CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>()
                         .EqualityComparison((dmDicomSeries, efDicomSeries) =>
                             efDicomSeries.SeriesInstanceUid == dmDicomSeries.SeriesInstanceUid.ToString())
-                        .ForMember(s => s.ID, opt => opt.Ignore())
-                        .ForMember(s => s.SeriesInstanceUid,
+                        .ForMember(efDicomSeries => efDicomSeries.ID, opt => opt.Ignore())
+                        .ForMember(efDicomSeries => efDicomSeries.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
                     cfg.CreateMap<EFModel.DicomSeries, DomainModel.DicomSeries>()
+                        .ForMember(dmDicomSeries => dmDicomSeries.SeriesInstanceUid, opt => opt.Ignore())
                         .ForCtorParam("seriesInstanceUid",
-                            opt => opt.MapFrom(src =>
-                                new DomainModel.DicomUid(src.SeriesInstanceUid)));
+                            opt => opt.MapFrom(dmDicomSeries =>
+                                new DomainModel.DicomUid(dmDicomSeries.SeriesInstanceUid)));
 
                     cfg.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>()
                         .EqualityComparison((dmDicomInstance, efDicomInstance) =>
                             efDicomInstance.SopInstanceUid == dmDicomInstance.SopInstanceUid.ToString())
-                        .ForMember(s => s.ID, opt => opt.Ignore())
-                        .ForMember(s => s.DicomSeriesId, opt => opt.Ignore())
-                        .ForMember(s => s.DicomSeries, opt => opt.Ignore())
-                        .ForMember(s => s.SopInstanceUid,
+                        .ForMember(efDicomInstance => efDicomInstance.ID, opt => opt.Ignore())
+                        .ForMember(efDicomInstance => efDicomInstance.DicomSeriesId, opt => opt.Ignore())
+                        .ForMember(efDicomInstance => efDicomInstance.DicomSeries, opt => opt.Ignore())
+                        .ForMember(efDicomInstance => efDicomInstance.SopInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
                     cfg.CreateMap<EFModel.DicomInstance, DomainModel.DicomInstance>()
+                        .ForMember(dmDicomInstance => dmDicomInstance.SopInstanceUid, opt => opt.Ignore())
                         .ForCtorParam("sopInstanceUid",
-                            opt => opt.MapFrom(src =>
-                                new DomainModel.DicomUid(src.SopInstanceUid)));
+                            opt => opt.MapFrom(dmDicomInstance =>
+                                new DomainModel.DicomUid(dmDicomInstance.SopInstanceUid)));
 
                     cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>()
                         .EqualityComparison((dmDicomAttribute, efDicomAttribute) =>
                             efDicomAttribute.DicomTag == dmDicomAttribute.DicomTag.ToString())
-                        .ForMember(s => s.ID, opt => opt.Ignore())
-                        .ForMember(s => s.DicomInstanceId, opt => opt.Ignore())
-                        .ForMember(s => s.DicomInstance, opt => opt.Ignore())
-                        .ForMember(s => s.DicomTag,
+                        .ForMember(efDicomAttribute => efDicomAttribute.ID, opt => opt.Ignore())
+                        .ForMember(efDicomAttribute => efDicomAttribute.DicomInstanceId, opt => opt.Ignore())
+                        .ForMember(efDicomAttribute => efDicomAttribute.DicomInstance, opt => opt.Ignore())
+                        .ForMember(efDicomAttribute => efDicomAttribute.DicomTag,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
 
                     cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
                         .ForMember(dmDicomAttribute => dmDicomAttribute.DicomTag, opt => opt.Ignore())
                         .ForCtorParam("dicomTag",
-                            opt => opt.MapFrom(src =>
-                                DomainModel.DicomTag.GetTag(src.DicomTag)));
+                            opt => opt.MapFrom(dmDicomAttribute =>
+                                DomainModel.DicomTag.GetTag(dmDicomAttribute.DicomTag)));
                 });
             }
 

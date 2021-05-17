@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using AutoMapper;
 using Dicom.Domain.Seedwork;
 
 namespace Dicom.Domain.Model
