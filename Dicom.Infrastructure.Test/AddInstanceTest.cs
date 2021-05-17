@@ -48,7 +48,7 @@ namespace Dicom.Infrastructure.Test
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
             // NOTE that the database needs to be clean to run the test
-            using (var context = new EFModel.MyContext())
+            using (var context = new EFModel.DicomDbContext())
             using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // perform an update to save it
@@ -85,7 +85,7 @@ namespace Dicom.Infrastructure.Test
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
             // NOTE that the database needs to be clean to run the test
-            using (var context = new EFModel.MyContext())
+            using (var context = new EFModel.DicomDbContext())
             using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // perform an update to save it
@@ -115,7 +115,7 @@ namespace Dicom.Infrastructure.Test
             DomainModel.DicomSeries updateSeriesDomainModel = null;
 
             // now generate a new context / repository
-            using (var context = new EFModel.MyContext())
+            using (var context = new EFModel.DicomDbContext())
             using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // now retreive the series domain model from the repository
@@ -137,7 +137,7 @@ namespace Dicom.Infrastructure.Test
             DomainModel.DicomSeries refetchSeriesDomainModel = null;
 
             // now generate a new context / repository
-            using (var context = new EFModel.MyContext())
+            using (var context = new EFModel.DicomDbContext())
             using (var repository = new Repositories.DicomSeriesRepository(context))
             {
                 // now retreive the series domain model from the repository

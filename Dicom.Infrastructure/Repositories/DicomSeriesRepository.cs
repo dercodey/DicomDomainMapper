@@ -15,17 +15,17 @@ namespace Dicom.Infrastructure.Repositories
     /// </summary>
     public class DicomSeriesRepository : IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>, IDisposable
     {
-        private readonly EFModel.MyContext _context;
+        private readonly EFModel.DicomDbContext _context;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// construct a new repository with the given DB context
         /// </summary>
         /// <param name="context">the DB context to use for query/update</param>
-        public DicomSeriesRepository(EFModel.MyContext context)
+        public DicomSeriesRepository(EFModel.DicomDbContext context)
         {
             _context = context;
-            _mapper = Mappers.MyMapper.GetMapper();
+            _mapper = Mappers.DomainMapper.GetMapper();
         }
 
         #region IAggregateRepository

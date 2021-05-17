@@ -10,7 +10,7 @@ namespace Dicom.Infrastructure.Mappers
     /// <summary>
     /// wrapper for Automapper configured to map between domain model and EF model
     /// </summary>
-    public static class MyMapper
+    public static class DomainMapper
     {
         /// <summary>
         /// gets (and creates) the mapper

@@ -3,15 +3,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Dicom.Infrastructure.EFModel
 {
-    public class MyContext : DbContext
+    public class DicomDbContext : DbContext
     {
-        private readonly ILogger<MyContext> _logger;
+        private readonly ILogger<DicomDbContext> _logger;
 
-        public MyContext()
+        public DicomDbContext()
         {
         }
 
-        public MyContext(DbContextOptions<MyContext> options, ILogger<MyContext> logger)
+        public DicomDbContext(DbContextOptions<DicomDbContext> options, ILogger<DicomDbContext> logger)
             : base(options)
         {
             _logger = logger;

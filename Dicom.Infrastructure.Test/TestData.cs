@@ -58,7 +58,7 @@ namespace Dicom.Infrastructure.Test
         /// </summary>
         internal static void CreatePopulateEFModel()
         {
-            var context = new EFModel.MyContext();
+            var context = new EFModel.DicomDbContext();
             var series = new EFModel.DicomSeries()
             {
                 SeriesInstanceUid = "1.2.5.4",

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dicom.Infrastructure.Migrations
 {
-    [DbContext(typeof(MyContext))]
+    [DbContext(typeof(DicomDbContext))]
     [Migration("20210514141020_Initial")]
     partial class Initial
     {

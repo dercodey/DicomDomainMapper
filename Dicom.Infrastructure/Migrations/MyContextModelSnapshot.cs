@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dicom.Infrastructure.Migrations
 {
-    [DbContext(typeof(MyContext))]
+    [DbContext(typeof(DicomDbContext))]
     partial class MyContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
