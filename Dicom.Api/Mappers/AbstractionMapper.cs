@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using DomainModel = Dicom.Domain.Model;
@@ -23,11 +20,11 @@ namespace Dicom.Api.Mappers
                     cfg.AddCollectionMappers();
 
                     cfg.CreateMap<DomainModel.DicomSeries, Abstractions.DicomSeries>()
-                        .ForMember(s => s.SeriesInstanceUid,
+                        .ForMember(abDicomSeries => abDicomSeries.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
                     cfg.CreateMap<Abstractions.DicomSeries, DomainModel.DicomSeries>()
-                        .ForMember(s => s.DicomInstances, opt => opt.Ignore())
+                        .ForMember(dmDicomSeries => dmDicomSeries.DicomInstances, opt => opt.Ignore())
                         .ForCtorParam("seriesInstanceUid",
                             opt => opt.MapFrom(src =>
                                 new DomainModel.DicomUid(src.SeriesInstanceUid)));

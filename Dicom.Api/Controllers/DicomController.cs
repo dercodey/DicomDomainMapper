@@ -61,19 +61,24 @@ namespace Dicom.Api.Controllers
             }
         }
 
-        [HttpPost("studies/{studyUid}/series")]
+        [HttpPost("series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> CreateDicomSeries([FromBody] Abstractions.DicomSeries dicomSeries)
         {
-            var mapper = Mappers.AbstractionMapper.GetMapper();
-            var seriesDomainModel = mapper.Map<Domain.Model.DicomSeries>(dicomSeries);
-
-            await _application.CreateSeriesAsync(seriesDomainModel);
-
-            return Ok();
+            try
+            {
+                var mapper = Mappers.AbstractionMapper.GetMapper();
+                var seriesDomainModel = mapper.Map<Domain.Model.DicomSeries>(dicomSeries);
+                await _application.CreateSeriesAsync(seriesDomainModel);
+                return Ok();
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
         }
     }
 }
