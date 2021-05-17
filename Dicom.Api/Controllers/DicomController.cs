@@ -22,10 +22,10 @@ namespace Dicom.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet("series")]
+        [HttpGet("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public IEnumerable<Abstractions.DicomSeries> GetAllDicomSeries()
+        public IEnumerable<Abstractions.DicomSeries> GetAllDicomSeries(string patientId)
         {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new Abstractions.DicomSeries
@@ -39,16 +39,18 @@ namespace Dicom.Api.Controllers
             .ToArray();
         }
 
-        [HttpGet("series/{seriesInstanceUid}")]
+        [HttpGet("patient/{patientId}/series/{seriesInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<Abstractions.DicomSeries> GetDicomSeries(string seriesInstanceUid)
+        public ActionResult<Abstractions.DicomSeries> GetDicomSeries(string patientId, string seriesInstanceUid)
         {
             try
             {
                 var seriesInstanceDicomUid = new Domain.Model.DicomUid(seriesInstanceUid);
                 var seriesDomainModel = _applicationService.GetSeriesByUid(seriesInstanceDicomUid);
+
+                // TODO: check patient ID?
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
                 var seriesAbstraction = mapper.Map<Abstractions.DicomSeries>(seriesDomainModel);
@@ -61,12 +63,12 @@ namespace Dicom.Api.Controllers
             }
         }
 
-        [HttpPost("series")]
+        [HttpPost("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> AddDicomSeries([FromBody] Abstractions.DicomSeries dicomSeries)
+        public async Task<ActionResult> AddDicomSeries(string patientId, [FromBody] Abstractions.DicomSeries dicomSeries)
         {
             try
             {

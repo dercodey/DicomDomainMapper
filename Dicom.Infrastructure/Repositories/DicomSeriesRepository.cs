@@ -67,6 +67,18 @@ namespace Dicom.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectFunc"></param>
+        /// <returns></returns>
+        public IEnumerable<DomainModel.DicomSeries> SelectAggregates(Func<DomainModel.DicomSeries, bool> selectFunc)
+        {
+            var allDmDicomSeries = _context.DicomSeries.Select(_mapper.Map<DomainModel.DicomSeries>);
+            var matchingSeries = allDmDicomSeries.Where(selectFunc);
+            return matchingSeries;
+        }
+
+        /// <summary>
         /// updates the aggregate, or creates if it is new
         /// </summary>
         /// <param name="updatedSeries">DicomSeries to be updated</param>

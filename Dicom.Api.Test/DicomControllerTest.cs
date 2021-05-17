@@ -30,7 +30,7 @@ namespace Dicom.Api.Test
 
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
 
-            var okObjectResult = (OkObjectResult)_testController.GetDicomSeries(testSeriesInstanceUid.ToString()).Result;
+            var okObjectResult = (OkObjectResult)_testController.GetDicomSeries(testPatientId, testSeriesInstanceUid.ToString()).Result;
             var abDicomSeries = (Abstractions.DicomSeries)okObjectResult.Value;
 
             Assert.AreEqual(testSeriesInstanceUid.ToString(), abDicomSeries.SeriesInstanceUid);
@@ -60,7 +60,7 @@ namespace Dicom.Api.Test
                 });
 
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
-            _testController.AddDicomSeries(testAbDicomSeries).Wait();
+            _testController.AddDicomSeries("", testAbDicomSeries).Wait();
         }
 
         [TestMethod]

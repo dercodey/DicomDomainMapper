@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Seedwork = Dicom.Domain.Seedwork;
 
 namespace Dicom.Application.Repositories
@@ -17,6 +19,13 @@ namespace Dicom.Application.Repositories
         /// <param name="forKey">key to match</param>
         /// <returns>the matching aggregate</returns>
         TEntity GetAggregateForKey(TKey forKey);
+
+        /// <summary>
+        /// gets the aggregate with the given key
+        /// </summary>
+        /// <param name="forKey">key to match</param>
+        /// <returns>the matching aggregate</returns>
+        IEnumerable<TEntity> SelectAggregates(Func<TEntity, bool> selectFunc);
 
         /// <summary>
         /// updates an aggregate (or creates if it is new)

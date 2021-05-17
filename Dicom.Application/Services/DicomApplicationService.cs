@@ -16,7 +16,7 @@ namespace Dicom.Application.Services
         {
             _repository = repository;
         }
-        public DomainModel.DicomSeries GetAllSeries()
+        public IEnumerable<DomainModel.DicomSeries> GetAllSeriesForPatient(string patientId)
         {
             throw new NotImplementedException();
         }

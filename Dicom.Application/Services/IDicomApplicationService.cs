@@ -8,7 +8,7 @@ namespace Dicom.Application.Services
 {
     public interface IDicomApplicationService
     {
-        DomainModel.DicomSeries GetAllSeries();
+        IEnumerable<DomainModel.DicomSeries> GetAllSeriesForPatient(string patientId);
 
         DomainModel.DicomSeries GetSeriesByUid(DomainModel.DicomUid seriesInstanceUid);
 
