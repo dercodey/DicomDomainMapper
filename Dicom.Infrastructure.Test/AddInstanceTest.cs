@@ -63,7 +63,7 @@ namespace Dicom.Infrastructure.Test
                 var patientId = reader["PatientId"].ToString();
                 Assert.AreEqual(newSeriesDomainModel.PatientId, patientId);
 
-                var modality = reader["Modality"].ToString();
+                var modality = Enum.Parse<DomainModel.Modality>(reader["Modality"].ToString());
                 Assert.AreEqual(newSeriesDomainModel.Modality, modality);
 
                 var acquisitionDateTime = System.DateTime.Parse(reader["AcquisitionDateTime"].ToString());
@@ -102,7 +102,7 @@ namespace Dicom.Infrastructure.Test
                 var patientId = reader["PatientId"].ToString();
                 Assert.AreEqual(newSeriesDomainModel.PatientId, patientId);
 
-                var modality = reader["Modality"].ToString();
+                var modality = Enum.Parse<DomainModel.Modality>(reader["Modality"].ToString());
                 Assert.AreEqual(newSeriesDomainModel.Modality, modality);
 
                 var acquisitionDateTime = System.DateTime.Parse(reader["AcquisitionDateTime"].ToString());

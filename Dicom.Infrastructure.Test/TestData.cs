@@ -17,7 +17,7 @@ namespace Dicom.Infrastructure.Test
                     new DicomUid("1.2.3.7"),
                     "Last, First",
                     "98765",
-                    "CT",
+                    Modality.CT,
                     new DateTime(2021, 01, 02),
                     3, // expected instance count
                     new List<DicomInstance>());
@@ -39,7 +39,7 @@ namespace Dicom.Infrastructure.Test
                     new DicomAttribute(DicomTag.PATIENTNAME, "Last, First"),
                     new DicomAttribute(DicomTag.PATIENTID, "98765"),
                     new DicomAttribute(DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
-                    new DicomAttribute(DicomTag.MODALITY, "CT"),
+                    new DicomAttribute(DicomTag.MODALITY, Modality.CT.ToString()),
                     new DicomAttribute(DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
                     new DicomAttribute(DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
                 };

@@ -20,7 +20,7 @@ namespace Dicom.Domain.Model
         /// <param name="acquisitionDateTime">when did the series get acquired</param>
         /// <param name="dicomInstances">collection of initial dicom instances</param>
         public DicomSeries(DicomUid seriesInstanceUid, 
-            string patientName, string patientId, string modality, 
+            string patientName, string patientId, Modality modality, 
             DateTime acquisitionDateTime, 
             int expectedInstanceCount,
             IEnumerable<DicomInstance> dicomInstances)
@@ -33,11 +33,6 @@ namespace Dicom.Domain.Model
             if (string.IsNullOrWhiteSpace(patientId))
             {
                 throw new ArgumentException("PatientID must be a non-empty string");
-            }
-
-            if (string.IsNullOrWhiteSpace(modality))
-            {
-                throw new ArgumentException("Modality must be a non-empty string");
             }
 
             if (acquisitionDateTime == null)
@@ -92,7 +87,7 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// series modality
         /// </summary>
-        public string Modality 
+        public Modality Modality 
         { 
             get; 
             private set; 
@@ -170,7 +165,7 @@ namespace Dicom.Domain.Model
             // perform checks by extracting relevent attributes
             var modalityAttribute = 
                 newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.MODALITY));
-            if (modalityAttribute.Value.CompareTo(Modality) != 0)
+            if (modalityAttribute.Value.CompareTo(Modality.ToString()) != 0)
             {
                 throw new ArgumentException("DICOM instance doesn't match series modality");
             }
