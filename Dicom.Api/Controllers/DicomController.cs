@@ -25,18 +25,20 @@ namespace Dicom.Api.Controllers
         [HttpGet("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public IEnumerable<Abstractions.DicomSeries> GetAllDicomSeries(string patientId)
+        public ActionResult<IEnumerable<Abstractions.DicomSeries>> GetAllDicomSeriesForPatient(string patientId)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Abstractions.DicomSeries
+            try
             {
-                PatientId = "98765",
-                PatientName = "Last, First",
-                SeriesInstanceUid = $"1.2.3.{index}",
-                Modality = "CT",
-                ExpectedInstanceCount = 3,
-            })
-            .ToArray();
+                var dmAllDicomSeries = _applicationService.GetAllSeriesForPatient(patientId);
+
+                var mapper = Mappers.AbstractionMapper.GetMapper();
+                var abAllDicomSeries = dmAllDicomSeries.Select(mapper.Map<Abstractions.DicomSeries>);
+                return Ok(abAllDicomSeries);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("patient/{patientId}/series/{seriesInstanceUid}")]
@@ -50,7 +52,10 @@ namespace Dicom.Api.Controllers
                 var seriesInstanceDicomUid = new Domain.Model.DicomUid(seriesInstanceUid);
                 var seriesDomainModel = _applicationService.GetSeriesByUid(seriesInstanceDicomUid);
 
-                // TODO: check patient ID?
+                if (!seriesDomainModel.PatientId.Equals(patientId))
+                {
+                    return BadRequest();
+                }
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
                 var seriesAbstraction = mapper.Map<Abstractions.DicomSeries>(seriesDomainModel);

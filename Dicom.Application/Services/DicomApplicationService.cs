@@ -18,7 +18,8 @@ namespace Dicom.Application.Services
         }
         public IEnumerable<DomainModel.DicomSeries> GetAllSeriesForPatient(string patientId)
         {
-            throw new NotImplementedException();
+            var allSeriesForPatient = _repository.SelectAggregates(series => series.PatientId.Equals(patientId));
+            return allSeriesForPatient;
         }
 
         public DomainModel.DicomSeries GetSeriesByUid(DomainModel.DicomUid seriesInstanceUid)
