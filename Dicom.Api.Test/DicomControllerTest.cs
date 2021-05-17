@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Dicom.Api.Test
 {
@@ -44,6 +45,22 @@ namespace Dicom.Api.Test
         [TestMethod]
         public void TestAddDicomSeries()
         {
+            var testAbDicomSeries = 
+                new Abstractions.DicomSeries() 
+                { 
+                    Modality = "CT",
+                };
+
+            var _mockService = new Mock<IDicomApplicationService>();
+            _mockService.Setup(svc => svc.CreateSeriesAsync(It.IsAny<DomainModel.DicomSeries>()))
+                .Returns(Task.CompletedTask)
+                .Callback((DomainModel.DicomSeries s) => 
+                {
+                    s.Modality.ToString().Equals(testAbDicomSeries.Modality);
+                });
+
+            var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
+            _testController.AddDicomSeries(testAbDicomSeries).Wait();
         }
 
         [TestMethod]
