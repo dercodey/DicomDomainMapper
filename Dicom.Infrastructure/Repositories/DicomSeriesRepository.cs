@@ -79,6 +79,16 @@ namespace Dicom.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="forKey"></param>
+        /// <returns></returns>
+        public Task RemoveAsync(DomainModel.DicomUid forKey)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region IDisposable
@@ -91,7 +101,7 @@ namespace Dicom.Infrastructure.Repositories
             _context.Dispose();
         }
 
-#endregion
+        #endregion
 
     }
 }

@@ -24,5 +24,12 @@ namespace Dicom.Application.Repositories
         /// <param name="updatedAggregate">aggregate to be updated</param>
         /// <returns>Task representing the updation operation</returns>
         Task UpdateAsync(TEntity updatedAggregate);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="forKey"></param>
+        /// <returns></returns>
+        Task RemoveAsync(TKey forKey);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Dicom.Application.Repositories;
@@ -45,6 +46,21 @@ namespace Dicom.Application.Services
         public Task ReconcilePatientName(string seriesInstanceUid, string oldPatientName, string newPatientName)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<DomainModel.DicomAttribute>> GetAttributesAsync(string instanceUid, List<string> attributes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddInstanceFromStreamAsync(Stream readStream)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteDicomSeries(string seriesUid)
+        {
+            await _repository.RemoveAsync(new DomainModel.DicomUid(seriesUid));
         }
     }
 }
