@@ -106,10 +106,16 @@ namespace Dicom.Domain.Model
             {
                 return true;
             }
+            else if (_valueRepresentation.IsEnum)
+            {
+                object parsedValue = null;
+                var success = Enum.TryParse(_valueRepresentation, value, out parsedValue);
+                return success;
+            }
             else if (_valueRepresentation == typeof(DateTime))
             {
-                DateTime result;
-                var success = DateTime.TryParse(value, out result);
+                DateTime parsedDateTime;
+                var success = DateTime.TryParse(value, out parsedDateTime);
                 return success;
             }
             else if (_valueRepresentation == typeof(DicomUid))
@@ -126,7 +132,7 @@ namespace Dicom.Domain.Model
                 return true;
             }
 
-            return false;
+            throw new NotSupportedException();
         }
 
         #region IEquatable
@@ -157,7 +163,7 @@ namespace Dicom.Domain.Model
         }
 
         // a few common tags
-        public static DicomTag MODALITY = new DicomTag(0x0008, 0x0060, typeof(string), false);
+        public static DicomTag MODALITY = new DicomTag(0x0008, 0x0060, typeof(Modality), false);
         public static DicomTag PATIENTNAME = new DicomTag(0x0010, 0x0010, typeof(string), false);
         public static DicomTag PATIENTID = new DicomTag(0x0010, 0x0020, typeof(string), false);
         public static DicomTag SOPINSTANCEUID = new DicomTag("(0008,0018)", typeof(DicomUid), false);
