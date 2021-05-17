@@ -14,8 +14,8 @@ namespace Dicom.Domain.Model
         /// construct an instance with the given instance UID and the corresponding attributes
         /// </summary>
         /// <param name="sopInstanceUid"></param>
-        /// <param name="dicomAttributes"></param>
-        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
+        /// <param name="dicomElements"></param>
+        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomElement> dicomElements)
         {
             if (sopInstanceUid == null)
             {
@@ -23,7 +23,7 @@ namespace Dicom.Domain.Model
             }
 
             var embeddedSopInstanceUid = 
-                dicomAttributes.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.SOPINSTANCEUID));
+                dicomElements.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.SOPINSTANCEUID));
 
             if (embeddedSopInstanceUid == null)
             {
@@ -37,15 +37,15 @@ namespace Dicom.Domain.Model
                 throw new ArgumentException("Mismatched SOP instance UID in DICOM instance");
             }
 
-            var distinctAttributes = dicomAttributes.Select(attribute => attribute.DicomTag).Distinct();
-            if (distinctAttributes.Count() < dicomAttributes.Count())
+            var distinctElements = dicomElements.Select(attribute => attribute.DicomTag).Distinct();
+            if (distinctElements.Count() < dicomElements.Count())
             {
                 // found duplicate DICOM tags
                 throw new ArgumentException("Duplicate DICOM tags");
             }
 
             SopInstanceUid = sopInstanceUid;
-            DicomAttributes = dicomAttributes;
+            DicomElements = dicomElements;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Dicom.Domain.Model
         /// <summary>
         /// list of DICOM attributes for the instance
         /// </summary>
-        public IEnumerable<DicomAttribute> DicomAttributes 
+        public IEnumerable<DicomElement> DicomElements 
         { 
             get;
             private set;

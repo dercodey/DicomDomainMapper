@@ -16,7 +16,7 @@ namespace Dicom.Infrastructure.Test
         private string[] tableNames = 
             new string[] 
             { 
-                "DicomAttributes", 
+                "DicomElements", 
                 "DicomInstances", 
                 "DicomSeries" 
             };
@@ -171,7 +171,7 @@ namespace Dicom.Infrastructure.Test
             foreach (var sopInstanceUid in sopInstanceUids)
             {
                 var queryAttributeString = "select DicomTag "
-                    + "from DicomAttributes inner join DicomInstances on DicomInstances.ID = DicomAttributes.DicomInstanceId "
+                    + "from DicomElements inner join DicomInstances on DicomInstances.ID = DicomElements.DicomInstanceId "
                     + $"where DicomInstances.SopInstanceUid = '{sopInstanceUid}'";
                 int attributeRowsFound = QueryAndTest(queryAttributeString, reader =>
                 {

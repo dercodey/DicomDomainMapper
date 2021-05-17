@@ -19,7 +19,7 @@ namespace Dicom.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomAttribute", b =>
+            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomElement", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace Dicom.Infrastructure.Migrations
 
                     b.HasIndex("DicomInstanceId");
 
-                    b.ToTable("DicomAttributes");
+                    b.ToTable("DicomElements");
                 });
 
             modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomInstance", b =>
@@ -92,10 +92,10 @@ namespace Dicom.Infrastructure.Migrations
                     b.ToTable("DicomSeries");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomAttribute", b =>
+            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomElement", b =>
                 {
                     b.HasOne("Dicom.Infrastructure.EFModel.DicomInstance", "DicomInstance")
-                        .WithMany("DicomAttributes")
+                        .WithMany("DicomElements")
                         .HasForeignKey("DicomInstanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -116,7 +116,7 @@ namespace Dicom.Infrastructure.Migrations
 
             modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomInstance", b =>
                 {
-                    b.Navigation("DicomAttributes");
+                    b.Navigation("DicomElements");
                 });
 
             modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomSeries", b =>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Dicom.Api.Abstractions
 {
-    public class DicomAttribute
+    public class DicomElement
     {
         public string DicomTag { get; set; }
 

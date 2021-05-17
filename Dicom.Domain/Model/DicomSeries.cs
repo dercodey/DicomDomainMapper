@@ -156,7 +156,7 @@ namespace Dicom.Domain.Model
         {
             // perform checks by extracting relevent attributes
             var patientIdAttribute =
-                newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.PATIENTID));
+                newInstance.DicomElements.Single(attribute => attribute.DicomTag.Equals(DicomTag.PATIENTID));
             if (patientIdAttribute.Value.CompareTo(PatientId.ToString()) != 0)
             {
                 throw new ArgumentException("DICOM instance doesn't match series PatientID");
@@ -164,14 +164,14 @@ namespace Dicom.Domain.Model
 
             // perform checks by extracting relevent attributes
             var modalityAttribute = 
-                newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.MODALITY));
+                newInstance.DicomElements.Single(attribute => attribute.DicomTag.Equals(DicomTag.MODALITY));
             if (modalityAttribute.Value.CompareTo(Modality.ToString()) != 0)
             {
                 throw new ArgumentException("DICOM instance doesn't match series modality");
             }
 
             var acquisitionDateTimeAttribute =
-                newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
+                newInstance.DicomElements.Single(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
             var acquisitionDateTime = DateTime.Parse(acquisitionDateTimeAttribute.Value);
             if (acquisitionDateTime.CompareTo(AcquisitionDateTime) != 0)
             {
@@ -202,9 +202,9 @@ namespace Dicom.Domain.Model
             var updatedInstances =
                 _instances.Select(instance =>
                     new DicomInstance(instance.SopInstanceUid,
-                        instance.DicomAttributes.Select(attribute =>
+                        instance.DicomElements.Select(attribute =>
                             attribute.DicomTag.Equals(DicomTag.PATIENTNAME)
-                                ? new DicomAttribute(DicomTag.PATIENTNAME, newPatientName)
+                                ? new DicomElement(DicomTag.PATIENTNAME, newPatientName)
                                 : attribute)));
 
             _instances = updatedInstances.ToList();

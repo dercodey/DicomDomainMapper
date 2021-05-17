@@ -12,7 +12,7 @@ namespace Dicom.Infrastructure.EFModel
 
         public DicomSeries DicomSeries { get; set; }
 
-        public List<DicomAttribute> DicomAttributes { get; set; } =
-            new List<DicomAttribute>();
+        public List<DicomElement> DicomElements { get; set; } =
+            new List<DicomElement>();
     }
 }

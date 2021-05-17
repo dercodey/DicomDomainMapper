@@ -46,7 +46,7 @@ namespace Dicom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DicomAttributes",
+                name: "DicomElements",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -57,9 +57,9 @@ namespace Dicom.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DicomAttributes", x => x.ID);
+                    table.PrimaryKey("PK_DicomElements", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_DicomAttributes_DicomInstances_DicomInstanceId",
+                        name: "FK_DicomElements_DicomInstances_DicomInstanceId",
                         column: x => x.DicomInstanceId,
                         principalTable: "DicomInstances",
                         principalColumn: "ID",
@@ -67,8 +67,8 @@ namespace Dicom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DicomAttributes_DicomInstanceId",
-                table: "DicomAttributes",
+                name: "IX_DicomElements_DicomInstanceId",
+                table: "DicomElements",
                 column: "DicomInstanceId");
 
             migrationBuilder.CreateIndex(
@@ -80,7 +80,7 @@ namespace Dicom.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DicomAttributes");
+                name: "DicomElements");
 
             migrationBuilder.DropTable(
                 name: "DicomInstances");

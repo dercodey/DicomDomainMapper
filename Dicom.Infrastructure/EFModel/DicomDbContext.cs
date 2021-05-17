@@ -19,7 +19,7 @@ namespace Dicom.Infrastructure.EFModel
 
         public DbSet<DicomSeries> DicomSeries { get; set; }
         public DbSet<DicomInstance> DicomInstances { get; set; }
-        public DbSet<DicomAttribute> DicomAttributes { get; set; }
+        public DbSet<DicomElement> DicomElements { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

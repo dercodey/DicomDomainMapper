@@ -40,7 +40,7 @@ namespace Dicom.Infrastructure.Repositories
             // TODO: investigate if this populates all the entities
             _context.DicomSeries
                 .Include(series => series.DicomInstances)
-                .ThenInclude(instance => instance.DicomAttributes);
+                .ThenInclude(instance => instance.DicomElements);
 
             // get the matching series
             var matchSeries = 
@@ -57,7 +57,7 @@ namespace Dicom.Infrastructure.Repositories
             // ensure other entities are selected\
             // TODO: is there a more efficient way to do this?
             _context.DicomInstances.ToList();
-            _context.DicomAttributes.ToList();
+            _context.DicomElements.ToList();
 
             // map to the domain model
             var seriesDomainModel = _mapper.Map<DomainModel.DicomSeries>(matchSeries);

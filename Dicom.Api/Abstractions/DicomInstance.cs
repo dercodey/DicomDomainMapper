@@ -7,6 +7,6 @@ namespace Dicom.Api.Abstractions
     {
         public string SopInstanceUid { get; set; }
 
-        public IEnumerable<DicomAttribute> DicomAttributes { get; set; }
+        public IEnumerable<DicomElement> DicomAttributes { get; set; }
     }
 }

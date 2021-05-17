@@ -1,6 +1,6 @@
 ﻿namespace Dicom.Infrastructure.EFModel
 {
-    public class DicomAttribute
+    public class DicomElement
     {
         public int ID { get; set; }
 

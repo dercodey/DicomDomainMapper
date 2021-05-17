@@ -52,7 +52,7 @@ namespace Dicom.Infrastructure.Mappers
                             opt => opt.MapFrom(dmDicomInstance =>
                                 new DomainModel.DicomUid(dmDicomInstance.SopInstanceUid)));
 
-                    cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>()
+                    cfg.CreateMap<DomainModel.DicomElement, EFModel.DicomElement>()
                         .EqualityComparison((dmDicomAttribute, efDicomAttribute) =>
                             efDicomAttribute.DicomTag == dmDicomAttribute.DicomTag.ToString())
                         .ForMember(efDicomAttribute => efDicomAttribute.ID, opt => opt.Ignore())
@@ -61,7 +61,7 @@ namespace Dicom.Infrastructure.Mappers
                         .ForMember(efDicomAttribute => efDicomAttribute.DicomTag,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
 
-                    cfg.CreateMap<EFModel.DicomAttribute, DomainModel.DicomAttribute>()
+                    cfg.CreateMap<EFModel.DicomElement, DomainModel.DicomElement>()
                         .ForMember(dmDicomAttribute => dmDicomAttribute.DicomTag, opt => opt.Ignore())
                         .ForCtorParam("dicomTag",
                             opt => opt.MapFrom(dmDicomAttribute =>
