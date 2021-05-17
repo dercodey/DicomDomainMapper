@@ -6,9 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Dicom.Application.Services;
+using System.IO;
 
 namespace Dicom.Api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class DicomController : ControllerBase
@@ -16,12 +20,22 @@ namespace Dicom.Api.Controllers
         private readonly IDicomApplicationService _applicationService;
         private readonly ILogger<DicomController> _logger;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="applicationService"></param>
+        /// <param name="logger"></param>
         public DicomController(IDicomApplicationService applicationService, ILogger<DicomController> logger)
         {
             _applicationService = applicationService;
             _logger = logger;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
         [HttpGet("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -41,6 +55,12 @@ namespace Dicom.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <param name="seriesInstanceUid"></param>
+        /// <returns></returns>
         [HttpGet("patient/{patientId}/series/{seriesInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -49,12 +69,13 @@ namespace Dicom.Api.Controllers
         {
             try
             {
-                var seriesInstanceDicomUid = new Domain.Model.DicomUid(seriesInstanceUid);
-                var seriesDomainModel = _applicationService.GetSeriesByUid(seriesInstanceDicomUid);
+                var seriesDomainModel = _applicationService.GetSeriesByUid(
+                    new Domain.Model.DicomUid(seriesInstanceUid));
 
+                // check the patient IDs match
                 if (!seriesDomainModel.PatientId.Equals(patientId))
                 {
-                    return BadRequest();
+                    return BadRequest("patient ID must match with stored value");
                 }
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
@@ -68,6 +89,12 @@ namespace Dicom.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <param name="dicomSeries"></param>
+        /// <returns></returns>
         [HttpPost("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
@@ -88,16 +115,21 @@ namespace Dicom.Api.Controllers
             }
         }
 
-
-        [HttpDelete("series/{seriesUid}")]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="seriesUid"></param>
+        /// <returns></returns>
+        [HttpDelete("series/{seriesInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> DeleteDicomSeries(string seriesUid)
+        public async Task<ActionResult> DeleteDicomSeries(string seriesInstanceUid)
         {
             try
             {
-                await _applicationService.DeleteDicomSeries(seriesUid);
+                await _applicationService.DeleteDicomSeriesAsync(
+                    new Domain.Model.DicomUid(seriesInstanceUid));
                 return Ok();
             }
             catch (Exception ex)
@@ -106,27 +138,26 @@ namespace Dicom.Api.Controllers
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="seriesUid"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         [HttpPost("series/{seriesUid}/instances")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> AddDicomInstance(string seriesUid, [FromForm] Abstractions.DicomInstance instance)
+        public async Task<ActionResult> AddDicomInstance(string seriesUid, [FromForm] Stream readStream)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("ModelState is invalid.");
-            }
-
-            if (instance == null)
+            if (readStream == null)
             {
                 return BadRequest("file is null or empty.");
             }
 
             try
             {
-                var readStream = instance.File.OpenReadStream();
                 await _applicationService.AddInstanceFromStreamAsync(readStream);
                 return Ok();
             }
@@ -140,36 +171,43 @@ namespace Dicom.Api.Controllers
             }
         }
 
-        [HttpGet("series/{seriesUid}/instances/{instanceUid}")]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instanceUid"></param>
+        /// <returns></returns>
+        [HttpGet("series/{seriesInstanceUid}/instances/{sopInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetDicomInstance(string instanceUid)
+        public async Task<ActionResult> GetDicomInstance(string seriesInstanceUid, string sopInstanceUid)
         {
-            if (string.IsNullOrWhiteSpace(instanceUid))
+            if (string.IsNullOrWhiteSpace(sopInstanceUid))
             {
                 return BadRequest("id is null or empty.");
             }
 
-            if (Request.Query == null || Request.Query.Count == 0)
-            {
-                return BadRequest($"No query parameters specified.");
-            }
-
-            if (!Request.Query.ContainsKey("query"))
-            {
-                // TODO: or should this just return all attributes?
-                return BadRequest($"Query does not contain key 'query'.");
-            }
-
             try
             {
-                var attributes = Request.Query["query"].ToString().Split(",").ToList();
-                var dmDicomAttributes = await _applicationService.GetAttributesAsync(instanceUid, attributes);
+                var dmDicomInstance = 
+                    await _applicationService.GetDicomInstanceAsync(
+                        new Domain.Model.DicomUid(seriesInstanceUid),
+                        new Domain.Model.DicomUid(sopInstanceUid));
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var abDicomAttributes = mapper.Map<Abstractions.DicomAttribute>(dmDicomAttributes);
-                return Ok(abDicomAttributes);
+                var abDicomInstance = mapper.Map<Abstractions.DicomInstance>(dmDicomInstance);
+
+                if (Request.Query.ContainsKey("query"))
+                {
+                    var attributes = Request.Query["query"].ToString().Split(",").ToList();
+                    var filteredAttributes =
+                        abDicomInstance.DicomAttributes.Where(attribute =>
+                            attributes.Contains(attribute.DicomTag.ToString()));
+
+                    abDicomInstance.DicomAttributes = filteredAttributes;
+                }
+
+                return Ok(abDicomInstance);
             }
             catch (ArgumentException)
             {

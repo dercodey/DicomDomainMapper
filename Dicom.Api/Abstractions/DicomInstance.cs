@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace Dicom.Api.Abstractions
 {
     public class DicomInstance
     {
-        public IFormFile File { get; set; }
+        public string SopInstanceUid { get; set; }
+
+        public IEnumerable<DicomAttribute> DicomAttributes { get; set; }
     }
 }
