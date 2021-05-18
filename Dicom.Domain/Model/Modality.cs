@@ -5,6 +5,7 @@
     /// </summary>
     public enum Modality
     {
+        DX,
         CT,
         MR,
         PT,
