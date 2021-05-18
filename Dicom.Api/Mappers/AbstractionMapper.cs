@@ -27,6 +27,26 @@ namespace Elekta.Capability.Dicom.Api.Mappers
                         .ForCtorParam("seriesInstanceUid",
                             opt => opt.MapFrom(src =>
                                 new DomainModel.DicomUid(src.SeriesInstanceUid)));
+
+                    cfg.CreateMap<DomainModel.DicomInstance, AbstractionModel.DicomInstance>()
+                        .ForMember(abDicomInstance => abDicomInstance.SopInstanceUid,
+                            opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
+
+                    cfg.CreateMap<AbstractionModel.DicomInstance, DomainModel.DicomInstance>()
+                        .ForMember(dmDicomSeries => dmDicomSeries.SopInstanceUid, opt => opt.Ignore())
+                        .ForCtorParam("sopInstanceUid",
+                            opt => opt.MapFrom(src =>
+                                new DomainModel.DicomUid(src.SopInstanceUid)));
+
+                    cfg.CreateMap<DomainModel.DicomElement, AbstractionModel.DicomElement>()
+                        .ForMember(abDicomElement => abDicomElement.DicomTag,
+                            opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
+
+                    cfg.CreateMap<AbstractionModel.DicomElement, DomainModel.DicomElement>()
+                        .ForMember(dmDicomElement => dmDicomElement.DicomTag, opt => opt.Ignore())
+                        .ForCtorParam("dicomTag",
+                            opt => opt.MapFrom(src =>
+                                DomainModel.DicomTag.GetTag(src.DicomTag)));
                 });
             }
 

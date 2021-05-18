@@ -221,14 +221,15 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 var mapper = Mappers.AbstractionMapper.GetMapper();
                 var abDicomInstance = mapper.Map<AbstractionModel.DicomInstance>(dmDicomInstance);
 
-                if (Request.Query.ContainsKey("query"))
+                if (Request.Query != null
+                    && Request.Query.ContainsKey("query"))
                 {
-                    var attributes = Request.Query["query"].ToString().Split(",").ToList();
+                    var attributes = Request.Query["query"].ToString().Split("/").ToList();
                     var filteredAttributes =
-                        abDicomInstance.DicomAttributes.Where(attribute =>
-                            attributes.Contains(attribute.DicomTag.ToString()));
+                        abDicomInstance.DicomElements.Where(attribute =>
+                            attributes.Contains(attribute.DicomTag));
 
-                    abDicomInstance.DicomAttributes = filteredAttributes;
+                    abDicomInstance.DicomElements = filteredAttributes;
                 }
 
                 return Ok(abDicomInstance);
