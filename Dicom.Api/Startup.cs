@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Dicom.Application.Repositories;
-using Dicom.Application.Services;
-using Dicom.Application.Helpers;
 using DomainModel = Dicom.Domain.Model;
+using Infrastructure = Dicom.Infrastructure;
+using Elekta.Capability.Dicom.Application.Repositories;
+using Elekta.Capability.Dicom.Application.Services;
+using Elekta.Capability.Dicom.Application.Helpers;
 
-namespace Dicom.Api
+namespace Elekta.Capability.Dicom.Api
 {
     public class Startup
     {
@@ -29,7 +30,7 @@ namespace Dicom.Api
             },
             ServiceLifetime.Scoped);
 
-            services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>, 
+            services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>,
                 Infrastructure.Repositories.DicomSeriesRepository>();
             services.AddScoped<IDicomParser, DicomParser>();
             services.AddScoped<IDicomApplicationService, DicomApplicationService>();

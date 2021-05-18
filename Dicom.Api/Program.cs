@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dicom.Api
+namespace Elekta.Capability.Dicom.Api
 {
     public class Program
     {

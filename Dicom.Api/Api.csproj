@@ -2,10 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Elekta.Capability.Dicom.Api</AssemblyName>
+    <RootNamespace>Elekta.Capability.Dicom.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dicom.Application\Dicom.Application.csproj" />
+    <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\Dicom.Application\Application.csproj" />
     <ProjectReference Include="..\Dicom.Domain\Dicom.Domain.csproj" />
     <ProjectReference Include="..\Dicom.Infrastructure\Dicom.Infrastructure.csproj" />
   </ItemGroup>

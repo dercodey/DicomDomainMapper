@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using DomainModel = Dicom.Domain.Model;
 
-namespace Dicom.Application.Services
+namespace Elekta.Capability.Dicom.Application.Services
 {
     /// <summary>
     /// service interface for the DICOM application service

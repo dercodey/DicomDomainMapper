@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dicom.Api.Abstractions
+namespace Elekta.Capability.Dicom.Abstractions.Models
 {
     public class DicomElement
     {

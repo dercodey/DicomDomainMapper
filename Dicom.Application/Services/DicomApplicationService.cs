@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Dicom.Application.Helpers;
-using Dicom.Application.Repositories;
 using DomainModel = Dicom.Domain.Model;
+using Elekta.Capability.Dicom.Application.Repositories;
+using Elekta.Capability.Dicom.Application.Helpers;
 
-namespace Dicom.Application.Services
+namespace Elekta.Capability.Dicom.Application.Services
 {
     /// <summary>
     /// application service object for supporting calls in to the domain model

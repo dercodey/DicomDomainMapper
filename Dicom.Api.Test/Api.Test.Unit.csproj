@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Elekta.Capability.Dicom.Api.Test.Unit</AssemblyName>
+
+    <RootNamespace>Elekta.Capability.Dicom.Api.Test.Unit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dicom.Api\Dicom.Api.csproj" />
+    <ProjectReference Include="..\Dicom.Api\Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

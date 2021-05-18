@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Dicom.Api.Abstractions
+namespace Elekta.Capability.Dicom.Abstractions.Models
 {
     public class DicomInstance
     {
