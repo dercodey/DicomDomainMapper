@@ -156,7 +156,24 @@ namespace Elekta.Capability.Dicom.Api.Test
         [TestMethod]
         public void TestDeleteDicomSeries()
         {
-            Assert.Fail();
+            var testSeriesInstanceUid = new DomainModel.DicomUid("1.2.3.7");
+
+            var mockRepository = new Mock<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>>();
+            mockRepository.Setup(repo =>
+                    repo.RemoveAsync(It.Is<DomainModel.DicomUid>(uid => uid.Equals(testSeriesInstanceUid))))
+                .Returns(Task.CompletedTask);
+
+            // and create the service and controller to be tested
+            var dicomParser = new DicomParser();
+            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+
+            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<DicomController>();
+            var testController = new DicomController(service, logger);
+
+            testController.DeleteDicomSeries(testSeriesInstanceUid.ToString()).Wait();
+
+            // that's it
         }
 
         [TestMethod]
