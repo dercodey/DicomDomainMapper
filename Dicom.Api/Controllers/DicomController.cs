@@ -224,7 +224,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 if (Request.Query != null
                     && Request.Query.ContainsKey("query"))
                 {
-                    var attributes = Request.Query["query"].ToString().Split("/").ToList();
+                    var attributes = Request.Query["query"].ToString().Split("+").ToList();
                     var filteredAttributes =
                         abDicomInstance.DicomElements.Where(attribute =>
                             attributes.Contains(attribute.DicomTag));

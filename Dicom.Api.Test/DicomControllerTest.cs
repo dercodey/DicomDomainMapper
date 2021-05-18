@@ -249,7 +249,15 @@ namespace Elekta.Capability.Dicom.Api.Test
                 new QueryCollection(
                     new Dictionary<string, StringValues>() 
                     {
-                        // { "query", new StringValues("") },
+                        { "query",
+                            new StringValues(
+                                String.Join('+',
+                                    new string[]
+                                    {
+                                        DomainModel.DicomTag.PATIENTID.ToString(),
+                                        DomainModel.DicomTag.PATIENTNAME.ToString(),
+                                        DomainModel.DicomTag.SOPINSTANCEUID.ToString()
+                                    })) },
                     });
 
             // and set up the test controller
@@ -266,6 +274,17 @@ namespace Elekta.Capability.Dicom.Api.Test
             var retrievedDicomInstance = (AbstractionModel.DicomInstance)okObjectResult.Value;
 
             Assert.AreEqual(sopInstanceUid.ToString(), retrievedDicomInstance.SopInstanceUid);
+
+            var retrievedPatientId = 
+                retrievedDicomInstance.DicomElements.Single(element => 
+                    element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID.ToString()));
+            Assert.AreEqual(patientId, retrievedPatientId.Value);
+
+            var retrievedPatientName =
+                retrievedDicomInstance.DicomElements.Single(element => 
+                    element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME.ToString()));
+            Assert.AreEqual(patientId, retrievedPatientId.Value);
+
         }
     }
 }
