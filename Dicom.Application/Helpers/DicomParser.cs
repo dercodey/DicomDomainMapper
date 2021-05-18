@@ -1,9 +1,9 @@
-﻿using Dicom.Domain.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Kaitai;
 using DomainModel = Dicom.Domain.Model;
 
 namespace Dicom.Application.Helpers
@@ -13,9 +13,9 @@ namespace Dicom.Application.Helpers
     /// </summary>
     public class DicomParser : IDicomParser
     {
-        public IEnumerable<DicomElement> ParseStream(Stream dicomStream)
+        public IEnumerable<DomainModel.DicomElement> ParseStream(Stream dicomStream)
         {
-            using (var kaitaiStream = new Kaitai.KaitaiStream(dicomStream))            
+            using (var kaitaiStream = new KaitaiStream(dicomStream))            
             {
                 var dicomParser = new Kaitai.Dicom(kaitaiStream);
                 

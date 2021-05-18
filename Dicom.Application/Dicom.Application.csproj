@@ -12,4 +12,8 @@
     <Folder Include="Generated\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="KaitaiStruct.Runtime.CSharp" Version="0.9.0" />
+  </ItemGroup>
+
 </Project>
