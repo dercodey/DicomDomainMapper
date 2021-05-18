@@ -67,17 +67,20 @@ namespace Dicom.Application.Services
         {
             var dicomParser = new Kaitai.Dicom(new Kaitai.KaitaiStream(readStream));
 
+            var payloadElements = dicomParser.Elements.Last().Elements;
+
             var selectedElements =
-                dicomParser.Elements.Select(element =>
+                payloadElements.Select(element =>
                 {
-                    var dmTag = DomainModel.DicomTag.GetTag($"({element.TagGroup:X4}, {element.TagElem:X4})");
+                    var dmTag = DomainModel.DicomTag.GetTag(element.TagGroup, element.TagElem);
                     if (dmTag == null)
                         return null;
 
                     var value = Encoding.UTF8.GetString(element.Value);
                     return new DomainModel.DicomElement(dmTag, value);
                 })
-                .Where(element => element != null);
+                .Where(element => element != null)
+                .ToList();
 
             var sopInstanceUid = selectedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
 
@@ -88,7 +91,7 @@ namespace Dicom.Application.Services
             var existingSeries = _repository.GetAggregateForKey(new DomainModel.DicomUid(seriesInstanceUid.Value));
             if (existingSeries == null)
             {
-                throw new ArgumentException();
+                throw new InvalidOperationException("SeriesInstanceUID not found in repository");
             }
 
             existingSeries.AddInstance(dmDicomInstance);
