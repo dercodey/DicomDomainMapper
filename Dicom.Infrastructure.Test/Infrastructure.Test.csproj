@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Elekta.Capability.Infrastructure.Test</AssemblyName>
+
+    <RootNamespace>Elekta.Capability.Infrastructure.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

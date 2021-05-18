@@ -13,7 +13,7 @@ using Elekta.Capability.Dicom.Application.Services;
 namespace Elekta.Capability.Dicom.Api.Controllers
 {
     /// <summary>
-    /// 
+    /// controller to handle DICOM requests
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -23,7 +23,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         private readonly ILogger<DicomController> _logger;
 
         /// <summary>
-        /// 
+        /// construct by injecting the application service and a logger
         /// </summary>
         /// <param name="applicationService"></param>
         /// <param name="logger"></param>
@@ -58,6 +58,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogError(ex.Message);
                 // couldn't find the patient
                 return NotFound(ex.Message);
             }
@@ -97,6 +98,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -116,6 +118,8 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         {
             try
             {
+                _logger.LogDebug($"Adding series for patient {patientId}");
+
                 var mapper = Mappers.AbstractionMapper.GetMapper();
                 var seriesDomainModel = mapper.Map<DomainModel.DicomSeries>(dicomSeries);
                 await _applicationService.CreateSeriesAsync(seriesDomainModel);
@@ -123,6 +127,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -146,6 +151,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -154,7 +160,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         /// 
         /// </summary>
         /// <param name="seriesUid"></param>
-        /// <param name="instance"></param>
+        /// <param name="readStream"></param>
         /// <returns></returns>
         [HttpPost("series/{seriesUid}/instances")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -165,7 +171,9 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         {
             if (readStream == null)
             {
-                return BadRequest("file is null or empty.");
+                var msg = "file is null or empty.";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             try
@@ -175,10 +183,12 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (Exception ex) when (ex.Message.EndsWith("already exists."))
             {
+                _logger.LogError(ex.Message);
                 return Conflict(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -196,7 +206,9 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         {
             if (string.IsNullOrWhiteSpace(sopInstanceUid))
             {
-                return BadRequest("id is null or empty.");
+                var msg = "id is null or empty.";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             try
@@ -223,6 +235,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

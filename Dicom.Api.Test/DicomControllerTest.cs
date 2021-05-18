@@ -13,6 +13,7 @@ using Elekta.Capability.Dicom.Application.Helpers;
 using Elekta.Capability.Dicom.Application.Repositories;
 using Elekta.Capability.Dicom.Application.Services;
 using Elekta.Capability.Dicom.Api.Controllers;
+using Microsoft.Extensions.Logging;
 
 namespace Elekta.Capability.Dicom.Api.Test
 {
@@ -41,7 +42,9 @@ namespace Elekta.Capability.Dicom.Api.Test
                 .Returns(testDicomSerieses);
 
             // hook up a controller to call in to
-            var testController = new DicomController(mockService.Object, new NullLogger<DicomController>());
+            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<DicomController>();
+            var testController = new DicomController(mockService.Object, logger);
 
             // now call the controller for the test patient
             var okObjectResult = (OkObjectResult)testController.GetAllDicomSeriesForPatient(testPatientId).Result;
@@ -86,7 +89,9 @@ namespace Elekta.Capability.Dicom.Api.Test
                         s.Equals(testSeriesInstanceUid))))
                 .Returns(testDicomSeries);
 
-            var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
+            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<DicomController>();
+            var _testController = new DicomController(_mockService.Object, logger);
 
             var okObjectResult = (OkObjectResult)_testController.GetDicomSeries(testPatientId, testSeriesInstanceUid.ToString()).Result;
             var abDicomSeries = (AbstractionModel.DicomSeries)okObjectResult.Value;
@@ -103,6 +108,7 @@ namespace Elekta.Capability.Dicom.Api.Test
         [TestMethod]
         public void TestAddDicomSeries()
         {
+            // create a series abstraction record to add
             var testAbDicomSeries =
                 new AbstractionModel.DicomSeries()
                 {
@@ -114,6 +120,7 @@ namespace Elekta.Capability.Dicom.Api.Test
                     AcquisitionDateTime = DateTime.Now,
                 };
 
+            // set up a mock service that will receive the new series
             var _mockService = new Mock<IDicomApplicationService>();
             _mockService.Setup(svc => 
                     svc.CreateSeriesAsync(It.IsAny<DomainModel.DicomSeries>()))
@@ -126,10 +133,16 @@ namespace Elekta.Capability.Dicom.Api.Test
                     Assert.AreEqual(testAbDicomSeries.AcquisitionDateTime, s.AcquisitionDateTime);
                     Assert.AreEqual(testAbDicomSeries.Modality, s.Modality.ToString());
                     Assert.AreEqual(testAbDicomSeries.AcquisitionDateTime, s.AcquisitionDateTime);
+                    Assert.AreEqual(DomainModel.SeriesState.Created, s.CurrentState);
                 });
 
-            var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
-            _testController.AddDicomSeries(testAbDicomSeries.PatientId, testAbDicomSeries).Wait();
+            // set up a controller to exercise add series
+            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<DicomController>();
+            var testController = new DicomController(_mockService.Object, logger);
+
+            // and try the operation
+            testController.AddDicomSeries(testAbDicomSeries.PatientId, testAbDicomSeries).Wait();
         }
 
         [TestMethod]
