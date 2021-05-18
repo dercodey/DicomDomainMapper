@@ -5,7 +5,7 @@ using DomainModel = Dicom.Domain.Model;
 
 namespace Dicom.Api.Mappers
 {
-    public static class AbstractionMapper
+    public class AbstractionMapper
     {
         /// <summary>
         /// gets (and creates) the mapper
@@ -17,8 +17,6 @@ namespace Dicom.Api.Mappers
             {
                 mapper = CreateMapper(cfg =>
                 {
-                    cfg.AddCollectionMappers();
-
                     cfg.CreateMap<DomainModel.DicomSeries, Abstractions.DicomSeries>()
                         .ForMember(abDicomSeries => abDicomSeries.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
