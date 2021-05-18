@@ -2,6 +2,7 @@
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using DomainModel = Dicom.Domain.Model;
+using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
 namespace Dicom.Api.Mappers
 {
@@ -17,11 +18,11 @@ namespace Dicom.Api.Mappers
             {
                 mapper = CreateMapper(cfg =>
                 {
-                    cfg.CreateMap<DomainModel.DicomSeries, Abstractions.DicomSeries>()
+                    cfg.CreateMap<DomainModel.DicomSeries, AbstractionModel.DicomSeries>()
                         .ForMember(abDicomSeries => abDicomSeries.SeriesInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
 
-                    cfg.CreateMap<Abstractions.DicomSeries, DomainModel.DicomSeries>()
+                    cfg.CreateMap<AbstractionModel.DicomSeries, DomainModel.DicomSeries>()
                         .ForMember(dmDicomSeries => dmDicomSeries.SeriesInstanceUid, opt => opt.Ignore())
                         .ForMember(dmDicomSeries => dmDicomSeries.DicomInstances, opt => opt.Ignore())
                         .ForCtorParam("seriesInstanceUid",

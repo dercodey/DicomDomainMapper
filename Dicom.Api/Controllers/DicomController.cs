@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Dicom.Application.Services;
 using System.IO;
+using Dicom.Application.Services;
+using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
 namespace Dicom.Api.Controllers
 {
@@ -38,20 +39,26 @@ namespace Dicom.Api.Controllers
         /// <returns></returns>
         [HttpGet("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<IEnumerable<Abstractions.DicomSeries>> GetAllDicomSeriesForPatient(string patientId)
+        public ActionResult<IEnumerable<AbstractionModel.DicomSeries>> GetAllDicomSeriesForPatient(string patientId)
         {
             try
             {
+                // get all of the serieses for the patient
                 var dmAllDicomSeries = _applicationService.GetAllSeriesForPatient(patientId);
 
+                // convert to abstraction series
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var abAllDicomSeries = dmAllDicomSeries.Select(mapper.Map<Abstractions.DicomSeries>);
+                var abAllDicomSeries = dmAllDicomSeries.Select(mapper.Map<AbstractionModel.DicomSeries>);
+
+                // and return the result
                 return Ok(abAllDicomSeries);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                // couldn't find the patient
+                return NotFound(ex.Message);
             }
         }
 
@@ -64,11 +71,13 @@ namespace Dicom.Api.Controllers
         [HttpGet("patient/{patientId}/series/{seriesInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<Abstractions.DicomSeries> GetDicomSeries(string patientId, string seriesInstanceUid)
+        public ActionResult<AbstractionModel.DicomSeries> GetDicomSeries(string patientId, string seriesInstanceUid)
         {
             try
             {
+                // try to retrieve the series
                 var seriesDomainModel = _applicationService.GetSeriesByUid(
                     new Domain.Model.DicomUid(seriesInstanceUid));
 
@@ -78,14 +87,16 @@ namespace Dicom.Api.Controllers
                     return BadRequest("patient ID must match with stored value");
                 }
 
+                // map to abstraction
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var seriesAbstraction = mapper.Map<Abstractions.DicomSeries>(seriesDomainModel);
+                var seriesAbstraction = mapper.Map<AbstractionModel.DicomSeries>(seriesDomainModel);
 
+                // and return the result
                 return Ok(seriesAbstraction);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
 
@@ -100,7 +111,7 @@ namespace Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> AddDicomSeries(string patientId, [FromBody] Abstractions.DicomSeries dicomSeries)
+        public async Task<ActionResult> AddDicomSeries(string patientId, [FromBody] AbstractionModel.DicomSeries dicomSeries)
         {
             try
             {
@@ -109,9 +120,9 @@ namespace Dicom.Api.Controllers
                 await _applicationService.CreateSeriesAsync(seriesDomainModel);
                 return Ok();
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -132,7 +143,7 @@ namespace Dicom.Api.Controllers
                     new Domain.Model.DicomUid(seriesInstanceUid));
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -195,7 +206,7 @@ namespace Dicom.Api.Controllers
                         new Domain.Model.DicomUid(sopInstanceUid));
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var abDicomInstance = mapper.Map<Abstractions.DicomInstance>(dmDicomInstance);
+                var abDicomInstance = mapper.Map<AbstractionModel.DicomInstance>(dmDicomInstance);
 
                 if (Request.Query.ContainsKey("query"))
                 {
@@ -209,9 +220,9 @@ namespace Dicom.Api.Controllers
 
                 return Ok(abDicomInstance);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -1,17 +1,18 @@
-using Dicom.Api.Controllers;
-using Dicom.Application.Repositories;
-using Dicom.Application.Services;
-using DomainModel = Dicom.Domain.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using System;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Dicom.Application.Helpers;
+using Dicom.Api.Controllers;
+using Dicom.Application.Repositories;
+using Dicom.Application.Services;
+using DomainModel = Dicom.Domain.Model;
+using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
 namespace Dicom.Api.Test
 {
@@ -40,7 +41,7 @@ namespace Dicom.Api.Test
 
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
             var okObjectResult = (OkObjectResult)_testController.GetAllDicomSeriesForPatient(testPatientId).Result;
-            var listDicomSeries = (IEnumerable<Abstractions.DicomSeries>)okObjectResult.Value;
+            var listDicomSeries = (IEnumerable<AbstractionModel.DicomSeries>)okObjectResult.Value;
 
             Assert.AreEqual(5, listDicomSeries.Count());
             foreach (var dicomSeries in listDicomSeries)
@@ -76,7 +77,7 @@ namespace Dicom.Api.Test
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
 
             var okObjectResult = (OkObjectResult)_testController.GetDicomSeries(testPatientId, testSeriesInstanceUid.ToString()).Result;
-            var abDicomSeries = (Abstractions.DicomSeries)okObjectResult.Value;
+            var abDicomSeries = (AbstractionModel.DicomSeries)okObjectResult.Value;
 
             Assert.AreEqual(testSeriesInstanceUid.ToString(), abDicomSeries.SeriesInstanceUid);
             Assert.AreEqual(testPatientName, abDicomSeries.PatientName);
@@ -91,7 +92,7 @@ namespace Dicom.Api.Test
         public void TestAddDicomSeries()
         {
             var testAbDicomSeries =
-                new Abstractions.DicomSeries()
+                new AbstractionModel.DicomSeries()
                 {
                     PatientId = "98754",
                     PatientName = "Last, First",

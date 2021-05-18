@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\Dicom.Application\Dicom.Application.csproj" />
     <ProjectReference Include="..\Dicom.Domain\Dicom.Domain.csproj" />
     <ProjectReference Include="..\Dicom.Infrastructure\Dicom.Infrastructure.csproj" />

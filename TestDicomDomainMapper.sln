@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Application", "Dicom.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Api", "Dicom.Api\Dicom.Api.csproj", "{046A7882-ABEE-49BE-BD7E-7A06C426E528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dicom.Api.Test", "Dicom.Api.Test\Dicom.Api.Test.csproj", "{C29405B1-8E1A-47D7-9D70-0AC646144212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Api.Test", "Dicom.Api.Test\Dicom.Api.Test.csproj", "{C29405B1-8E1A-47D7-9D70-0AC646144212}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstractions", "Abstractions\Abstractions.csproj", "{99696D7A-089E-4BF7-AA14-A813139C04AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{C29405B1-8E1A-47D7-9D70-0AC646144212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C29405B1-8E1A-47D7-9D70-0AC646144212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C29405B1-8E1A-47D7-9D70-0AC646144212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

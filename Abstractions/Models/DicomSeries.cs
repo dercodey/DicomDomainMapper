@@ -1,6 +1,6 @@
 using System;
 
-namespace Dicom.Api.Abstractions
+namespace Elekta.Capability.Dicom.Abstractions.Models
 {
     public class DicomSeries
     {
