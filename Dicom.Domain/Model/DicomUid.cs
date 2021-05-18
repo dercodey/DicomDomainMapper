@@ -19,18 +19,20 @@ namespace Dicom.Domain.Model
         /// <param name="uidString"></param>
         public DicomUid(string uidString)
         {
+#if TEST_UID_FORMAT
             // validate string is correct
-            var pattern = "[0-9]*\\.[0-9]*\\.[0-9]*\\.[0-9]*";
+            var pattern = "[0-9.]*";
             var matches = Regex.Matches(uidString, pattern);
             if (matches.Count != 1)
             {
                 throw new ArgumentException("Incorrect format for DICOM UID");
             }
+#endif
 
             _uidString = uidString;
         }
 
-        #region IEquatable
+#region IEquatable
 
         /// <summary>
         /// perform equality test on two UIDs by comparing their string representation
@@ -42,7 +44,7 @@ namespace Dicom.Domain.Model
             return _uidString.CompareTo(other._uidString) == 0;
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// string representation of the UID
