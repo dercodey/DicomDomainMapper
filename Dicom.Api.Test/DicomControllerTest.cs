@@ -90,10 +90,15 @@ namespace Dicom.Api.Test
         [TestMethod]
         public void TestAddDicomSeries()
         {
-            var testAbDicomSeries = 
-                new Abstractions.DicomSeries() 
-                { 
+            var testAbDicomSeries =
+                new Abstractions.DicomSeries()
+                {
+                    PatientId = "98754",
+                    PatientName = "Last, First",
+                    SeriesInstanceUid = "1.2.3.7",
                     Modality = "CT",
+                    ExpectedInstanceCount = 1,
+                    AcquisitionDateTime = DateTime.Now,
                 };
 
             var _mockService = new Mock<IDicomApplicationService>();
@@ -102,7 +107,12 @@ namespace Dicom.Api.Test
                 .Returns(Task.CompletedTask)
                 .Callback((DomainModel.DicomSeries s) => 
                 {
-                    s.Modality.ToString().Equals(testAbDicomSeries.Modality);
+                    Assert.AreEqual(testAbDicomSeries.PatientId, s.PatientId);
+                    Assert.AreEqual(testAbDicomSeries.PatientName, s.PatientName);
+                    Assert.AreEqual(testAbDicomSeries.SeriesInstanceUid, s.SeriesInstanceUid.ToString());
+                    Assert.AreEqual(testAbDicomSeries.AcquisitionDateTime, s.AcquisitionDateTime);
+                    Assert.AreEqual(testAbDicomSeries.Modality, s.Modality.ToString());
+                    Assert.AreEqual(testAbDicomSeries.AcquisitionDateTime, s.AcquisitionDateTime);
                 });
 
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
