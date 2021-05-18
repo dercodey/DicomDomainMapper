@@ -1,10 +1,9 @@
 ﻿using System;
 using AutoMapper;
-using AutoMapper.EquivalencyExpression;
 using DomainModel = Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
-namespace Dicom.Api.Mappers
+namespace Elekta.Capability.Dicom.Api.Mappers
 {
     public class AbstractionMapper
     {

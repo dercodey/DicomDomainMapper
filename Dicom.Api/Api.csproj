@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Elekta.Capability.Dicom.Api</AssemblyName>
+    <RootNamespace>Elekta.Capability.Dicom.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -8,8 +8,9 @@ using Dicom.Application.Repositories;
 using Dicom.Application.Services;
 using Dicom.Application.Helpers;
 using DomainModel = Dicom.Domain.Model;
+using Infrastructure = Dicom.Infrastructure;
 
-namespace Dicom.Api
+namespace Elekta.Capability.Dicom.Api
 {
     public class Startup
     {
@@ -29,7 +30,7 @@ namespace Dicom.Api
             },
             ServiceLifetime.Scoped);
 
-            services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>, 
+            services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>,
                 Infrastructure.Repositories.DicomSeriesRepository>();
             services.AddScoped<IDicomParser, DicomParser>();
             services.AddScoped<IDicomApplicationService, DicomApplicationService>();

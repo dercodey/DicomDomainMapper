@@ -7,14 +7,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Dicom.Application.Helpers;
-using Dicom.Api.Controllers;
-using Dicom.Application.Repositories;
-using Dicom.Application.Services;
 using DomainModel = Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
+using Dicom.Application.Helpers;
+using Dicom.Application.Repositories;
+using Dicom.Application.Services;
+using Elekta.Capability.Dicom.Api.Controllers;
 
-namespace Dicom.Api.Test
+namespace Elekta.Capability.Dicom.Api.Test
 {
     [TestClass]
     public class DicomControllerTest

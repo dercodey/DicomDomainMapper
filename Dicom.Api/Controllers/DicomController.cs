@@ -7,9 +7,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.IO;
 using Dicom.Application.Services;
+using DomainModel = Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
-namespace Dicom.Api.Controllers
+namespace Elekta.Capability.Dicom.Api.Controllers
 {
     /// <summary>
     /// 
@@ -79,7 +80,7 @@ namespace Dicom.Api.Controllers
             {
                 // try to retrieve the series
                 var seriesDomainModel = _applicationService.GetSeriesByUid(
-                    new Domain.Model.DicomUid(seriesInstanceUid));
+                    new DomainModel.DicomUid(seriesInstanceUid));
 
                 // check the patient IDs match
                 if (!seriesDomainModel.PatientId.Equals(patientId))
@@ -116,7 +117,7 @@ namespace Dicom.Api.Controllers
             try
             {
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var seriesDomainModel = mapper.Map<Domain.Model.DicomSeries>(dicomSeries);
+                var seriesDomainModel = mapper.Map<DomainModel.DicomSeries>(dicomSeries);
                 await _applicationService.CreateSeriesAsync(seriesDomainModel);
                 return Ok();
             }
@@ -140,7 +141,7 @@ namespace Dicom.Api.Controllers
             try
             {
                 await _applicationService.DeleteDicomSeriesAsync(
-                    new Domain.Model.DicomUid(seriesInstanceUid));
+                    new DomainModel.DicomUid(seriesInstanceUid));
                 return Ok();
             }
             catch (ArgumentException ex)
@@ -202,8 +203,8 @@ namespace Dicom.Api.Controllers
             {
                 var dmDicomInstance = 
                     await _applicationService.GetDicomInstanceAsync(
-                        new Domain.Model.DicomUid(seriesInstanceUid),
-                        new Domain.Model.DicomUid(sopInstanceUid));
+                        new DomainModel.DicomUid(seriesInstanceUid),
+                        new DomainModel.DicomUid(sopInstanceUid));
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
                 var abDicomInstance = mapper.Map<AbstractionModel.DicomInstance>(dmDicomInstance);
