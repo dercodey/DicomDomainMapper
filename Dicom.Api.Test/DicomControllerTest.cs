@@ -32,17 +32,26 @@ namespace Dicom.Api.Test
                             testPatientName, testPatientId, 
                             DomainModel.Modality.CT, testAcquistionDateTime, 3, null));
 
-            var _mockService = new Mock<IDicomApplicationService>();
-            _mockService.Setup(svc => 
+            // set up a mock service to return the serieses
+            var mockService = new Mock<IDicomApplicationService>();
+            mockService.Setup(svc => 
                 svc.GetAllSeriesForPatient(It.Is<string>(s => 
                     s.Equals(testPatientId))))
                 .Returns(testDicomSerieses);
 
-            var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
-            var okObjectResult = (OkObjectResult)_testController.GetAllDicomSeriesForPatient(testPatientId).Result;
+            // hook up a controller to call in to
+            var testController = new DicomController(mockService.Object, new NullLogger<DicomController>());
+
+            // now call the controller for the test patient
+            var okObjectResult = (OkObjectResult)testController.GetAllDicomSeriesForPatient(testPatientId).Result;
+
+            // and get the list of series that was returned
             var listDicomSeries = (IEnumerable<Abstractions.DicomSeries>)okObjectResult.Value;
 
+            // make sure the proper number are returned
             Assert.AreEqual(5, listDicomSeries.Count());
+
+            // for each, check that the properties match what was provded
             foreach (var dicomSeries in listDicomSeries)
             {
                 Assert.AreEqual(testPatientId, dicomSeries.PatientId);
@@ -51,6 +60,7 @@ namespace Dicom.Api.Test
                 Assert.AreEqual(testAcquistionDateTime, dicomSeries.AcquisitionDateTime);
             }
 
+            // make sure the SeriesInstanceUids for each is distinct
             var allDistinctSeriesInstanceUids = 
                 listDicomSeries.Select(dicomSeries => dicomSeries.SeriesInstanceUid).Distinct();
             Assert.AreEqual(5, allDistinctSeriesInstanceUids.Count());
@@ -61,8 +71,10 @@ namespace Dicom.Api.Test
         {
             var testPatientName = "Last, First";
             var testPatientId = "98765";
-            var testSeriesInstanceUid = new DomainModel.DicomUid("1.2.3.7");
             var testAcquistionDateTime = DateTime.Now;
+
+            var testSeriesInstanceUid = new DomainModel.DicomUid("1.2.3.7");
+
             var testDicomSeries =
                 new DomainModel.DicomSeries(testSeriesInstanceUid, 
                     testPatientName, testPatientId, DomainModel.Modality.CT, testAcquistionDateTime, 3, null);
@@ -116,7 +128,7 @@ namespace Dicom.Api.Test
                 });
 
             var _testController = new DicomController(_mockService.Object, new NullLogger<DicomController>());
-            _testController.AddDicomSeries("", testAbDicomSeries).Wait();
+            _testController.AddDicomSeries(testAbDicomSeries.PatientId, testAbDicomSeries).Wait();
         }
 
         [TestMethod]
@@ -147,15 +159,30 @@ namespace Dicom.Api.Test
 
                     var newInstance = series.DicomInstances.First();
 
-                    // TODO: check elements
-                    // newInstance.DicomElements.First()
+                    // check elements
+                    var addedPatientName =
+                        newInstance.DicomElements.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME));
+                    Assert.AreEqual(patientName, addedPatientName.Value);
+
+                    var addedPatientId =
+                        newInstance.DicomElements.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID));
+                    Assert.AreEqual(patientId, addedPatientId.Value);
+
+                    var addedModality =
+                        newInstance.DicomElements.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.MODALITY));
+                    Assert.AreEqual("DX", addedModality.Value);
+
                 });
 
+            // now set up the service with the mock and a dicom parser
             var dicomParser = new DicomParser();
             var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+
+            // and set up the test controller
             var testController = new DicomController(service, new NullLogger<DicomController>());
 
-            testController.AddDicomInstance("1.2.3.7", dicomInstanceStream).Wait();
+            // call to add the dicom instance
+            testController.AddDicomInstance("1.3.6.1.4.1.5962.1.1.65535.103.1.1239106253.3783.0", dicomInstanceStream).Wait();
 
             System.Diagnostics.Trace.WriteLine("Done adding new instance");
         }
