@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Elekta.Capability.Dicom.Domain.Model;
 
-namespace Dicom.Infrastructure.Test
+namespace Elekta.Capability.Dicom.Infrastructure.Test
 {
     internal static class TestData
     {
