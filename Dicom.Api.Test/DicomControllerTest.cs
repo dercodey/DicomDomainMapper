@@ -22,13 +22,18 @@ namespace Elekta.Capability.Dicom.Api.Test
     [TestClass]
     public class DicomControllerTest
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestGetAllSeriesForPatient()
         {
+            // common patient and series values
             var testPatientName = "Last, First";
             var testPatientId = "98765";
             var testAcquistionDateTime = DateTime.Now;
 
+            // create a set of series to be returned
             var testDicomSerieses = 
                 Enumerable.Range(1, 5).Select(n => 
                         new DomainModel.DicomSeries(
@@ -225,7 +230,10 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             System.Diagnostics.Trace.WriteLine("Done adding new instance");
         }
-
+        
+        /// <summary>
+        /// test for getting a dicom instance
+        /// </summary>
         [TestMethod]
         public void TestGetDicomInstance()
         {
@@ -262,25 +270,11 @@ namespace Elekta.Capability.Dicom.Api.Test
             var service = new DicomApplicationService(mockRepository.Object, dicomParser);
 
             var httpContext = new DefaultHttpContext();
-            httpContext.Request.Query = 
-                new QueryCollection(
-                    new Dictionary<string, StringValues>() 
-                    {
-                        { "query",
-                            new StringValues(
-                                String.Join('+',
-                                    new string[]
-                                    {
-                                        DomainModel.DicomTag.PATIENTID.ToString(),
-                                        DomainModel.DicomTag.PATIENTNAME.ToString(),
-                                        DomainModel.DicomTag.SOPINSTANCEUID.ToString()
-                                    })) },
-                    });
 
             // and set up the test controller
-            var testController = 
-                new DicomController(service, new NullLogger<DicomController>()) 
-                { 
+            var testController =
+                new DicomController(service, new NullLogger<DicomController>())
+                {
                     ControllerContext = new ControllerContext()
                     {
                         HttpContext = httpContext,
@@ -300,8 +294,93 @@ namespace Elekta.Capability.Dicom.Api.Test
             var retrievedPatientName =
                 retrievedDicomInstance.DicomElements.Single(element => 
                     element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME.ToString()));
+
+            var retrievedModality =
+                retrievedDicomInstance.DicomElements.Single(element =>
+                    element.DicomTag.Equals(DomainModel.DicomTag.MODALITY.ToString()));
+            Assert.AreEqual("CT", retrievedModality.Value);
+        }
+
+        /// <summary>
+        /// test for getting a dicom instance
+        /// </summary>
+        [TestMethod]
+        public void TestGetDicomInstanceWithFilterQuery()
+        {
+            var patientName = "Last^First";
+            var patientId = "987321";
+            var seriesInstanceUid = new DomainModel.DicomUid("1.3.9.5");
+            var sopInstanceUid = new DomainModel.DicomUid("1.3.9.7");
+            var mockInstance =
+                new DomainModel.DicomInstance(sopInstanceUid,
+                    new List<DomainModel.DicomElement>()
+                    {
+                        new DomainModel.DicomElement(DomainModel.DicomTag.PATIENTID, patientId),
+                        new DomainModel.DicomElement(DomainModel.DicomTag.PATIENTNAME, patientName),
+                        new DomainModel.DicomElement(DomainModel.DicomTag.SERIESINSTANCEUID, seriesInstanceUid.ToString()),
+                        new DomainModel.DicomElement(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
+                        new DomainModel.DicomElement(DomainModel.DicomTag.MODALITY, "CT"),
+                    });
+            var mockSeries =
+                new DomainModel.DicomSeries(seriesInstanceUid,
+                    patientName, patientId,
+                    DomainModel.Modality.DX, DateTime.Now, 1,
+                    new List<DomainModel.DicomInstance>()
+                    {
+                        mockInstance
+                    });
+
+            var mockRepository = new Mock<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>>();
+            mockRepository.Setup(repo =>
+                    repo.GetAggregateForKey(It.Is<DomainModel.DicomUid>(uid => uid.Equals(seriesInstanceUid))))
+                .Returns(mockSeries);
+
+            // now set up the service with the mock and a dicom parser
+            var dicomParser = new DicomParser();
+            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Query =
+                new QueryCollection(
+                    new Dictionary<string, StringValues>()
+                    {
+                        { "query",
+                            new StringValues(
+                                String.Join('+',
+                                    new string[]
+                                    {
+                                        DomainModel.DicomTag.PATIENTID.ToString(),
+                                        DomainModel.DicomTag.PATIENTNAME.ToString(),
+                                        DomainModel.DicomTag.SOPINSTANCEUID.ToString()
+                                    })) },
+                    });
+
+            // and set up the test controller
+            var testController =
+                new DicomController(service, new NullLogger<DicomController>())
+                {
+                    ControllerContext = new ControllerContext()
+                    {
+                        HttpContext = httpContext,
+                    }
+                };
+
+            var okObjectResult = (OkObjectResult)testController.GetDicomInstance(seriesInstanceUid.ToString(), sopInstanceUid.ToString()).Result;
+            var retrievedDicomInstance = (AbstractionModel.DicomInstance)okObjectResult.Value;
+
+            Assert.AreEqual(sopInstanceUid.ToString(), retrievedDicomInstance.SopInstanceUid);
+            Assert.AreEqual(3, retrievedDicomInstance.DicomElements.Count());
+
+            var retrievedPatientId =
+                retrievedDicomInstance.DicomElements.Single(element =>
+                    element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID.ToString()));
             Assert.AreEqual(patientId, retrievedPatientId.Value);
 
+            var retrievedPatientName =
+                retrievedDicomInstance.DicomElements.Single(element =>
+                    element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME.ToString()));
+            Assert.AreEqual(patientId, retrievedPatientId.Value);
         }
+
     }
 }
