@@ -98,12 +98,15 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
         /// <returns></returns>
         public Task RemoveAsync(DomainModel.DicomUid forKey)
         {
-            throw new NotImplementedException();
+#if CHECK_THIS
+            _context.DicomSeries.Persist(_mapper).Remove(forKey);
+#endif
+            return Task.CompletedTask;
         }
 
-        #endregion
+#endregion
 
-        #region IDisposable
+#region IDisposable
 
         /// <summary>
         /// 
@@ -113,7 +116,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
             _context.Dispose();
         }
 
-        #endregion
+#endregion
 
     }
 }
