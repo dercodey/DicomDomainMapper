@@ -28,7 +28,7 @@ namespace Kaitai
         }
 
 
-        public enum Tags
+        public enum Tags : uint
         {
             FileMetaInformationGroupLength = 131072,
             FileMetaInformationVersion = 131073,
@@ -4048,11 +4048,11 @@ namespace Kaitai
             CoefficientsSdvn = 2145386528,
             CoefficientsSdhn = 2145386544,
             CoefficientsSddn = 2145386560,
-            //DigitalSignaturesSequence = 4294639610,
-            //DataSetTrailingPadding = 4294770684,
-            //Item = 4294893568,
-            //ItemDelimitationItem = 4294893581,
-            //SequenceDelimitationItem = 4294893789,
+            DigitalSignaturesSequence = 4294639610,
+            DataSetTrailingPadding = 4294770684,
+            Item = 4294893568,
+            ItemDelimitationItem = 4294893581,
+            SequenceDelimitationItem = 4294893789,
         }
         public Dicom(KaitaiStream p__io, KaitaiStruct p__parent = null, Dicom p__root = null) : base(p__io)
         {
