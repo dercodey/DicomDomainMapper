@@ -4,22 +4,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dicom.Application.Helpers;
 using Dicom.Application.Repositories;
 using DomainModel = Dicom.Domain.Model;
 
 namespace Dicom.Application.Services
 {
     /// <summary>
-    /// 
+    /// application service object for supporting calls in to the domain model
     /// </summary>
     public class DicomApplicationService : IDicomApplicationService
     {
         private readonly IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> _repository;
+        private readonly IDicomParser _dicomParser;
 
-        public DicomApplicationService(IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> repository)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="dicomParser"></param>
+        public DicomApplicationService(IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> repository, IDicomParser dicomParser)
         {
             _repository = repository;
+            _dicomParser = dicomParser;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -65,37 +74,28 @@ namespace Dicom.Application.Services
         /// <returns></returns>
         public async Task AddInstanceFromStreamAsync(Stream readStream)
         {
-            var dicomParser = new Kaitai.Dicom(new Kaitai.KaitaiStream(readStream));
+            var parsedElements =
+                _dicomParser.ParseStream(readStream);
 
-            var payloadElements = dicomParser.Elements.Last().Elements;
-
-            var selectedElements =
-                payloadElements.Select(element =>
-                {
-                    var dmTag = DomainModel.DicomTag.GetTag(element.TagGroup, element.TagElem);
-                    if (dmTag == null)
-                        return null;
-
-                    var value = Encoding.UTF8.GetString(element.Value);
-                    return new DomainModel.DicomElement(dmTag, value);
-                })
-                .Where(element => element != null)
-                .ToList();
-
-            var sopInstanceUid = selectedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
-
-            var dmDicomInstance =
-                new DomainModel.DicomInstance(new DomainModel.DicomUid(sopInstanceUid.Value), selectedElements);
-
-            var seriesInstanceUid = selectedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
+            // check that the series has already been created
+            var seriesInstanceUid = parsedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
             var existingSeries = _repository.GetAggregateForKey(new DomainModel.DicomUid(seriesInstanceUid.Value));
             if (existingSeries == null)
             {
                 throw new InvalidOperationException("SeriesInstanceUID not found in repository");
             }
 
+            // create the new instance
+            var sopInstanceUid = parsedElements.Single(da => 
+                da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
+
+            var dmDicomInstance =
+                new DomainModel.DicomInstance(new DomainModel.DicomUid(sopInstanceUid.Value), parsedElements);
+
+            // now add the new instance to the series
             existingSeries.AddInstance(dmDicomInstance);
 
+            // and commit the changes
             await _repository.UpdateAsync(existingSeries);
         }
 

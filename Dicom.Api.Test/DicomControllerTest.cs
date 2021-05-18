@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using Dicom.Application.Helpers;
 
 namespace Dicom.Api.Test
 {
@@ -140,7 +141,8 @@ namespace Dicom.Api.Test
                     // newInstance.DicomElements.First()
                 });
 
-            var service = new DicomApplicationService(mockRepository.Object);
+            var dicomParser = new DicomParser();
+            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
             var testController = new DicomController(service, new NullLogger<DicomController>());
 
             testController.AddDicomInstance("1.2.3.7", dicomInstanceStream).Wait();

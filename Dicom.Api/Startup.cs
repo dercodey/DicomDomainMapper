@@ -1,19 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Dicom.Application.Repositories;
 using Dicom.Application.Services;
+using Dicom.Application.Helpers;
 using DomainModel = Dicom.Domain.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace Dicom.Api
 {
@@ -37,6 +31,7 @@ namespace Dicom.Api
 
             services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>, 
                 Infrastructure.Repositories.DicomSeriesRepository>();
+            services.AddScoped<IDicomParser, DicomParser>();
             services.AddScoped<IDicomApplicationService, DicomApplicationService>();
 
             services.AddControllers();
