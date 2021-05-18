@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using DomainModel = Dicom.Domain.Model;
+using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 
 namespace Elekta.Capability.Dicom.Application.Services
 {

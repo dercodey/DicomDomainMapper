@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dicom.Domain.Model;
+using Elekta.Capability.Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.Test
 {

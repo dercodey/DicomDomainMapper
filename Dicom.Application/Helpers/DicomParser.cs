@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Kaitai;
-using DomainModel = Dicom.Domain.Model;
+using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 
 namespace Elekta.Capability.Dicom.Application.Helpers
 {

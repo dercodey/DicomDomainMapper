@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Seedwork = Dicom.Domain.Seedwork;
+using Seedwork = Elekta.Capability.Dicom.Domain.Seedwork;
 
 namespace Elekta.Capability.Dicom.Application.Repositories
 {

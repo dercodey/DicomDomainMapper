@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DomainModel = Dicom.Domain.Model;
+using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.Test
 {

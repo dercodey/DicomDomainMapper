@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 
-using DomainModel = Dicom.Domain.Model;
+using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 
 namespace Dicom.Infrastructure.Mappers
 {

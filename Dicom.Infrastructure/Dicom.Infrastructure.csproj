@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dicom.Application\Application.csproj" />
-    <ProjectReference Include="..\Dicom.Domain\Dicom.Domain.csproj" />
+    <ProjectReference Include="..\Dicom.Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

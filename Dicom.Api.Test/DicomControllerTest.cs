@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using DomainModel = Dicom.Domain.Model;
+using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 using Elekta.Capability.Dicom.Application.Helpers;
 using Elekta.Capability.Dicom.Application.Repositories;
@@ -47,7 +47,7 @@ namespace Elekta.Capability.Dicom.Api.Test
             var okObjectResult = (OkObjectResult)testController.GetAllDicomSeriesForPatient(testPatientId).Result;
 
             // and get the list of series that was returned
-            var listDicomSeries = (IEnumerable<Abstractions.DicomSeries>)okObjectResult.Value;
+            var listDicomSeries = (IEnumerable<AbstractionModel.DicomSeries>)okObjectResult.Value;
 
             // make sure the proper number are returned
             Assert.AreEqual(5, listDicomSeries.Count());

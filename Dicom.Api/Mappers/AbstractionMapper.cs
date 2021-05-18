@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using DomainModel = Dicom.Domain.Model;
+using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
 namespace Elekta.Capability.Dicom.Api.Mappers

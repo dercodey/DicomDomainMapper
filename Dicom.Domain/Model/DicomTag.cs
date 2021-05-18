@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Dicom.Domain.Seedwork;
+using Elekta.Capability.Dicom.Domain.Seedwork;
 
-namespace Dicom.Domain.Model
+namespace Elekta.Capability.Dicom.Domain.Model
 {
     /// <summary>
     /// value type for a Dicom Tag

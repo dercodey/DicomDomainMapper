@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Dicom.Domain.Seedwork;
+using Elekta.Capability.Dicom.Domain.Seedwork;
 
-namespace Dicom.Domain.Model
+namespace Elekta.Capability.Dicom.Domain.Model
 {
     /// <summary>
     /// value object representing a DICOM attribute

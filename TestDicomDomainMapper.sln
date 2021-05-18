@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Domain", "Dicom.Domain\Dicom.Domain.csproj", "{B17A43C8-DDF7-419E-AFFB-25A373823020}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Dicom.Domain\Domain.csproj", "{B17A43C8-DDF7-419E-AFFB-25A373823020}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Infrastructure", "Dicom.Infrastructure\Dicom.Infrastructure.csproj", "{944FA3FF-D9E1-4C1F-882B-E36E864262D0}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Dicom.Api\Api.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Test.Unit", "Dicom.Api.Test\Api.Test.Unit.csproj", "{C29405B1-8E1A-47D7-9D70-0AC646144212}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstractions", "Abstractions\Abstractions.csproj", "{99696D7A-089E-4BF7-AA14-A813139C04AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstractions", "Abstractions\Abstractions.csproj", "{99696D7A-089E-4BF7-AA14-A813139C04AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

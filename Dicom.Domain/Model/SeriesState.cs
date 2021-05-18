@@ -1,4 +1,4 @@
-﻿namespace Dicom.Domain.Model
+﻿namespace Elekta.Capability.Dicom.Domain.Model
 {
     public enum SeriesState
     {
