@@ -170,14 +170,8 @@ namespace Dicom.Domain.Model
         public static DicomTag SERIESINSTANCEUID = new DicomTag("(0020,000E)", typeof(DicomUid), false);
         public static DicomTag ACQUISITIONDATETIME = new DicomTag("(0008,002A)", typeof(DateTime), false);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="matchTag"></param>
-        /// <returns></returns>
-        public static DicomTag GetTag(string matchTag)
-        {
-            var listOfTags = new List<DicomTag>
+        static List<DicomTag> listOfTags = 
+            new List<DicomTag>
             {
                 MODALITY,
                 PATIENTNAME,
@@ -187,9 +181,35 @@ namespace Dicom.Domain.Model
                 ACQUISITIONDATETIME
             };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="matchTag"></param>
+        /// <returns></returns>
+        public static DicomTag GetTag(string matchTag)
+        {
             foreach (var tag in listOfTags)
             {
                 if (tag.ToString().CompareTo(matchTag) == 0)
+                {
+                    return tag;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static DicomTag GetTag(uint group, uint element)
+        {
+            foreach (var tag in listOfTags)
+            {
+                if (tag.Group == group && tag.Element == element)
                 {
                     return tag;
                 }
