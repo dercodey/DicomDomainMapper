@@ -185,6 +185,7 @@ namespace Elekta.Capability.Dicom.Api.Test
         public void TestAddDicomInstance()
         {
             var dicomInstanceStream = new FileStream(@"TestData\DXIMAGEA.dcm", FileMode.Open);
+            var dicomFormFile = new FormFile(dicomInstanceStream, 0, 0, "DICOM", "DXIMAGEA.dcm");
 
             var patientName = "Test^PixelSpacing";
             var patientId = "62354PQGRRST";
@@ -226,7 +227,7 @@ namespace Elekta.Capability.Dicom.Api.Test
             var testController = new DicomController(service, new NullLogger<DicomController>());
 
             // call to add the dicom instance
-            testController.AddDicomInstance("1.3.6.1.4.1.5962.1.1.65535.103.1.1239106253.3783.0", dicomInstanceStream).Wait();
+            testController.AddDicomInstance("1.3.6.1.4.1.5962.1.1.65535.103.1.1239106253.3783.0", dicomFormFile).Wait();
 
             System.Diagnostics.Trace.WriteLine("Done adding new instance");
         }
