@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using DomainModel = Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
-using Dicom.Application.Helpers;
-using Dicom.Application.Repositories;
-using Dicom.Application.Services;
+using Elekta.Capability.Dicom.Application.Helpers;
+using Elekta.Capability.Dicom.Application.Repositories;
+using Elekta.Capability.Dicom.Application.Services;
 using Elekta.Capability.Dicom.Api.Controllers;
 
 namespace Elekta.Capability.Dicom.Api.Test

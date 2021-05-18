@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DomainModel = Dicom.Domain.Model;
 
-namespace Dicom.Application.Helpers
+namespace Elekta.Capability.Dicom.Application.Helpers
 {
     public interface IDicomParser
     {

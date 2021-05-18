@@ -6,7 +6,7 @@ using System.Text;
 using Kaitai;
 using DomainModel = Dicom.Domain.Model;
 
-namespace Dicom.Application.Helpers
+namespace Elekta.Capability.Dicom.Application.Helpers
 {
     /// <summary>
     /// 

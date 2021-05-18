@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Dicom.Application.Repositories;
-using Dicom.Application.Services;
-using Dicom.Application.Helpers;
 using DomainModel = Dicom.Domain.Model;
 using Infrastructure = Dicom.Infrastructure;
+using Elekta.Capability.Dicom.Application.Repositories;
+using Elekta.Capability.Dicom.Application.Services;
+using Elekta.Capability.Dicom.Application.Helpers;
 
 namespace Elekta.Capability.Dicom.Api
 {

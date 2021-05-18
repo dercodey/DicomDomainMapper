@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Seedwork = Dicom.Domain.Seedwork;
 
-namespace Dicom.Application.Repositories
+namespace Elekta.Capability.Dicom.Application.Repositories
 {
     /// <summary>
     /// interface that represents an aggregate repository

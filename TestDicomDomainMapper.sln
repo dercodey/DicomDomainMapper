@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Infrastructure", "Dic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Infrastructure.Test", "Dicom.Infrastructure.Test\Dicom.Infrastructure.Test.csproj", "{085DA72D-60DB-496D-8FA1-38ED974C1A4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Application", "Dicom.Application\Dicom.Application.csproj", "{C21C4D1A-ED8F-4EC1-8DB3-16795835894A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Dicom.Application\Application.csproj", "{C21C4D1A-ED8F-4EC1-8DB3-16795835894A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Dicom.Api\Api.csproj", "{046A7882-ABEE-49BE-BD7E-7A06C426E528}"
 EndProject

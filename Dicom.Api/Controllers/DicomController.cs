@@ -6,9 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.IO;
-using Dicom.Application.Services;
 using DomainModel = Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
+using Elekta.Capability.Dicom.Application.Services;
 
 namespace Elekta.Capability.Dicom.Api.Controllers
 {
