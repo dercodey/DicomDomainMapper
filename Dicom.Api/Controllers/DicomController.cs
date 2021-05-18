@@ -9,6 +9,7 @@ using System.IO;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 using Elekta.Capability.Dicom.Application.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Elekta.Capability.Dicom.Api.Controllers
 {
@@ -167,9 +168,9 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> AddDicomInstance(string seriesUid, [FromForm] Stream readStream)
+        public async Task<ActionResult> AddDicomInstance(string seriesUid, IFormFile dicomFile)
         {
-            if (readStream == null)
+            if (dicomFile == null)
             {
                 var msg = "file is null or empty.";
                 _logger.LogError(msg);
@@ -178,6 +179,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
 
             try
             {
+                var readStream = dicomFile.OpenReadStream();
                 await _applicationService.AddInstanceFromStreamAsync(readStream);
                 return Ok();
             }
