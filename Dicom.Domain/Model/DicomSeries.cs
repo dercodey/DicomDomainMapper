@@ -170,15 +170,16 @@ namespace Dicom.Domain.Model
                 throw new ArgumentException("DICOM instance doesn't match series modality");
             }
 
-#if CHECK_ACQUISTION_DATETIME
             var acquisitionDateTimeAttribute =
-                newInstance.DicomElements.Single(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
-            var acquisitionDateTime = DateTime.Parse(acquisitionDateTimeAttribute.Value);
-            if (acquisitionDateTime.CompareTo(AcquisitionDateTime) != 0)
+                newInstance.DicomElements.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
+            if (acquisitionDateTimeAttribute != null)
             {
-                throw new ArgumentException("DICOM instance doesn't match series acquistion date time");
+                var acquisitionDateTime = DateTime.Parse(acquisitionDateTimeAttribute.Value);
+                if (acquisitionDateTime.CompareTo(AcquisitionDateTime) != 0)
+                {
+                    throw new ArgumentException("DICOM instance doesn't match series acquistion date time");
+                }
             }
-#endif
 
             // everything is OK, so add to the collection
             _instances.Add(newInstance);
