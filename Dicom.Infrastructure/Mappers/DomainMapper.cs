@@ -5,7 +5,7 @@ using AutoMapper.EquivalencyExpression;
 
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 
-namespace Dicom.Infrastructure.Mappers
+namespace Elekta.Capability.Dicom.Infrastructure.Mappers
 {
     /// <summary>
     /// wrapper for Automapper configured to map between domain model and EF model

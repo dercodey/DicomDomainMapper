@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Dicom.Infrastructure.EFModel
+namespace Elekta.Capability.Dicom.Infrastructure.EFModel
 {
     public class DicomDbContext : DbContext
     {

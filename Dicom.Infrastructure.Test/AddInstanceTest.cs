@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 
-namespace Dicom.Infrastructure.Test
+namespace Elekta.Capability.Dicom.Infrastructure.Test
 {
     [TestClass]
     public class AddInstanceTest

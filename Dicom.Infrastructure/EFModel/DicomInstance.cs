@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dicom.Infrastructure.EFModel
+namespace Elekta.Capability.Dicom.Infrastructure.EFModel
 {
     public class DicomInstance
     {

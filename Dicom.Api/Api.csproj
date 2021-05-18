@@ -10,7 +10,7 @@
     <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\Dicom.Application\Application.csproj" />
     <ProjectReference Include="..\Dicom.Domain\Domain.csproj" />
-    <ProjectReference Include="..\Dicom.Infrastructure\Dicom.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dicom.Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 

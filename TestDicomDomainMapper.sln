@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Dicom.Domain\Domain.csproj", "{B17A43C8-DDF7-419E-AFFB-25A373823020}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Infrastructure", "Dicom.Infrastructure\Dicom.Infrastructure.csproj", "{944FA3FF-D9E1-4C1F-882B-E36E864262D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Dicom.Infrastructure\Infrastructure.csproj", "{944FA3FF-D9E1-4C1F-882B-E36E864262D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dicom.Infrastructure.Test", "Dicom.Infrastructure.Test\Dicom.Infrastructure.Test.csproj", "{085DA72D-60DB-496D-8FA1-38ED974C1A4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Test", "Dicom.Infrastructure.Test\Infrastructure.Test.csproj", "{085DA72D-60DB-496D-8FA1-38ED974C1A4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Dicom.Application\Application.csproj", "{C21C4D1A-ED8F-4EC1-8DB3-16795835894A}"
 EndProject

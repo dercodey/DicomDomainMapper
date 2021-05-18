@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using Elekta.Capability.Dicom.Application.Repositories;
 
-namespace Dicom.Infrastructure.Repositories
+namespace Elekta.Capability.Dicom.Infrastructure.Repositories
 {
     /// <summary>
     /// an aggregate repository for DICOM series aggregates
