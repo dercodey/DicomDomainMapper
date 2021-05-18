@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Dicom.Api.Test
 {
@@ -115,6 +116,36 @@ namespace Dicom.Api.Test
         [TestMethod]
         public void TestAddDicomInstance()
         {
+            var dicomInstanceStream = new FileStream(@"TestData\DXIMAGEA.dcm", FileMode.Open);
+
+            var patientName = "Test^PixelSpacing";
+            var patientId = "62354PQGRRST";
+            var seriesInstanceUid = new DomainModel.DicomUid("1.3.6.1.4.1.5962.1.1.65535.103.1.1239106253.3783.0");
+
+            var mockSeries = new DomainModel.DicomSeries(seriesInstanceUid, patientName, patientId, DomainModel.Modality.DX, DateTime.Now, 1);
+            var mockRepository = new Mock<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>>();
+            mockRepository.Setup(repo =>
+                    repo.GetAggregateForKey(It.Is<DomainModel.DicomUid>(uid => uid.Equals(seriesInstanceUid))))
+                .Returns(mockSeries);
+            mockRepository.Setup(repo =>
+                    repo.UpdateAsync(It.IsAny<DomainModel.DicomSeries>()))
+                .Returns(Task.CompletedTask)
+                .Callback((DomainModel.DicomSeries series) =>
+                {
+                    Assert.AreEqual(1, series.DicomInstances.Count());
+
+                    var newInstance = series.DicomInstances.First();
+
+                    // TODO: check elements
+                    // newInstance.DicomElements.First()
+                });
+
+            var service = new DicomApplicationService(mockRepository.Object);
+            var testController = new DicomController(service, new NullLogger<DicomController>());
+
+            testController.AddDicomInstance("1.2.3.7", dicomInstanceStream).Wait();
+
+            System.Diagnostics.Trace.WriteLine("Done adding new instance");
         }
 
         [TestMethod]
