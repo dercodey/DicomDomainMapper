@@ -156,7 +156,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
         {
             // perform checks by extracting relevent attributes
             var patientIdAttribute =
-                newInstance.DicomElements.Single(attribute => attribute.DicomTag.Equals(DicomTag.PATIENTID));
+                newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.PATIENTID));
             if (patientIdAttribute.Value.CompareTo(PatientId.ToString()) != 0)
             {
                 throw new ArgumentException("DICOM instance doesn't match series PatientID");
@@ -164,14 +164,14 @@ namespace Elekta.Capability.Dicom.Domain.Model
 
             // perform checks by extracting relevent attributes
             var modalityAttribute = 
-                newInstance.DicomElements.Single(attribute => attribute.DicomTag.Equals(DicomTag.MODALITY));
+                newInstance.DicomAttributes.Single(attribute => attribute.DicomTag.Equals(DicomTag.MODALITY));
             if (modalityAttribute.Value.CompareTo(Modality.ToString()) != 0)
             {
                 throw new ArgumentException("DICOM instance doesn't match series modality");
             }
 
             var acquisitionDateTimeAttribute =
-                newInstance.DicomElements.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
+                newInstance.DicomAttributes.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.ACQUISITIONDATETIME));
             if (acquisitionDateTimeAttribute != null)
             {
                 var acquisitionDateTime = DateTime.Parse(acquisitionDateTimeAttribute.Value);
@@ -205,7 +205,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
             var updatedInstances =
                 _instances.Select(instance =>
                     new DicomInstance(instance.SopInstanceUid,
-                        instance.DicomElements.Select(attribute =>
+                        instance.DicomAttributes.Select(attribute =>
                             attribute.DicomTag.Equals(DicomTag.PATIENTNAME)
                                 ? new DicomAttribute(DicomTag.PATIENTNAME, newPatientName)
                                 : attribute)));

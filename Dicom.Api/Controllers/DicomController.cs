@@ -228,10 +228,10 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 {
                     var attributes = Request.Query["query"].ToString().Split("+").ToList();
                     var filteredAttributes =
-                        abDicomInstance.DicomElements.Where(attribute =>
+                        abDicomInstance.DicomAttributes.Where(attribute =>
                             attributes.Contains(attribute.DicomTag));
 
-                    abDicomInstance.DicomElements = filteredAttributes;
+                    abDicomInstance.DicomAttributes = filteredAttributes;
                 }
 
                 return Ok(abDicomInstance);

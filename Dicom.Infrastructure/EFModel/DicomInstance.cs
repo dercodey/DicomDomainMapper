@@ -12,7 +12,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.EFModel
 
         public DicomSeries DicomSeries { get; set; }
 
-        public List<DicomElement> DicomElements { get; set; } =
-            new List<DicomElement>();
+        public List<DicomAttribute> DicomAttributes { get; set; } =
+            new List<DicomAttribute>();
     }
 }

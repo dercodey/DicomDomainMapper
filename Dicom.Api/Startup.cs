@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
-using Infrastructure = Dicom.Infrastructure;
 using Elekta.Capability.Dicom.Application.Repositories;
 using Elekta.Capability.Dicom.Application.Services;
 using Elekta.Capability.Dicom.Application.Helpers;

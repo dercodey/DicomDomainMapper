@@ -40,7 +40,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
             // TODO: investigate if this populates all the entities
             _context.DicomSeries
                 .Include(series => series.DicomInstances)
-                .ThenInclude(instance => instance.DicomElements);
+                .ThenInclude(instance => instance.DicomAttributes);
 
             // get the matching series
             var matchSeries = 

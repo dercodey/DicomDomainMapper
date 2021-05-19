@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Dicom.Infrastructure.Migrations
+namespace Elekta.Capability.Dicom.Infrastructure.Migrations
 {
     [DbContext(typeof(DicomDbContext))]
-    [Migration("20210517204012_initial")]
+    [Migration("20210519134047_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Dicom.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomElement", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomAttribute", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace Dicom.Infrastructure.Migrations
                     b.ToTable("DicomElements");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomInstance", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomInstance", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace Dicom.Infrastructure.Migrations
                     b.ToTable("DicomInstances");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomSeries", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomSeries", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -94,9 +94,9 @@ namespace Dicom.Infrastructure.Migrations
                     b.ToTable("DicomSeries");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomElement", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomAttribute", b =>
                 {
-                    b.HasOne("Dicom.Infrastructure.EFModel.DicomInstance", "DicomInstance")
+                    b.HasOne("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomInstance", "DicomInstance")
                         .WithMany("DicomElements")
                         .HasForeignKey("DicomInstanceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -105,9 +105,9 @@ namespace Dicom.Infrastructure.Migrations
                     b.Navigation("DicomInstance");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomInstance", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomInstance", b =>
                 {
-                    b.HasOne("Dicom.Infrastructure.EFModel.DicomSeries", "DicomSeries")
+                    b.HasOne("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomSeries", "DicomSeries")
                         .WithMany("DicomInstances")
                         .HasForeignKey("DicomSeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -116,12 +116,12 @@ namespace Dicom.Infrastructure.Migrations
                     b.Navigation("DicomSeries");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomInstance", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomInstance", b =>
                 {
                     b.Navigation("DicomElements");
                 });
 
-            modelBuilder.Entity("Dicom.Infrastructure.EFModel.DicomSeries", b =>
+            modelBuilder.Entity("Elekta.Capability.Dicom.Infrastructure.EFModel.DicomSeries", b =>
                 {
                     b.Navigation("DicomInstances");
                 });

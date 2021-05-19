@@ -207,15 +207,15 @@ namespace Elekta.Capability.Dicom.Api.Test
 
                     // check elements
                     var addedPatientName =
-                        newInstance.DicomElements.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME));
+                        newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME));
                     Assert.AreEqual(patientName, addedPatientName.Value);
 
                     var addedPatientId =
-                        newInstance.DicomElements.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID));
+                        newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID));
                     Assert.AreEqual(patientId, addedPatientId.Value);
 
                     var addedModality =
-                        newInstance.DicomElements.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.MODALITY));
+                        newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.MODALITY));
                     Assert.AreEqual("DX", addedModality.Value);
                 });
 
@@ -288,16 +288,16 @@ namespace Elekta.Capability.Dicom.Api.Test
             Assert.AreEqual(sopInstanceUid.ToString(), retrievedDicomInstance.SopInstanceUid);
 
             var retrievedPatientId = 
-                retrievedDicomInstance.DicomElements.Single(element => 
+                retrievedDicomInstance.DicomAttributes.Single(element => 
                     element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID.ToString()));
             Assert.AreEqual(patientId, retrievedPatientId.Value);
 
             var retrievedPatientName =
-                retrievedDicomInstance.DicomElements.Single(element => 
+                retrievedDicomInstance.DicomAttributes.Single(element => 
                     element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME.ToString()));
 
             var retrievedModality =
-                retrievedDicomInstance.DicomElements.Single(element =>
+                retrievedDicomInstance.DicomAttributes.Single(element =>
                     element.DicomTag.Equals(DomainModel.DicomTag.MODALITY.ToString()));
             Assert.AreEqual("CT", retrievedModality.Value);
         }
@@ -370,15 +370,15 @@ namespace Elekta.Capability.Dicom.Api.Test
             var retrievedDicomInstance = (AbstractionModel.DicomInstance)okObjectResult.Value;
 
             Assert.AreEqual(sopInstanceUid.ToString(), retrievedDicomInstance.SopInstanceUid);
-            Assert.AreEqual(3, retrievedDicomInstance.DicomElements.Count());
+            Assert.AreEqual(3, retrievedDicomInstance.DicomAttributes.Count());
 
             var retrievedPatientId =
-                retrievedDicomInstance.DicomElements.Single(element =>
+                retrievedDicomInstance.DicomAttributes.Single(element =>
                     element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID.ToString()));
             Assert.AreEqual(patientId, retrievedPatientId.Value);
 
             var retrievedPatientName =
-                retrievedDicomInstance.DicomElements.Single(element =>
+                retrievedDicomInstance.DicomAttributes.Single(element =>
                     element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME.ToString()));
             Assert.AreEqual(patientId, retrievedPatientId.Value);
         }

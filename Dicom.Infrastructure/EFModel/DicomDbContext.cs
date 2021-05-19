@@ -19,7 +19,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.EFModel
 
         public DbSet<DicomSeries> DicomSeries { get; set; }
         public DbSet<DicomInstance> DicomInstances { get; set; }
-        public DbSet<DicomElement> DicomElements { get; set; }
+        public DbSet<DicomAttribute> DicomElements { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

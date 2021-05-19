@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Dicom.Infrastructure.Migrations
+namespace Elekta.Capability.Dicom.Infrastructure.Migrations
 {
     public partial class initial : Migration
     {

@@ -1,6 +1,6 @@
 ﻿namespace Elekta.Capability.Dicom.Infrastructure.EFModel
 {
-    public class DicomElement
+    public class DicomAttribute
     {
         public int ID { get; set; }
 

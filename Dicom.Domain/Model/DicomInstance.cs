@@ -14,8 +14,8 @@ namespace Elekta.Capability.Dicom.Domain.Model
         /// construct an instance with the given instance UID and the corresponding attributes
         /// </summary>
         /// <param name="sopInstanceUid"></param>
-        /// <param name="dicomElements"></param>
-        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomElements)
+        /// <param name="dicomAttributes"></param>
+        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomAttributes)
         {
             if (sopInstanceUid == null)
             {
@@ -23,7 +23,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
             }
 
             var embeddedSopInstanceUid = 
-                dicomElements.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.SOPINSTANCEUID));
+                dicomAttributes.SingleOrDefault(attribute => attribute.DicomTag.Equals(DicomTag.SOPINSTANCEUID));
 
             if (embeddedSopInstanceUid == null)
             {
@@ -37,15 +37,15 @@ namespace Elekta.Capability.Dicom.Domain.Model
                 throw new ArgumentException("Mismatched SOP instance UID in DICOM instance");
             }
 
-            var distinctElements = dicomElements.Select(attribute => attribute.DicomTag).Distinct();
-            if (distinctElements.Count() < dicomElements.Count())
+            var distinctElements = dicomAttributes.Select(attribute => attribute.DicomTag).Distinct();
+            if (distinctElements.Count() < dicomAttributes.Count())
             {
                 // found duplicate DICOM tags
                 throw new ArgumentException("Duplicate DICOM tags");
             }
 
             SopInstanceUid = sopInstanceUid;
-            DicomElements = dicomElements;
+            DicomAttributes = dicomAttributes;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
         /// <summary>
         /// list of DICOM attributes for the instance
         /// </summary>
-        public IEnumerable<DicomAttribute> DicomElements 
+        public IEnumerable<DicomAttribute> DicomAttributes 
         { 
             get;
             private set;
