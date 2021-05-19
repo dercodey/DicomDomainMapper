@@ -23,45 +23,44 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// </summary>
         /// <param name="seriesInstanceUid">the series instance UID to be retrieved</param>
         /// <returns>the DicomSeries</returns>
-        DomainModel.DicomSeries GetSeriesByUid(DomainModel.DicomUid seriesInstanceUid);
+        DomainModel.DicomSeries GetSeriesByUid(string seriesInstanceUid);
 
         /// <summary>
-        /// 
+        /// creates a new series
         /// </summary>
-        /// <param name="newSeries"></param>
-        /// <returns></returns>
-        Task CreateSeriesAsync(DomainModel.DicomSeries newSeries);
+        /// <param name="dmNewSeries"></param>
+        /// <returns>task representing status of operation</returns>
+        Task CreateSeriesAsync(DomainModel.DicomSeries dmNewSeries);
 
         /// <summary>
-        /// 
+        /// add a dicom instance from a stream
         /// </summary>
         /// <param name="readStream"></param>
         /// <returns>the Dicom UID of the series that the instance was added to</returns>
         Task<DomainModel.DicomUid> AddInstanceFromStreamAsync(Stream readStream);
 
         /// <summary>
-        /// 
+        /// perform a reconciliation of the instances in the series
         /// </summary>
         /// <param name="seriesInstanceUid"></param>
         /// <param name="oldPatientName"></param>
         /// <param name="newPatientName"></param>
-        /// <returns></returns>
-        Task ReconcilePatientNameAsync(DomainModel.DicomUid seriesInstanceUid, string oldPatientName, string newPatientName);
+        /// <returns>task representing status of the asynchronous operation</returns>
+        Task ReconcilePatientNameAsync(string seriesInstanceUid, string oldPatientName, string newPatientName);
 
         /// <summary>
-        /// 
+        /// retrieve a dicom instance
         /// </summary>
-        /// <param name="instanceUid"></param>
-        /// <param name="attributes"></param>
-        /// <returns></returns>
-        Task<DomainModel.DicomInstance> GetDicomInstanceAsync(DomainModel.DicomUid seriesInstanceUid, 
-            DomainModel.DicomUid instanceUid);
+        /// <param name="seriesInstanceUid"></param>
+        /// <param name="sopInstanceUid"></param>
+        /// <returns>task representing status of the asynchronous operation</returns>
+        Task<DomainModel.DicomInstance> GetDicomInstanceAsync(string seriesInstanceUid, string sopInstanceUid);
 
         /// <summary>
-        /// 
+        /// delete the series
         /// </summary>
-        /// <param name="seriesUid"></param>
-        /// <returns></returns>
-        Task DeleteDicomSeriesAsync(DomainModel.DicomUid seriesUid);
+        /// <param name="seriesInstanceUid"></param>
+        /// <returns>task representing status of the asynchronous operation</returns>
+        Task DeleteDicomSeriesAsync(string seriesInstanceUid);
     }
 }

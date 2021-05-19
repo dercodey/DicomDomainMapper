@@ -44,10 +44,12 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// </summary>
         /// <param name="seriesInstanceUid"></param>
         /// <returns></returns>
-        public DomainModel.DicomSeries GetSeriesByUid(DomainModel.DicomUid seriesInstanceUid)
+        public DomainModel.DicomSeries GetSeriesByUid(string seriesInstanceUid)
         {
-            var seriesDomainModel = _repository.GetAggregateForKey(seriesInstanceUid);
-            return seriesDomainModel;
+            var dmSeriesInstanceUid = new DomainModel.DicomUid(seriesInstanceUid);
+
+            var dmDicomSeries = _repository.GetAggregateForKey(dmSeriesInstanceUid);
+            return dmDicomSeries;
         }
 
         /// <summary>
@@ -108,7 +110,7 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// <param name="oldPatientName"></param>
         /// <param name="newPatientName"></param>
         /// <returns></returns>
-        public Task ReconcilePatientNameAsync(DomainModel.DicomUid seriesInstanceUid, string oldPatientName, string newPatientName)
+        public Task ReconcilePatientNameAsync(string seriesInstanceUid, string oldPatientName, string newPatientName)
         {
             throw new NotImplementedException();
         }
@@ -119,14 +121,14 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// <param name="seriesInstanceUid"></param>
         /// <param name="sopInstanceUid"></param>
         /// <returns></returns>
-        public Task<DomainModel.DicomInstance> GetDicomInstanceAsync(DomainModel.DicomUid seriesInstanceUid,
-            DomainModel.DicomUid sopInstanceUid)
+        public Task<DomainModel.DicomInstance> GetDicomInstanceAsync(string seriesInstanceUid, string sopInstanceUid)
         {
             var seriesDomainModel = GetSeriesByUid(seriesInstanceUid);
 
+            var dmSopInstanceUid = new DomainModel.DicomUid(sopInstanceUid);
             var matchingInstance =
                 seriesDomainModel.DicomInstances.Where(instance => 
-                        instance.SopInstanceUid.Equals(sopInstanceUid))
+                        instance.SopInstanceUid.Equals(dmSopInstanceUid))
                     .Single();
 
             return Task.FromResult(matchingInstance);
@@ -137,9 +139,10 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// </summary>
         /// <param name="seriesUid"></param>
         /// <returns></returns>
-        public async Task DeleteDicomSeriesAsync(DomainModel.DicomUid seriesInstanceUid)
+        public async Task DeleteDicomSeriesAsync(string seriesInstanceUid)
         {
-            await _repository.RemoveAsync(seriesInstanceUid);
+            var dmSeriesInstanceUid = new DomainModel.DicomUid(seriesInstanceUid);
+            await _repository.RemoveAsync(dmSeriesInstanceUid);
         }
     }
 }
