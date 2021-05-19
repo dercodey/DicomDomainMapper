@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomAttribute">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAgAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\DicomAttribute.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DicomTag" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomInstance">
+    <Position X="4.5" Y="4.75" Width="1.5" />
+    <AssociationLine Name="DicomAttributes" Type="Elekta.Capability.Dicom.Domain.Model.DicomAttribute" FixedFromPoint="true">
+      <Path>
+        <Point X="6" Y="5.875" />
+        <Point X="7.5" Y="5.875" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SopInstanceUid" Type="Elekta.Capability.Dicom.Domain.Model.DicomUid" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="6.305" />
+        <Point X="5.25" Y="6.812" />
+        <Point X="2.25" Y="6.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAACAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\DicomInstance.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SopInstanceUid" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="DicomAttributes" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomSeries">
+    <Position X="4.25" Y="0.75" Width="2" />
+    <AssociationLine Name="DicomInstances" Type="Elekta.Capability.Dicom.Domain.Model.DicomInstance" FixedToPoint="true">
+      <Path>
+        <Point X="5.812" Y="3.911" />
+        <Point X="5.812" Y="4.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.315" Y="0.402" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SeriesInstanceUid" Type="Elekta.Capability.Dicom.Domain.Model.DicomUid" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.344" Y="3.911" />
+        <Point X="4.344" Y="5.438" />
+        <Point X="2.25" Y="5.438" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAABCAwAAgAABAAAACCIAAgAAAAAAAIAAAAIAAAA=</HashCode>
+      <FileName>Model\DicomSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SeriesInstanceUid" />
+      <Property Name="Modality" />
+      <Property Name="CurrentState" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="DicomInstances" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomTag">
+    <Position X="10.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IiACAEAAAAAACYAEgAgAAAAAAAAAAAAAEACBAAAAAAA=</HashCode>
+      <FileName>Model\DicomTag.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomUid">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAEgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\DicomUid.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IAggregateRoot&lt;KeyType&gt;" Collapsed="true">
+    <Position X="12.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Seedwork\IAggregateRoot.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IEntity&lt;KeyType&gt;" Collapsed="true">
+    <Position X="14.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Seedwork\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IValueObject" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Seedwork\IValueObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Elekta.Capability.Dicom.Domain.Model.Modality">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAIAAAAAAAAQAAAAAAAAAAAAAAgAAAAAAAiAAAAQAA=</HashCode>
+      <FileName>Model\Modality.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Elekta.Capability.Dicom.Domain.Model.SeriesState">
+    <Position X="2" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAgAAAAAAAAAAAAAQAABAAAAAAAAA=</HashCode>
+      <FileName>Model\SeriesState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
