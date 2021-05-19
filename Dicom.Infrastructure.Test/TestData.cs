@@ -64,31 +64,25 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
                 SeriesInstanceUid = "1.2.5.4",
                 PatientID = "12345",
                 Modality = "CT",
-                AcquisitionDateTime = DateTime.Now
+                AcquisitionDateTime = DateTime.Now,
+                DicomInstances = new List<EFModel.DicomInstance>()
+                {
+                    new EFModel.DicomInstance()
+                    {
+                        SopInstanceUid = "1.2.5.5",
+                    },
+                    new EFModel.DicomInstance()
+                    {
+                        SopInstanceUid = "1.2.5.6",
+                    },
+                    new EFModel.DicomInstance()
+                    {
+                        SopInstanceUid = "1.2.5.7",
+                    }
+                }
             };
+
             context.DicomSeries.Add(series);
-
-            context.DicomInstances.Add(
-                new EFModel.DicomInstance()
-                {
-                    DicomSeries = series,
-                    SopInstanceUid = "1.2.5.5",
-                });
-
-            context.DicomInstances.Add(
-                new EFModel.DicomInstance()
-                {
-                    DicomSeries = series,
-                    SopInstanceUid = "1.2.5.6",
-                });
-
-            context.DicomInstances.Add(
-                new EFModel.DicomInstance()
-                {
-                    DicomSeries = series,
-                    SopInstanceUid = "1.2.5.7",
-                });
-
             context.SaveChanges();
         }
     }

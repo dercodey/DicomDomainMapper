@@ -10,8 +10,6 @@ namespace Elekta.Capability.Dicom.Infrastructure.EFModel
 
         public string SopInstanceUid { get; set; }
 
-        public DicomSeries DicomSeries { get; set; }
-
         public List<DicomAttribute> DicomAttributes { get; set; } =
             new List<DicomAttribute>();
     }

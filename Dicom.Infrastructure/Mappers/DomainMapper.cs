@@ -48,7 +48,6 @@ namespace Elekta.Capability.Dicom.Infrastructure.Mappers
                         /// ignore primary key and foreign keys
                         .ForMember(efDicomInstance => efDicomInstance.ID, opt => opt.Ignore())
                         .ForMember(efDicomInstance => efDicomInstance.DicomSeriesId, opt => opt.Ignore())
-                        .ForMember(efDicomInstance => efDicomInstance.DicomSeries, opt => opt.Ignore())
                         // set up conversion for value objects
                         .ForMember(efDicomInstance => efDicomInstance.SopInstanceUid,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomUid>()));
@@ -67,7 +66,6 @@ namespace Elekta.Capability.Dicom.Infrastructure.Mappers
                         /// ignore primary key and foreign keys
                         .ForMember(efDicomAttribute => efDicomAttribute.ID, opt => opt.Ignore())
                         .ForMember(efDicomAttribute => efDicomAttribute.DicomInstanceId, opt => opt.Ignore())
-                        .ForMember(efDicomAttribute => efDicomAttribute.DicomInstance, opt => opt.Ignore())
                         // set up conversion for value objects
                         .ForMember(efDicomAttribute => efDicomAttribute.DicomTag,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));

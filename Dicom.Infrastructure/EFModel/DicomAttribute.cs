@@ -9,7 +9,5 @@
         public string DicomTag { get; set; }
 
         public string Value { get; set; }
-
-        public DicomInstance DicomInstance { get; set; }
     }
 }
