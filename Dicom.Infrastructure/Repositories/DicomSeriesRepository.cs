@@ -37,27 +37,20 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
         /// <returns>the matching DicomSeries</returns>
         public DomainModel.DicomSeries GetAggregateForKey(DomainModel.DicomUid forKey)
         {
-            // TODO: investigate if this populates all the entities
-            _context.DicomSeries
-                .Include(series => series.DicomInstances)
-                .ThenInclude(instance => instance.DicomAttributes);
-
             // get the matching series
             var matchSeries = 
-                _context.DicomSeries.Where(series =>
-                        series.SeriesInstanceUid.CompareTo(forKey.ToString()) == 0)
+                _context.DicomSeries
+                    .Where(series =>
+                        series.SeriesInstanceUid == forKey.ToString())
+                    .Include(series => series.DicomInstances)
+                    .ThenInclude(instance => instance.DicomAttributes)
                     .SingleOrDefault();
 
             // did an entity get found?
             if (matchSeries == null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"unable to locate series for key = {forKey.ToString()}");
             }
-
-            // ensure other entities are selected\
-            // TODO: is there a more efficient way to do this?
-            _context.DicomInstances.ToList();
-            _context.DicomElements.ToList();
 
             // map to the domain model
             var seriesDomainModel = _mapper.Map<DomainModel.DicomSeries>(matchSeries);
