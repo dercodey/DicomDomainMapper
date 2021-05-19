@@ -49,7 +49,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
             // did an entity get found?
             if (matchSeries == null)
             {
-                throw new KeyNotFoundException($"unable to locate series for key = {forKey.ToString()}");
+                return null;
             }
 
             // map to the domain model
@@ -66,6 +66,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
         /// <returns></returns>
         public IEnumerable<DomainModel.DicomSeries> SelectAggregates(Func<DomainModel.DicomSeries, bool> selectFunc)
         {
+            // TODO: how to make this more efficient?
             var allDmDicomSeries = _context.DicomSeries.Select(_mapper.Map<DomainModel.DicomSeries>);
             var matchingSeries = allDmDicomSeries.Where(selectFunc);
             return matchingSeries;
