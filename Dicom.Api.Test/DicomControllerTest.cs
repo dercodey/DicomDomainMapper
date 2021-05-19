@@ -23,7 +23,7 @@ namespace Elekta.Capability.Dicom.Api.Test
     public class DicomControllerTest
     {
         /// <summary>
-        /// 
+        /// test retrieve all series for a given patient ID
         /// </summary>
         [TestMethod]
         public void TestGetAllSeriesForPatient()
@@ -77,6 +77,9 @@ namespace Elekta.Capability.Dicom.Api.Test
             Assert.AreEqual(5, allDistinctSeriesInstanceUids.Count());
         }
 
+        /// <summary>
+        /// test getting a series by series instance UID
+        /// </summary>
         [TestMethod]
         public void TestGetDicomSeries()
         {
@@ -117,7 +120,9 @@ namespace Elekta.Capability.Dicom.Api.Test
             Assert.AreEqual(3, abDicomSeries.ExpectedInstanceCount);
         }
 
-
+        /// <summary>
+        /// testing adding a dicom series for given metadata
+        /// </summary>
         [TestMethod]
         public void TestAddDicomSeries()
         {
@@ -133,12 +138,11 @@ namespace Elekta.Capability.Dicom.Api.Test
                     AcquisitionDateTime = DateTime.Now,
                 };
 
-            // set up a mock service that will receive the new series
-            var _mockService = new Mock<IDicomApplicationService>();
-            _mockService.Setup(svc => 
-                    svc.CreateSeriesAsync(It.IsAny<DomainModel.DicomSeries>()))
+            var mockRepository = new Mock<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>>();
+            mockRepository.Setup(repo =>
+                repo.UpdateAsync(It.IsAny<DomainModel.DicomSeries>()))
                 .Returns(Task.CompletedTask)
-                .Callback((DomainModel.DicomSeries s) => 
+                .Callback((DomainModel.DicomSeries s) =>
                 {
                     Assert.AreEqual(testAbDicomSeries.PatientId, s.PatientId);
                     Assert.AreEqual(testAbDicomSeries.PatientName, s.PatientName);
@@ -149,15 +153,21 @@ namespace Elekta.Capability.Dicom.Api.Test
                     Assert.AreEqual(DomainModel.SeriesState.Created, s.CurrentState);
                 });
 
+            var dicomParser = new DicomParser();
+            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+
             // set up a controller to exercise add series
             using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             var logger = loggerFactory.CreateLogger<DicomController>();
-            var testController = new DicomController(_mockService.Object, logger);
+            var testController = new DicomController(service, logger);
 
             // and try the operation
             testController.AddDicomSeries(testAbDicomSeries.PatientId, testAbDicomSeries).Wait();
         }
 
+        /// <summary>
+        /// test deleting a dicom series by UID
+        /// </summary>
         [TestMethod]
         public void TestDeleteDicomSeries()
         {
@@ -205,18 +215,9 @@ namespace Elekta.Capability.Dicom.Api.Test
 
                     var newInstance = series.DicomInstances.First();
 
-                    // check elements
-                    var addedPatientName =
-                        newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTNAME));
-                    Assert.AreEqual(patientName, addedPatientName.Value);
-
-                    var addedPatientId =
-                        newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.PATIENTID));
-                    Assert.AreEqual(patientId, addedPatientId.Value);
-
-                    var addedModality =
-                        newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(DomainModel.DicomTag.MODALITY));
-                    Assert.AreEqual("DX", addedModality.Value);
+                    CheckAttribute(newInstance, DomainModel.DicomTag.PATIENTNAME, patientName);
+                    CheckAttribute(newInstance, DomainModel.DicomTag.PATIENTID, patientId);
+                    CheckAttribute(newInstance, DomainModel.DicomTag.MODALITY, "DX");
                 });
 
             // now set up the service with the mock and a dicom parser
@@ -231,7 +232,14 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             System.Diagnostics.Trace.WriteLine("Done adding new instance");
         }
-        
+
+        private void CheckAttribute(DomainModel.DicomInstance newInstance, DomainModel.DicomTag forTag, string expectedValue)
+        {
+            var attribute =
+                newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(forTag));
+            Assert.AreEqual(expectedValue, attribute.Value);
+        }
+
         /// <summary>
         /// test for getting a dicom instance
         /// </summary>
