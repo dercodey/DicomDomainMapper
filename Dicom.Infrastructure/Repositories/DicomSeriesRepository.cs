@@ -89,12 +89,13 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
         /// </summary>
         /// <param name="forKey"></param>
         /// <returns></returns>
-        public Task RemoveAsync(DomainModel.DicomUid forKey)
+        public async Task RemoveAsync(DomainModel.DicomUid forKey)
         {
-#if CHECK_THIS
-            _context.DicomSeries.Persist(_mapper).Remove(forKey);
-#endif
-            return Task.CompletedTask;
+            var matchSeries = GetAggregateForKey(forKey);
+
+            _context.DicomSeries.Persist(_mapper).Remove(matchSeries);
+
+            await _context.SaveChangesAsync();
         }
 
 #endregion
