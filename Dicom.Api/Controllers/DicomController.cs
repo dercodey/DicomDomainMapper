@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.IO;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 using Elekta.Capability.Dicom.Application.Services;
-using Microsoft.AspNetCore.Http;
 
 namespace Elekta.Capability.Dicom.Api.Controllers
 {
