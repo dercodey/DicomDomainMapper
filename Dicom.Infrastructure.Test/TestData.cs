@@ -34,14 +34,14 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             for (int n = 0; n < 3; n++)
             {
                 var sopInstanceUid = new DicomUid($"1.2.3.{n + 7}");
-                var attributes = new List<DicomElement>()
+                var attributes = new List<DicomAttribute>()
                 {
-                    new DicomElement(DicomTag.PATIENTNAME, "Last, First"),
-                    new DicomElement(DicomTag.PATIENTID, "98765"),
-                    new DicomElement(DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
-                    new DicomElement(DicomTag.MODALITY, Modality.CT.ToString()),
-                    new DicomElement(DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
-                    new DicomElement(DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
+                    new DicomAttribute(DicomTag.PATIENTNAME, "Last, First"),
+                    new DicomAttribute(DicomTag.PATIENTID, "98765"),
+                    new DicomAttribute(DicomTag.SERIESINSTANCEUID, series.SeriesInstanceUid.ToString()),
+                    new DicomAttribute(DicomTag.MODALITY, Modality.CT.ToString()),
+                    new DicomAttribute(DicomTag.ACQUISITIONDATETIME, (new DateTime(2021,01,02)).ToString()),
+                    new DicomAttribute(DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
                 };
 
                 var instance =

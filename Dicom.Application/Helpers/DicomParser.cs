@@ -13,7 +13,7 @@ namespace Elekta.Capability.Dicom.Application.Helpers
     /// </summary>
     public class DicomParser : IDicomParser
     {
-        public IEnumerable<DomainModel.DicomElement> ParseStream(Stream dicomStream)
+        public IEnumerable<DomainModel.DicomAttribute> ParseStream(Stream dicomStream)
         {
             using (var kaitaiStream = new KaitaiStream(dicomStream))            
             {
@@ -30,7 +30,7 @@ namespace Elekta.Capability.Dicom.Application.Helpers
                             return null;
 
                         var value = Encoding.UTF8.GetString(element.Value);
-                        return new DomainModel.DicomElement(dmTag, value);
+                        return new DomainModel.DicomAttribute(dmTag, value);
                     })
                     .Where(element => element != null)
                     .ToList();

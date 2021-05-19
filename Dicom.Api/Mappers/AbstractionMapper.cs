@@ -38,11 +38,11 @@ namespace Elekta.Capability.Dicom.Api.Mappers
                             opt => opt.MapFrom(src =>
                                 new DomainModel.DicomUid(src.SopInstanceUid)));
 
-                    cfg.CreateMap<DomainModel.DicomElement, AbstractionModel.DicomElement>()
+                    cfg.CreateMap<DomainModel.DicomAttribute, AbstractionModel.DicomAttribute>()
                         .ForMember(abDicomElement => abDicomElement.DicomTag,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
 
-                    cfg.CreateMap<AbstractionModel.DicomElement, DomainModel.DicomElement>()
+                    cfg.CreateMap<AbstractionModel.DicomAttribute, DomainModel.DicomAttribute>()
                         .ForMember(dmDicomElement => dmDicomElement.DicomTag, opt => opt.Ignore())
                         .ForCtorParam("dicomTag",
                             opt => opt.MapFrom(src =>

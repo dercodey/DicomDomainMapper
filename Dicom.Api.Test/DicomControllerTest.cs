@@ -244,13 +244,13 @@ namespace Elekta.Capability.Dicom.Api.Test
             var sopInstanceUid = new DomainModel.DicomUid("1.3.9.7");
             var mockInstance = 
                 new DomainModel.DicomInstance(sopInstanceUid,
-                    new List<DomainModel.DicomElement>()
+                    new List<DomainModel.DicomAttribute>()
                     {
-                        new DomainModel.DicomElement(DomainModel.DicomTag.PATIENTID, patientId),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.PATIENTNAME, patientName),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.SERIESINSTANCEUID, seriesInstanceUid.ToString()),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.MODALITY, "CT"),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTID, patientId),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTNAME, patientName),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.SERIESINSTANCEUID, seriesInstanceUid.ToString()),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.MODALITY, "CT"),
                     });
             var mockSeries = 
                 new DomainModel.DicomSeries(seriesInstanceUid, 
@@ -314,13 +314,13 @@ namespace Elekta.Capability.Dicom.Api.Test
             var sopInstanceUid = new DomainModel.DicomUid("1.3.9.7");
             var mockInstance =
                 new DomainModel.DicomInstance(sopInstanceUid,
-                    new List<DomainModel.DicomElement>()
+                    new List<DomainModel.DicomAttribute>()
                     {
-                        new DomainModel.DicomElement(DomainModel.DicomTag.PATIENTID, patientId),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.PATIENTNAME, patientName),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.SERIESINSTANCEUID, seriesInstanceUid.ToString()),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
-                        new DomainModel.DicomElement(DomainModel.DicomTag.MODALITY, "CT"),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTID, patientId),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.PATIENTNAME, patientName),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.SERIESINSTANCEUID, seriesInstanceUid.ToString()),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.SOPINSTANCEUID, sopInstanceUid.ToString()),
+                        new DomainModel.DicomAttribute(DomainModel.DicomTag.MODALITY, "CT"),
                     });
             var mockSeries =
                 new DomainModel.DicomSeries(seriesInstanceUid,

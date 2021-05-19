@@ -7,6 +7,6 @@ namespace Elekta.Capability.Dicom.Application.Helpers
 {
     public interface IDicomParser
     {
-        IEnumerable<DomainModel.DicomElement> ParseStream(Stream dicomStream);
+        IEnumerable<DomainModel.DicomAttribute> ParseStream(Stream dicomStream);
     }
 }

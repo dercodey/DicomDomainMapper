@@ -7,14 +7,14 @@ namespace Elekta.Capability.Dicom.Domain.Model
     /// <summary>
     /// value object representing a DICOM attribute
     /// </summary>
-    public class DicomElement : IValueObject, IEquatable<DicomElement>
+    public class DicomAttribute : IValueObject, IEquatable<DicomAttribute>
     {
         /// <summary>
         /// construct an attribute from a tag and value
         /// </summary>
         /// <param name="dicomTag"></param>
         /// <param name="value"></param>
-        public DicomElement(DicomTag dicomTag, string value)
+        public DicomAttribute(DicomTag dicomTag, string value)
         {
             if (dicomTag == null)
             {
@@ -55,7 +55,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
         /// </summary>
         /// <param name="other">the other attribute to be compared</param>
         /// <returns>true if equal</returns>
-        public bool Equals([AllowNull] DicomElement other)
+        public bool Equals([AllowNull] DicomAttribute other)
         {
             if (other == null)
             {

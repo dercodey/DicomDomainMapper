@@ -52,7 +52,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Mappers
                             opt => opt.MapFrom(dmDicomInstance =>
                                 new DomainModel.DicomUid(dmDicomInstance.SopInstanceUid)));
 
-                    cfg.CreateMap<DomainModel.DicomElement, EFModel.DicomElement>()
+                    cfg.CreateMap<DomainModel.DicomAttribute, EFModel.DicomElement>()
                         .EqualityComparison((dmDicomAttribute, efDicomAttribute) =>
                             efDicomAttribute.DicomTag == dmDicomAttribute.DicomTag.ToString())
                         .ForMember(efDicomAttribute => efDicomAttribute.ID, opt => opt.Ignore())
@@ -61,7 +61,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Mappers
                         .ForMember(efDicomAttribute => efDicomAttribute.DicomTag,
                             opt => opt.ConvertUsing(new ToStringFormatter<DomainModel.DicomTag>()));
 
-                    cfg.CreateMap<EFModel.DicomElement, DomainModel.DicomElement>()
+                    cfg.CreateMap<EFModel.DicomElement, DomainModel.DicomAttribute>()
                         .ForMember(dmDicomAttribute => dmDicomAttribute.DicomTag, opt => opt.Ignore())
                         .ForCtorParam("dicomTag",
                             opt => opt.MapFrom(dmDicomAttribute =>

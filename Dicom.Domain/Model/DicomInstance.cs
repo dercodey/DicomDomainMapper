@@ -15,7 +15,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
         /// </summary>
         /// <param name="sopInstanceUid"></param>
         /// <param name="dicomElements"></param>
-        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomElement> dicomElements)
+        public DicomInstance(DicomUid sopInstanceUid, IEnumerable<DicomAttribute> dicomElements)
         {
             if (sopInstanceUid == null)
             {
@@ -65,7 +65,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
         /// <summary>
         /// list of DICOM attributes for the instance
         /// </summary>
-        public IEnumerable<DicomElement> DicomElements 
+        public IEnumerable<DicomAttribute> DicomElements 
         { 
             get;
             private set;

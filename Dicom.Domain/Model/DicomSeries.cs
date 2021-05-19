@@ -207,7 +207,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
                     new DicomInstance(instance.SopInstanceUid,
                         instance.DicomElements.Select(attribute =>
                             attribute.DicomTag.Equals(DicomTag.PATIENTNAME)
-                                ? new DicomElement(DicomTag.PATIENTNAME, newPatientName)
+                                ? new DicomAttribute(DicomTag.PATIENTNAME, newPatientName)
                                 : attribute)));
 
             _instances = updatedInstances.ToList();

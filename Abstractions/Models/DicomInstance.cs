@@ -6,6 +6,6 @@ namespace Elekta.Capability.Dicom.Abstractions.Models
     {
         public string SopInstanceUid { get; set; }
 
-        public IEnumerable<DicomElement> DicomElements { get; set; }
+        public IEnumerable<DicomAttribute> DicomElements { get; set; }
     }
 }
