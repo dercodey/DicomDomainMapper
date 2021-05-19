@@ -48,6 +48,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             {
                 // get all of the serieses for the patient
                 var dmAllDicomSeries = _applicationService.GetAllSeriesForPatient(patientId);
+                _logger.LogDebug($"Retrieved {dmAllDicomSeries.Count()} series for patient {patientId}");
 
                 // convert to abstraction series
                 var mapper = Mappers.AbstractionMapper.GetMapper();
@@ -58,8 +59,8 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogError(ex.Message);
                 // couldn't find the patient
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -80,21 +81,21 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             try
             {
                 // try to retrieve the series
-                var seriesDomainModel = _applicationService.GetSeriesByUid(
-                    new DomainModel.DicomUid(seriesInstanceUid));
+                var dmDicomSeries = _applicationService.GetSeriesByUid(seriesInstanceUid);
+                _logger.LogDebug($"Retrieved {dmDicomSeries} series for patient {patientId}");
 
                 // check the patient IDs match
-                if (!seriesDomainModel.PatientId.Equals(patientId))
+                if (!dmDicomSeries.PatientId.Equals(patientId))
                 {
                     return BadRequest("patient ID must match with stored value");
                 }
 
                 // map to abstraction
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var seriesAbstraction = mapper.Map<AbstractionModel.DicomSeries>(seriesDomainModel);
+                var abDicomSeries = mapper.Map<AbstractionModel.DicomSeries>(dmDicomSeries);
 
                 // and return the result
-                return Ok(seriesAbstraction);
+                return Ok(abDicomSeries);
             }
             catch (ArgumentException ex)
             {
@@ -145,8 +146,8 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         {
             try
             {
-                await _applicationService.DeleteDicomSeriesAsync(
-                    new DomainModel.DicomUid(seriesInstanceUid));
+                await _applicationService.DeleteDicomSeriesAsync(seriesInstanceUid);
+                _logger.LogDebug($"Deleted series instance {seriesInstanceUid}");
                 return Ok();
             }
             catch (ArgumentException ex)
@@ -223,9 +224,8 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             {
                 // get the DICOM instance domain model
                 var dmDicomInstance = 
-                    await _applicationService.GetDicomInstanceAsync(
-                        new DomainModel.DicomUid(seriesInstanceUid),
-                        new DomainModel.DicomUid(sopInstanceUid));
+                    await _applicationService.GetDicomInstanceAsync(seriesInstanceUid, sopInstanceUid);
+                _logger.LogDebug($"Retrieved instance for {sopInstanceUid}");
 
                 // map to the abstraction model
                 var mapper = Mappers.AbstractionMapper.GetMapper();
@@ -243,6 +243,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
 
                     // and assign to the abstraction model
                     abDicomInstance.DicomAttributes = filteredAttributes.ToList();
+                    _logger.LogDebug($"Filtered to {abDicomInstance.DicomAttributes.Count()}");
                 }
 
                 return Ok(abDicomInstance);
