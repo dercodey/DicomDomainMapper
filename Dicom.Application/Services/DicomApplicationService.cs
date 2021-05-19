@@ -71,14 +71,15 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// </summary>
         /// <param name="readStream"></param>
         /// <returns></returns>
-        public async Task AddInstanceFromStreamAsync(Stream readStream)
+        public async Task<DomainModel.DicomUid> AddInstanceFromStreamAsync(Stream readStream)
         {
             var parsedElements =
                 _dicomParser.ParseStream(readStream);
 
             // check that the series has already been created
             var seriesInstanceUid = parsedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
-            var existingSeries = _repository.GetAggregateForKey(new DomainModel.DicomUid(seriesInstanceUid.Value));
+            var dmSeriesInstanceUid = new DomainModel.DicomUid(seriesInstanceUid.Value);
+            var existingSeries = _repository.GetAggregateForKey(dmSeriesInstanceUid);
             if (existingSeries == null)
             {
                 throw new InvalidOperationException("SeriesInstanceUID not found in repository");
@@ -87,15 +88,17 @@ namespace Elekta.Capability.Dicom.Application.Services
             // create the new instance
             var sopInstanceUid = parsedElements.Single(da => 
                 da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
-
+            var dmSopInstanceUid = new DomainModel.DicomUid(sopInstanceUid.Value);
             var dmDicomInstance =
-                new DomainModel.DicomInstance(new DomainModel.DicomUid(sopInstanceUid.Value), parsedElements);
+                new DomainModel.DicomInstance(dmSopInstanceUid, parsedElements);
 
             // now add the new instance to the series
             existingSeries.AddInstance(dmDicomInstance);
 
             // and commit the changes
             await _repository.UpdateAsync(existingSeries);
+
+            return dmSeriesInstanceUid;
         }
 
         /// <summary>

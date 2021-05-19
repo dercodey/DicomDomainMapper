@@ -158,10 +158,10 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// adds a dicom instance from a IFormFile
         /// </summary>
-        /// <param name="seriesUid"></param>
-        /// <param name="readStream"></param>
+        /// <param name="seriesUid">the series UID to be added to</param>
+        /// <param name="dicomFile">the IFormFile representing the DICOM blob</param>
         /// <returns></returns>
         [HttpPost("series/{seriesUid}/instances")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -180,7 +180,13 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             try
             {
                 var readStream = dicomFile.OpenReadStream();
-                await _applicationService.AddInstanceFromStreamAsync(readStream);
+                var seriesInstanceUid = await _applicationService.AddInstanceFromStreamAsync(readStream);
+                if (!seriesInstanceUid.ToString().Equals(seriesUid))
+                {
+                    // mismatched series instance UID?  should we be adding in this case?
+                    return BadRequest();
+                }
+
                 return Ok();
             }
             catch (Exception ex) when (ex.Message.EndsWith("already exists."))
@@ -196,9 +202,10 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// retrieves a dicom instance, with optional query parameter
         /// </summary>
-        /// <param name="instanceUid"></param>
+        /// <param name="seriesInstanceUid"></param>/// 
+        /// <param name="sopInstanceUid"></param>
         /// <returns></returns>
         [HttpGet("series/{seriesInstanceUid}/instances/{sopInstanceUid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -215,23 +222,28 @@ namespace Elekta.Capability.Dicom.Api.Controllers
 
             try
             {
+                // get the DICOM instance domain model
                 var dmDicomInstance = 
                     await _applicationService.GetDicomInstanceAsync(
                         new DomainModel.DicomUid(seriesInstanceUid),
                         new DomainModel.DicomUid(sopInstanceUid));
 
+                // map to the abstraction model
                 var mapper = Mappers.AbstractionMapper.GetMapper();
                 var abDicomInstance = mapper.Map<AbstractionModel.DicomInstance>(dmDicomInstance);
 
+                // is there a query to be used?
                 if (Request.Query != null
                     && Request.Query.ContainsKey("query"))
                 {
+                    // yes, so select the attributes that match the query
                     var attributes = Request.Query["query"].ToString().Split("+").ToList();
                     var filteredAttributes =
                         abDicomInstance.DicomAttributes.Where(attribute =>
                             attributes.Contains(attribute.DicomTag));
 
-                    abDicomInstance.DicomAttributes = filteredAttributes;
+                    // and assign to the abstraction model
+                    abDicomInstance.DicomAttributes = filteredAttributes.ToList();
                 }
 
                 return Ok(abDicomInstance);
