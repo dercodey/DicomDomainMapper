@@ -191,6 +191,9 @@ namespace Elekta.Capability.Dicom.Api.Test
             // that's it
         }
 
+        /// <summary>
+        /// test adding a dicom instance from a blob
+        /// </summary>
         [TestMethod]
         public void TestAddDicomInstance()
         {
@@ -311,7 +314,7 @@ namespace Elekta.Capability.Dicom.Api.Test
         }
 
         /// <summary>
-        /// test for getting a dicom instance
+        /// test for getting a dicom instance using a filter query
         /// </summary>
         [TestMethod]
         public void TestGetDicomInstanceWithFilterQuery()
