@@ -5,9 +5,9 @@ using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 
 namespace Elekta.Capability.Dicom.Api.Mappers
 {
-    public class AbstractionMapper : Profile
+    public class AbstractionMapperProfile : Profile
     {
-        public AbstractionMapper()
+        public AbstractionMapperProfile()
         {
             CreateMap<DomainModel.DicomSeries, AbstractionModel.DicomSeries>()
                 .ForMember(abDicomSeries => abDicomSeries.SeriesInstanceUid,

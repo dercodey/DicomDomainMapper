@@ -10,9 +10,9 @@ namespace Elekta.Capability.Dicom.Infrastructure.Mappers
     /// <summary>
     /// wrapper for Automapper configured to map between domain model and EF model
     /// </summary>
-    public class DomainMapper : Profile
+    public class DomainMapperProfile : Profile
     {
-        public DomainMapper()
+        public DomainMapperProfile()
         {
             CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>()
                 // set up collection identity

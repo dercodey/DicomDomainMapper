@@ -382,7 +382,7 @@ namespace Elekta.Capability.Dicom.Api.Test
         {
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<Mappers.AbstractionMapper>();
+                cfg.AddProfile<Mappers.AbstractionMapperProfile>();
             });
             var mapper = config.CreateMapper();
             var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

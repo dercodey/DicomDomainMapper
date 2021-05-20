@@ -51,7 +51,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.AddCollectionMappers();
-                cfg.AddProfile<Mappers.DomainMapper>();
+                cfg.AddProfile<Mappers.DomainMapperProfile>();
             });
             var mapper = config.CreateMapper();
 
@@ -95,7 +95,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.AddCollectionMappers();
-                cfg.AddProfile<Mappers.DomainMapper>();
+                cfg.AddProfile<Mappers.DomainMapperProfile>();
             });
             var mapper = config.CreateMapper();
 
