@@ -183,8 +183,8 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 var addedSopInstanceUid = await _applicationService.AddInstanceFromStreamAsync(seriesInstanceUid, readStream);
                 if (addedSopInstanceUid != null)
                 {
-                    // mismatched series instance UID?  should we be adding in this case?
-                    return BadRequest();
+                    // mismatched series instance UID
+                    return BadRequest("mismatched series instance UID");
                 }
 
                 return Ok(addedSopInstanceUid.ToString());
