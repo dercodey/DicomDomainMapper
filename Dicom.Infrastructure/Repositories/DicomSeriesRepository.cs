@@ -24,10 +24,11 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
         /// construct a new repository with the given DB context
         /// </summary>
         /// <param name="context">the DB context to use for query/update</param>
-        public DicomSeriesRepository(EFModel.DicomDbContext context, IMapper mapper)
+        public DicomSeriesRepository(EFModel.DicomDbContext context, IMapper mapper, ILogger<DicomSeriesRepository> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         #region IAggregateRepository
@@ -101,9 +102,9 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-#endregion
+        #endregion
 
-#region IDisposable
+        #region IDisposable
 
         /// <summary>
         /// 
@@ -113,7 +114,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
             _context.Dispose();
         }
 
-#endregion
+        #endregion
 
     }
 }
