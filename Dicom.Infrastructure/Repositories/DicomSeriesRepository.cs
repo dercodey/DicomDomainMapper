@@ -7,6 +7,7 @@ using AutoMapper.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using Elekta.Capability.Dicom.Application.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Elekta.Capability.Dicom.Infrastructure.Repositories
 {
@@ -17,6 +18,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
     {
         private readonly EFModel.DicomDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<DicomSeriesRepository> _logger;
 
         /// <summary>
         /// construct a new repository with the given DB context
