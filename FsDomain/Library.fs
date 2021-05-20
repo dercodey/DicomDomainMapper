@@ -139,7 +139,7 @@ module Repository =
             member this.GetAggregateForKey(arg1: DomainModel.DicomUid): DomainModel.DicomSeries = 
                 context.DicomSeries
                 |> Seq.find (fun series -> 
-                    series.SeriesInstanceUid = arg1.UidString))
+                    series.SeriesInstanceUid = arg1.UidString)
                 |> mapSeriesEfToDomainModel
 
             member this.UpdateAsync(arg1: DomainModel.DicomSeries): Task = 
