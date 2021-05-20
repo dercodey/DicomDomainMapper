@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using Elekta.Capability.Dicom.Application.Repositories;
 using Elekta.Capability.Dicom.Application.Helpers;
@@ -26,7 +27,7 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// <param name="messaging"></param>
         /// <param name="dicomParser"></param>
         public DicomApplicationService(IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> repository, 
-            IMessaging messaging, IDicomParser dicomParser)
+            IMessaging messaging, IDicomParser dicomParser, ILogger<DicomApplicationService> logger)
         {
             _repository = repository;
             _messaging = messaging;
