@@ -35,9 +35,10 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// <summary>
         /// add a dicom instance from a stream
         /// </summary>
+        /// <param name="seriesInstanceUid"></param>
         /// <param name="readStream"></param>
         /// <returns>the Dicom UID of the series that the instance was added to</returns>
-        Task<DomainModel.DicomUid> AddInstanceFromStreamAsync(Stream readStream);
+        Task<DomainModel.DicomUid> AddInstanceFromStreamAsync(string seriesInstanceUid, Stream readStream);
 
         /// <summary>
         /// perform a reconciliation of the instances in the series

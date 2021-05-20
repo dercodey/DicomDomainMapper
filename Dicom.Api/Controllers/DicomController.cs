@@ -108,22 +108,22 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         /// 
         /// </summary>
         /// <param name="patientId"></param>
-        /// <param name="dicomSeries"></param>
+        /// <param name="abDicomSeries"></param>
         /// <returns></returns>
         [HttpPost("patient/{patientId}/series")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> AddDicomSeries(string patientId, [FromBody] AbstractionModel.DicomSeries dicomSeries)
+        public async Task<ActionResult> AddDicomSeries(string patientId, [FromBody] AbstractionModel.DicomSeries abDicomSeries)
         {
             try
             {
                 _logger.LogDebug($"Adding series for patient {patientId}");
 
                 var mapper = Mappers.AbstractionMapper.GetMapper();
-                var seriesDomainModel = mapper.Map<DomainModel.DicomSeries>(dicomSeries);
-                await _applicationService.CreateSeriesAsync(seriesDomainModel);
+                var dmDicomSeries = mapper.Map<DomainModel.DicomSeries>(abDicomSeries);
+                await _applicationService.CreateSeriesAsync(dmDicomSeries);
                 return Ok();
             }
             catch (ArgumentException ex)
@@ -160,7 +160,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         /// <summary>
         /// adds a dicom instance from a IFormFile
         /// </summary>
-        /// <param name="seriesUid">the series UID to be added to</param>
+        /// <param name="seriesInstanceU">the series UID to be added to</param>
         /// <param name="dicomFile">the IFormFile representing the DICOM blob</param>
         /// <returns></returns>
         [HttpPost("series/{seriesUid}/instances")]
@@ -168,7 +168,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> AddDicomInstance(string seriesUid, IFormFile dicomFile)
+        public async Task<ActionResult> AddDicomInstance(string seriesInstanceUid, IFormFile dicomFile)
         {
             if (dicomFile == null)
             {
@@ -180,14 +180,14 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             try
             {
                 var readStream = dicomFile.OpenReadStream();
-                var seriesInstanceUid = await _applicationService.AddInstanceFromStreamAsync(readStream);
-                if (!seriesInstanceUid.ToString().Equals(seriesUid))
+                var addedSopInstanceUid = await _applicationService.AddInstanceFromStreamAsync(seriesInstanceUid, readStream);
+                if (addedSopInstanceUid != null)
                 {
                     // mismatched series instance UID?  should we be adding in this case?
                     return BadRequest();
                 }
 
-                return Ok();
+                return Ok(addedSopInstanceUid.ToString());
             }
             catch (Exception ex) when (ex.Message.EndsWith("already exists."))
             {

@@ -74,18 +74,24 @@ namespace Elekta.Capability.Dicom.Application.Services
         }
 
         /// <summary>
-        /// 
+        /// adds a DICOM instance represented as a stream
         /// </summary>
+        /// <param name="seriesInstanceUid"></param>
         /// <param name="readStream"></param>
-        /// <returns></returns>
-        public async Task<DomainModel.DicomUid> AddInstanceFromStreamAsync(Stream readStream)
+        /// <returns>the DICOM UID for the new instance, or null if not added</returns>
+        public async Task<DomainModel.DicomUid> AddInstanceFromStreamAsync(string seriesInstanceUid, Stream readStream)
         {
             var parsedElements =
                 _dicomParser.ParseStream(readStream);
 
             // check that the series has already been created
-            var seriesInstanceUid = parsedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
-            var dmSeriesInstanceUid = new DomainModel.DicomUid(seriesInstanceUid.Value);
+            var extractedSeriesInstanceUid = parsedElements.Single(da => da.DicomTag.Equals(DomainModel.DicomTag.SOPINSTANCEUID));
+            if (extractedSeriesInstanceUid.Value != seriesInstanceUid)
+            {
+                return null;
+            }
+
+            var dmSeriesInstanceUid = new DomainModel.DicomUid(seriesInstanceUid);
             var existingSeries = _repository.GetAggregateForKey(dmSeriesInstanceUid);
             if (existingSeries == null)
             {
