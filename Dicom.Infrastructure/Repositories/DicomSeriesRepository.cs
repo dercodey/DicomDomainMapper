@@ -22,10 +22,10 @@ namespace Elekta.Capability.Dicom.Infrastructure.Repositories
         /// construct a new repository with the given DB context
         /// </summary>
         /// <param name="context">the DB context to use for query/update</param>
-        public DicomSeriesRepository(EFModel.DicomDbContext context)
+        public DicomSeriesRepository(EFModel.DicomDbContext context, IMapper mapper)
         {
             _context = context;
-            _mapper = Mappers.DomainMapper.GetMapper();
+            _mapper = mapper;
         }
 
         #region IAggregateRepository

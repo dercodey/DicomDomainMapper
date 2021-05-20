@@ -8,7 +8,7 @@ using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using Elekta.Capability.Dicom.Application.Repositories;
 using Elekta.Capability.Dicom.Application.Services;
 using Elekta.Capability.Dicom.Application.Helpers;
-using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 
 namespace Elekta.Capability.Dicom.Api
 {
@@ -32,7 +32,9 @@ namespace Elekta.Capability.Dicom.Api
 
             services.AddAutoMapper(cfg => 
             {
+                cfg.AddCollectionMappers();
                 cfg.AddProfile<Mappers.AbstractionMapper>();
+                cfg.AddProfile<Infrastructure.Mappers.DomainMapper>();
             });
 
             services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>,

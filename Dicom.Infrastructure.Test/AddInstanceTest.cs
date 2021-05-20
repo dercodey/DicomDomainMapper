@@ -1,3 +1,4 @@
+using AutoMapper.EquivalencyExpression;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -47,9 +48,16 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             var newSeriesDomainModel = TestData.CreateSeries();
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.AddCollectionMappers();
+                cfg.AddProfile<Mappers.DomainMapper>();
+            });
+            var mapper = config.CreateMapper();
+
             // NOTE that the database needs to be clean to run the test
             using (var context = new EFModel.DicomDbContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
@@ -84,9 +92,16 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             var newSeriesDomainModel = TestData.CreateSeries();
             var newSeriesUid = newSeriesDomainModel.SeriesInstanceUid;
 
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.AddCollectionMappers();
+                cfg.AddProfile<Mappers.DomainMapper>();
+            });
+            var mapper = config.CreateMapper();
+
             // NOTE that the database needs to be clean to run the test
             using (var context = new EFModel.DicomDbContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // perform an update to save it
                 repository.UpdateAsync(newSeriesDomainModel).Wait();
@@ -116,7 +131,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
 
             // now generate a new context / repository
             using (var context = new EFModel.DicomDbContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // now retreive the series domain model from the repository
                 updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
@@ -138,7 +153,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
 
             // now generate a new context / repository
             using (var context = new EFModel.DicomDbContext())
-            using (var repository = new Repositories.DicomSeriesRepository(context))
+            using (var repository = new Repositories.DicomSeriesRepository(context, mapper))
             {
                 // now retreive the series domain model from the repository
                 refetchSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);
