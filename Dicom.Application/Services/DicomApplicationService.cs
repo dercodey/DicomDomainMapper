@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using Elekta.Capability.Dicom.Application.Repositories;
 using Elekta.Capability.Dicom.Application.Helpers;
+using Elekta.Capability.Dicom.Application.Messaging;
 
 namespace Elekta.Capability.Dicom.Application.Services
 {
@@ -15,16 +16,20 @@ namespace Elekta.Capability.Dicom.Application.Services
     public class DicomApplicationService : IDicomApplicationService
     {
         private readonly IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> _repository;
+        private readonly IMessaging _messaging;
         private readonly IDicomParser _dicomParser;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="repository"></param>
+        /// <param name="messaging"></param>
         /// <param name="dicomParser"></param>
-        public DicomApplicationService(IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> repository, IDicomParser dicomParser)
+        public DicomApplicationService(IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> repository, 
+            IMessaging messaging, IDicomParser dicomParser)
         {
             _repository = repository;
+            _messaging = messaging;
             _dicomParser = dicomParser;
         }
 
@@ -99,6 +104,12 @@ namespace Elekta.Capability.Dicom.Application.Services
 
             // and commit the changes
             await _repository.UpdateAsync(existingSeries);
+
+            if (existingSeries.CurrentState == DomainModel.SeriesState.Complete)
+            {
+                // send event
+                await _messaging.SendNewSeriesEvent(existingSeries);
+            }
 
             return dmSeriesInstanceUid;
         }

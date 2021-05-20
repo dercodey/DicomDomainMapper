@@ -17,10 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Test.Unit", "Dicom.Api.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstractions", "Abstractions\Abstractions.csproj", "{99696D7A-089E-4BF7-AA14-A813139C04AD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "fsharp", "fsharp", "{EBE7E714-A152-44FD-AB46-A6AA67C539C5}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsDomain", "FsDomain\FsDomain.fsproj", "{E4D4F4D4-C598-4F0C-843C-6A0587AF5ECB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,16 +51,9 @@ Global
 		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99696D7A-089E-4BF7-AA14-A813139C04AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4D4F4D4-C598-4F0C-843C-6A0587AF5ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4D4F4D4-C598-4F0C-843C-6A0587AF5ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4D4F4D4-C598-4F0C-843C-6A0587AF5ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4D4F4D4-C598-4F0C-843C-6A0587AF5ECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{E4D4F4D4-C598-4F0C-843C-6A0587AF5ECB} = {EBE7E714-A152-44FD-AB46-A6AA67C539C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2103FEA6-BE71-4BB5-ACAF-58C5D15C51BC}

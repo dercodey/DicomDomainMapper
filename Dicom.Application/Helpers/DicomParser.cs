@@ -9,10 +9,15 @@ using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 namespace Elekta.Capability.Dicom.Application.Helpers
 {
     /// <summary>
-    /// 
+    /// implements a DICOM parser using the kaitai DICOM definition
     /// </summary>
     public class DicomParser : IDicomParser
     {
+        /// <summary>
+        /// reads a stream, that is assumed to be positioned at start
+        /// </summary>
+        /// <param name="dicomStream">the stream to be read</param>
+        /// <returns>collection of DICOM attributes read</returns>
         public IEnumerable<DomainModel.DicomAttribute> ParseStream(Stream dicomStream)
         {
             using (var kaitaiStream = new KaitaiStream(dicomStream))            

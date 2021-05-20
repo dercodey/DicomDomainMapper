@@ -103,7 +103,8 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             // and create the service and controller to be tested
             var dicomParser = new DicomParser();
-            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+            var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
+            var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             var logger = loggerFactory.CreateLogger<DicomController>();
@@ -154,7 +155,8 @@ namespace Elekta.Capability.Dicom.Api.Test
                 });
 
             var dicomParser = new DicomParser();
-            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+            var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
+            var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             // set up a controller to exercise add series
             using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
@@ -180,7 +182,8 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             // and create the service and controller to be tested
             var dicomParser = new DicomParser();
-            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+            var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
+            var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             var logger = loggerFactory.CreateLogger<DicomController>();
@@ -225,7 +228,8 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             // now set up the service with the mock and a dicom parser
             var dicomParser = new DicomParser();
-            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+            var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
+            var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             // and set up the test controller
             var testController = new DicomController(service, new NullLogger<DicomController>());
@@ -279,7 +283,8 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             // now set up the service with the mock and a dicom parser
             var dicomParser = new DicomParser();
-            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+            var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
+            var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             var httpContext = new DefaultHttpContext();
 
@@ -349,7 +354,8 @@ namespace Elekta.Capability.Dicom.Api.Test
 
             // now set up the service with the mock and a dicom parser
             var dicomParser = new DicomParser();
-            var service = new DicomApplicationService(mockRepository.Object, dicomParser);
+            var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
+            var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Query =
