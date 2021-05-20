@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DomainModel = Elekta.Capability.Dicom.Domain.Model;
 using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
 using Elekta.Capability.Dicom.Application.Services;
+using AutoMapper;
 
 namespace Elekta.Capability.Dicom.Api.Controllers
 {
@@ -20,6 +21,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
     public class DicomController : ControllerBase
     {
         private readonly IDicomApplicationService _applicationService;
+        private readonly IMapper _mapper;
         private readonly ILogger<DicomController> _logger;
 
         /// <summary>
@@ -27,9 +29,10 @@ namespace Elekta.Capability.Dicom.Api.Controllers
         /// </summary>
         /// <param name="applicationService"></param>
         /// <param name="logger"></param>
-        public DicomController(IDicomApplicationService applicationService, ILogger<DicomController> logger)
+        public DicomController(IDicomApplicationService applicationService, IMapper mapper, ILogger<DicomController> logger)
         {
             _applicationService = applicationService;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -51,8 +54,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 _logger.LogDebug($"Retrieved {dmAllDicomSeries.Count()} series for patient {patientId}");
 
                 // convert to abstraction series
-                var mapper = Mappers.AbstractionMapper.GetMapper();
-                var abAllDicomSeries = dmAllDicomSeries.Select(mapper.Map<AbstractionModel.DicomSeries>);
+                var abAllDicomSeries = dmAllDicomSeries.Select(_mapper.Map<AbstractionModel.DicomSeries>);
 
                 // and return the result
                 return Ok(abAllDicomSeries);
@@ -91,8 +93,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 }
 
                 // map to abstraction
-                var mapper = Mappers.AbstractionMapper.GetMapper();
-                var abDicomSeries = mapper.Map<AbstractionModel.DicomSeries>(dmDicomSeries);
+                var abDicomSeries = _mapper.Map<AbstractionModel.DicomSeries>(dmDicomSeries);
 
                 // and return the result
                 return Ok(abDicomSeries);
@@ -121,8 +122,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
             {
                 _logger.LogDebug($"Adding series for patient {patientId}");
 
-                var mapper = Mappers.AbstractionMapper.GetMapper();
-                var dmDicomSeries = mapper.Map<DomainModel.DicomSeries>(abDicomSeries);
+                var dmDicomSeries = _mapper.Map<DomainModel.DicomSeries>(abDicomSeries);
                 await _applicationService.CreateSeriesAsync(dmDicomSeries);
                 return Ok();
             }
@@ -228,8 +228,7 @@ namespace Elekta.Capability.Dicom.Api.Controllers
                 _logger.LogDebug($"Retrieved instance for {sopInstanceUid}");
 
                 // map to the abstraction model
-                var mapper = Mappers.AbstractionMapper.GetMapper();
-                var abDicomInstance = mapper.Map<AbstractionModel.DicomInstance>(dmDicomInstance);
+                var abDicomInstance = _mapper.Map<AbstractionModel.DicomInstance>(dmDicomInstance);
 
                 // is there a query to be used?
                 if (Request.Query != null

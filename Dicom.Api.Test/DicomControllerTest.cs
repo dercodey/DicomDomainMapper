@@ -34,24 +34,22 @@ namespace Elekta.Capability.Dicom.Api.Test
             var testAcquistionDateTime = DateTime.Now;
 
             // create a set of series to be returned
-            var testDicomSerieses = 
-                Enumerable.Range(1, 5).Select(n => 
+            var testDicomSerieses =
+                Enumerable.Range(1, 5).Select(n =>
                         new DomainModel.DicomSeries(
-                            new DomainModel.DicomUid($"1.2.3.{n}"), 
-                            testPatientName, testPatientId, 
+                            new DomainModel.DicomUid($"1.2.3.{n}"),
+                            testPatientName, testPatientId,
                             DomainModel.Modality.CT, testAcquistionDateTime, 3, null));
 
             // set up a mock service to return the serieses
             var mockService = new Mock<IDicomApplicationService>();
-            mockService.Setup(svc => 
-                svc.GetAllSeriesForPatient(It.Is<string>(s => 
+            mockService.Setup(svc =>
+                svc.GetAllSeriesForPatient(It.Is<string>(s =>
                     s.Equals(testPatientId))))
                 .Returns(testDicomSerieses);
 
             // hook up a controller to call in to
-            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            var logger = loggerFactory.CreateLogger<DicomController>();
-            var testController = new DicomController(mockService.Object, logger);
+            DicomController testController = CreateTestController(mockService.Object);
 
             // now call the controller for the test patient
             var okObjectResult = (OkObjectResult)testController.GetAllDicomSeriesForPatient(testPatientId).Result;
@@ -72,7 +70,7 @@ namespace Elekta.Capability.Dicom.Api.Test
             }
 
             // make sure the SeriesInstanceUids for each is distinct
-            var allDistinctSeriesInstanceUids = 
+            var allDistinctSeriesInstanceUids =
                 listDicomSeries.Select(dicomSeries => dicomSeries.SeriesInstanceUid).Distinct();
             Assert.AreEqual(5, allDistinctSeriesInstanceUids.Count());
         }
@@ -106,9 +104,7 @@ namespace Elekta.Capability.Dicom.Api.Test
             var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
             var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
-            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            var logger = loggerFactory.CreateLogger<DicomController>();
-            var testController = new DicomController(service, logger);
+            var testController = CreateTestController(service);
 
             var okObjectResult = (OkObjectResult)testController.GetDicomSeries(testPatientId, testSeriesInstanceUid.ToString()).Result;
             var abDicomSeries = (AbstractionModel.DicomSeries)okObjectResult.Value;
@@ -158,10 +154,7 @@ namespace Elekta.Capability.Dicom.Api.Test
             var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
             var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
-            // set up a controller to exercise add series
-            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            var logger = loggerFactory.CreateLogger<DicomController>();
-            var testController = new DicomController(service, logger);
+            var testController = CreateTestController(service);
 
             // and try the operation
             testController.AddDicomSeries(testAbDicomSeries.PatientId, testAbDicomSeries).Wait();
@@ -185,9 +178,7 @@ namespace Elekta.Capability.Dicom.Api.Test
             var messaging = new Messaging.Messaging(new NullLogger<Messaging.Messaging>());
             var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
-            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            var logger = loggerFactory.CreateLogger<DicomController>();
-            var testController = new DicomController(service, logger);
+            var testController = CreateTestController(service);
 
             testController.DeleteDicomSeries(testSeriesInstanceUid.ToString()).Wait();
 
@@ -232,19 +223,12 @@ namespace Elekta.Capability.Dicom.Api.Test
             var service = new DicomApplicationService(mockRepository.Object, messaging, dicomParser);
 
             // and set up the test controller
-            var testController = new DicomController(service, new NullLogger<DicomController>());
+            var testController = CreateTestController(service);
 
             // call to add the dicom instance
             testController.AddDicomInstance("1.3.6.1.4.1.5962.1.1.65535.103.1.1239106253.3783.0", dicomFormFile).Wait();
 
             System.Diagnostics.Trace.WriteLine("Done adding new instance");
-        }
-
-        private void CheckAttribute(DomainModel.DicomInstance newInstance, DomainModel.DicomTag forTag, string expectedValue)
-        {
-            var attribute =
-                newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(forTag));
-            Assert.AreEqual(expectedValue, attribute.Value);
         }
 
         /// <summary>
@@ -289,14 +273,11 @@ namespace Elekta.Capability.Dicom.Api.Test
             var httpContext = new DefaultHttpContext();
 
             // and set up the test controller
-            var testController =
-                new DicomController(service, new NullLogger<DicomController>())
-                {
-                    ControllerContext = new ControllerContext()
-                    {
-                        HttpContext = httpContext,
-                    }
-                };
+            var testController = CreateTestController(service);
+            testController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext,
+            };
 
             var okObjectResult = (OkObjectResult)testController.GetDicomInstance(seriesInstanceUid.ToString(), sopInstanceUid.ToString()).Result;
             var retrievedDicomInstance = (AbstractionModel.DicomInstance)okObjectResult.Value;
@@ -374,14 +355,11 @@ namespace Elekta.Capability.Dicom.Api.Test
                     });
 
             // and set up the test controller
-            var testController =
-                new DicomController(service, new NullLogger<DicomController>())
-                {
-                    ControllerContext = new ControllerContext()
-                    {
-                        HttpContext = httpContext,
-                    }
-                };
+            var testController = CreateTestController(service);
+            testController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext,
+            };
 
             var okObjectResult = (OkObjectResult)testController.GetDicomInstance(seriesInstanceUid.ToString(), sopInstanceUid.ToString()).Result;
             var retrievedDicomInstance = (AbstractionModel.DicomInstance)okObjectResult.Value;
@@ -400,5 +378,23 @@ namespace Elekta.Capability.Dicom.Api.Test
             Assert.AreEqual(patientId, retrievedPatientId.Value);
         }
 
+        private static DicomController CreateTestController(IDicomApplicationService service)
+        {
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<Mappers.AbstractionMapper>();
+            });
+            var mapper = config.CreateMapper();
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<DicomController>();
+            return new DicomController(service, mapper, logger);
+        }
+
+        private void CheckAttribute(DomainModel.DicomInstance newInstance, DomainModel.DicomTag forTag, string expectedValue)
+        {
+            var attribute =
+                newInstance.DicomAttributes.Single(element => element.DicomTag.Equals(forTag));
+            Assert.AreEqual(expectedValue, attribute.Value);
+        }
     }
 }
