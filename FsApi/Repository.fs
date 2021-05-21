@@ -8,8 +8,11 @@ type IAggregateRepository<'entity, 'key> =
     abstract member GetAggregateForKey : 'key -> 'entity
     abstract member UpdateAsync : 'entity -> Task
 
+type IDicomSeriesRepository = 
+    IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>
+
 type DicomSeriesRepository(context:EFModel.DicomDbContext, mapper:IMapper) = 
-    interface IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> with
+    interface IDicomSeriesRepository with
         member this.GetAggregateForKey(dmDicomUid) = 
             context.DicomSeries
             |> Seq.find (fun series -> 
