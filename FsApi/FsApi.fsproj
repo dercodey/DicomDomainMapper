@@ -9,7 +9,7 @@
   <ItemGroup>
     <Compile Include="Library.fs" />
     <Compile Include="WeatherForecast.fs" />
-    <Compile Include="Controllers/WeatherForecastController.fs" />
+    <Compile Include="Controllers\DicomController.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

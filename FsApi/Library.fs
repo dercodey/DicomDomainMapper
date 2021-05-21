@@ -156,7 +156,3 @@ module Application =
                 raise (System.NotImplementedException())
             member this.GetAllSeriesForPatient(arg1: string): seq<DomainModel.DicomSeries> = 
                 raise (System.NotImplementedException())
-
-module Controllers =
-    type DicomController(service:Application.DicomApplicationService) = 
-        class end

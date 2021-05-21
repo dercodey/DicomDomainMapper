@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "dicom/patient/98765/series",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
