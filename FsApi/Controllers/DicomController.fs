@@ -6,7 +6,6 @@ open System.Linq
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
-open FsApi
 open FsDomain.Application
 
 module Abstractions = 
@@ -21,20 +20,8 @@ module Abstractions =
 
 [<ApiController>]
 [<Route("[controller]")>]
-type DicomController ((*service:IDicomApplicationService,*) logger : ILogger<DicomController>) =
+type DicomController (service:IDicomApplicationService, logger : ILogger<DicomController>) =
     inherit ControllerBase()
-
-    let summaries = [| "Freezing"; "Bracing"; "Chilly"; "Cool"; "Mild"; "Warm"; "Balmy"; "Hot"; "Sweltering"; "Scorching" |]
-
-    [<HttpGet>]
-    member __.Get() : WeatherForecast[] =
-        let rng = System.Random()
-        [|
-            for index in 0..4 ->
-                { Date = DateTime.Now.AddDays(float index)
-                  TemperatureC = rng.Next(-20,55)
-                  Summary = summaries.[rng.Next(summaries.Length)] }
-        |]
 
     [<HttpGet("patient/{patientId}/series")>]
     [<ProducesResponseType(200 (* HttpStatusCode.OK *))>]

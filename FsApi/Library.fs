@@ -2,6 +2,7 @@
 
 open Microsoft.EntityFrameworkCore
 open System.Threading.Tasks
+open Microsoft.Extensions.Logging
 
 module Seedwork =
     type IAggregateRoot<'key> =
@@ -93,9 +94,8 @@ module EFModel =
         DicomInstances:seq<DicomInstance>;
     }
 
-    type DicomDbContext() =
+    type DicomDbContext(options:DbContextOptions<DicomDbContext>, logger:ILogger<DicomDbContext>) =
         inherit DbContext()
-
         override this.OnConfiguring(optionsBuilder:DbContextOptionsBuilder) =
             @"Data Source=(localdb)\ProjectsV13;Initial Catalog=MyStoreDB;"
             |> optionsBuilder.UseSqlServer
@@ -150,7 +150,7 @@ module Application =
         abstract member GetAllSeriesForPatient : string -> seq<DomainModel.DicomSeries> 
         abstract member CreateSeriesAsync : DomainModel.DicomSeries -> Task
 
-    type DicomApplicationService(repository:Repository.DicomSeriesRepository) = 
+    type DicomApplicationService(repository:Repository.IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>) = 
         interface IDicomApplicationService with
             member this.CreateSeriesAsync(arg1: DomainModel.DicomSeries): Task = 
                 raise (System.NotImplementedException())
