@@ -2,6 +2,7 @@
 
 open System.Threading.Tasks
 open System.IO
+open System
 
 type IDicomParser =
     abstract member ParseStream : Stream -> seq<DomainModel.DicomAttribute>
@@ -43,15 +44,47 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
 
         member this.AddInstanceFromStreamAsync(seriesInstanceUid: string) (dicomStream: Stream): Task<DomainModel.DicomUid> =             
             let parsedElements =
-                parser.ParseStream(dicomStream)
+                dicomStream
+                |> parser.ParseStream
 
-            // check that the series has already been created
-            let extractedSeriesInstanceUid = 
+            parsedElements
+            |> Seq.tryFind (fun da -> 
+                    da.DicomTag.Equals("DomainModel.DicomTag.SOPINSTANCEUID"))
+            |> function
+                | None -> 
+                    raise(Exception())
+                | Some(extractedSeriesInstanceUid) 
+                        when extractedSeriesInstanceUid.Value <> seriesInstanceUid ->
+                    raise(Exception())
+
+            let existingSeries = 
+                { DomainModel.DicomUid.UidString = seriesInstanceUid }
+                |> repository.GetAggregateForKey
+                |> function
+                    //| null ->
+                    //    raise(InvalidOperationException("SeriesInstanceUID not found in repository"))
+                    | existingSeries -> existingSeries
+
+            
+            let sopInstanceUid =
                 parsedElements
-                |> Seq.find (fun da -> 
-                        da.DicomTag.Equals("DomainModel.DicomTag.SOPINSTANCEUID"))
-            if (extractedSeriesInstanceUid.Value <> seriesInstanceUid)
-            then 
-                null
-            else
-                raise (System.NotImplementedException())
+                |> Seq.tryFind (fun da -> 
+                    da.DicomTag.Equals("DomainModel.DicomTag.SOPINSTANCEUID"))
+                |> function
+                    | None -> 
+                        raise(Exception())
+                    | Some(sopInstanceUid) ->
+                        { DomainModel.DicomUid.UidString = sopInstanceUid.Value }
+
+            (sopInstanceUid, parsedElements)
+            |> DomainModel.DicomInstance
+            |> existingSeries.AddInstance
+            |> ignore
+
+            existingSeries
+            |> repository.UpdateAsync
+            |> ignore
+
+            sopInstanceUid
+            |> Task.FromResult
+
