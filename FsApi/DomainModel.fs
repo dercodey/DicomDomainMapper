@@ -1,21 +1,19 @@
 ﻿module DomainModel
 
 [<CLIMutable>]
-type DicomTag = {
-    Group:int;
-    Element:int; 
-}
+type DicomTag = 
+    { Group:int;
+        Element:int; }
 
 [<CLIMutable>]
-type DicomUid = {
-    UidString:string
-}
+type DicomUid = 
+    { UidString:string; }
+    override this.ToString () = this.UidString
 
 [<CLIMutable>]
-type DicomAttribute = {
-    DicomTag:DicomTag;
-    Value:string;
-}
+type DicomAttribute = 
+    { DicomTag:DicomTag;
+        Value:string; }
 
 type Modality =
 | CT
@@ -37,8 +35,12 @@ type DicomSeries(seriesInstanceUid:DicomUid,
         dicomInstances:seq<DicomInstance>) =
 
     // check that attributes are OK
-    let mutable dicomInstances : list<DicomInstance> = [ ]
+    let mutable dicomInstances = dicomInstances |> List.ofSeq
     member val SeriesInstanceUid = seriesInstanceUid
+    member val PatientName = patientName
+    member val PatientId = patientId
+    member val AcquisitionDateTime = acquisitionDateTime
+    member val ExpectedInstanceCount = expectedInstanceCount
     member val DicomInstances = dicomInstances
     member this.AddInstance (dicomInstance:DicomInstance) =
         let seriesFromInstance = dicomInstance.DicomAttributes |> Seq.head

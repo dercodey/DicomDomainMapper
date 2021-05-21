@@ -15,8 +15,8 @@ type DicomApplicationService(repository:Repository.IAggregateRepository<DomainMo
         member this.GetSeriesByUid (seriresInstanceUid: string): DomainModel.DicomSeries = 
             DomainModel.DicomSeries(
                 seriesInstanceUid = { DomainModel.DicomUid.UidString="1.2.3.9" },
-                patientName = "",
-                patientId = "",
+                patientName = "Last, First",
+                patientId = "98765",
                 modality = DomainModel.Modality.CT,
                 acquisitionDateTime = System.DateTime.Now,
                 expectedInstanceCount = 3,
