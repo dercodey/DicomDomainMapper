@@ -1,42 +1,23 @@
 ﻿module Repository
 
 open System.Threading.Tasks
+open AutoMapper
+open AutoMapper.EntityFrameworkCore
 
 type IAggregateRepository<'entity, 'key> = 
     abstract member GetAggregateForKey : 'key -> 'entity
     abstract member UpdateAsync : 'entity -> Task
 
-let mapSeriesEfToDomainModel (efSeries:EFModel.DicomSeries) =
-    efSeries.DicomInstances 
-    |> Seq.map (fun efInstance -> 
-        efInstance.DicomAttributes
-        |> Seq.map (fun efAttribute -> 
-            { DomainModel.DicomAttribute.DicomTag = Unchecked.defaultof<DomainModel.DicomTag>;
-                DomainModel.DicomAttribute.Value = "string" })
-        |> function 
-            efAttributes ->
-                DomainModel.DicomInstance(
-                    sopInstanceUid = { DomainModel.DicomUid.UidString = efInstance.SopInstanceUid },
-                    dicomAttributes = efAttributes))
-    |> function 
-        efInstances ->
-            DomainModel.DicomSeries(
-                seriesInstanceUid = { UidString = efSeries.SeriesInstanceUid },
-                patientName = efSeries.PatientName, 
-                patientId = efSeries.PatientId,
-                modality = DomainModel.Modality.CT, 
-                acquisitionDateTime = efSeries.AcquistionDateTime,
-                expectedInstanceCount = 3,
-                dicomInstances = efInstances)
-
-type DicomSeriesRepository(context:EFModel.DicomDbContext) = 
+type DicomSeriesRepository(context:EFModel.DicomDbContext, mapper:IMapper) = 
     interface IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> with
-        member this.GetAggregateForKey(arg1: DomainModel.DicomUid): DomainModel.DicomSeries = 
+        member this.GetAggregateForKey(dmDicomUid) = 
             context.DicomSeries
             |> Seq.find (fun series -> 
-                series.SeriesInstanceUid = arg1.UidString)
-            |> mapSeriesEfToDomainModel
+                series.SeriesInstanceUid = dmDicomUid.UidString)
+            |> mapper.Map<DomainModel.DicomSeries>
 
-        member this.UpdateAsync(arg1: DomainModel.DicomSeries): Task = 
-            raise (System.NotImplementedException())
-
+        member this.UpdateAsync(dmDicomSeries) = 
+            dmDicomSeries
+            |> mapper.Map<EFModel.DicomSeries>
+            |> context.DicomSeries.Persist(mapper).InsertOrUpdateAsync
+            :> Task

@@ -25,3 +25,26 @@ type DicomController (service:IDicomApplicationService, mapper:IMapper, logger:I
         |> mapper.Map<Abstractions.DicomSeries>
         |> this.Ok
         :> ActionResult
+
+    [<HttpPost("patient/{patientId}/series")>]
+    [<ProducesResponseType(200 (* HttpStatusCode.OK *))>]
+    // [<ProducesResponseType(HttpStatusCode.Conflict)>]
+    // [<ProducesResponseType(HttpStatusCode.BadRequest)>]
+    [<ApiConventionMethod(typedefof<DefaultApiConventions>, nameof(DefaultApiConventions.Post))>]
+    member this.AddDicomSeries (patientId:string, [<FromBody>] abDicomSeries:DicomSeries) =
+        try
+            $"Adding series for patient {patientId}" 
+            |> logger.LogDebug
+
+            abDicomSeries
+            |> mapper.Map<DomainModel.DicomSeries>
+            |> service.CreateSeriesAsync
+            |> function task -> task.Wait()
+            |> this.Ok
+            :> ActionResult
+        with
+        | ex -> 
+            ex.Message |> logger.LogError
+            ex.Message 
+            |> this.BadRequest 
+            :> ActionResult
