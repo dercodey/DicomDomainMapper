@@ -6,6 +6,7 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
+open AutoMapper.EquivalencyExpression
 open DomainModel
 open EFModel
 open Repository
@@ -25,6 +26,12 @@ type Startup private () =
                 |> ignore), 
             ServiceLifetime.Scoped) 
             |> ignore
+
+        services.AddAutoMapper(fun cfg -> 
+            cfg.AddCollectionMappers()
+            cfg.AddProfile<MappingProfiles.AbstractionMappingProfile>()
+            cfg.AddProfile<MappingProfiles.DomainMappingProfile>();
+        ) |> ignore
 
         services.AddScoped<IAggregateRepository<DomainModel.DicomSeries, DicomUid>, 
                                 DicomSeriesRepository>() |> ignore

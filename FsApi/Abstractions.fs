@@ -2,6 +2,7 @@
 
 open System
 
+[<CLIMutable>]
 type DicomSeries = {
     SeriesInstanceUid:string;
     PatientName:string;

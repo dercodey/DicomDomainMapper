@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Abstractions.fs" />
     <Compile Include="Seedwork.fs" />
     <Compile Include="DomainModel.fs" />
     <Compile Include="EFModel.fs" />
     <Compile Include="Repository.fs" />
     <Compile Include="Application.fs" />
+    <Compile Include="Abstractions.fs" />
+    <Compile Include="MappingProfiles.fs" />
     <Compile Include="Controllers\DicomController.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
@@ -23,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Collection" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
   </ItemGroup>
 
