@@ -6,17 +6,8 @@ open System.Linq
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
-open FsDomain.Application
-
-module Abstractions = 
-    type DicomSeries = {
-        SeriesInstanceUid:string;
-        PatientName:string;
-        PatientId:string;
-        Modality:string;
-        AcquisitionDateTime:DateTime;
-        ExpectedInstanceCount:int;
-    }
+open Application
+open Abstractions
 
 [<ApiController>]
 [<Route("[controller]")>]

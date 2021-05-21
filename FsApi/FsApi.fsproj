@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="Abstractions.fs" />
+    <Compile Include="Seedwork.fs" />
+    <Compile Include="DomainModel.fs" />
+    <Compile Include="EFModel.fs" />
+    <Compile Include="Repository.fs" />
+    <Compile Include="Application.fs" />
     <Compile Include="Controllers\DicomController.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
