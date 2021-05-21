@@ -23,6 +23,11 @@ type DicomParser() =
 type DicomApplicationService(repository:Repository.IDicomSeriesRepository, 
                                 parser:IDicomParser) = 
 
+    let checkResult checkFunc result =
+        if not(checkFunc result)
+        then raise(Exception())
+        else result
+
     let findTag tag (attributes:seq<DomainModel.DicomAttribute>) =
         attributes
         |> Seq.tryFind (fun da -> da.DicomTag.Equals(tag))
@@ -54,34 +59,24 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
             let parsedAttributes =
                 dicomStream
                 |> parser.ParseStream
-
-            let extractedSeriesInstanceUid =
-                parsedAttributes
-                |> findTag "DomainModel.DicomTag.SOPINSTANCEUID"
-
-            if extractedSeriesInstanceUid <> seriesInstanceUid
-            then raise(Exception())
-
-            let sopInstanceUid =
-                { DomainModel.DicomUid.UidString =
-                    parsedAttributes
-                    |> findTag "DomainModel.DicomTag.SOPINSTANCEUID" }
+                |> checkResult ((findTag "DomainModel.DicomTag.SOPINSTANCEUID") >> ((=) seriesInstanceUid))
 
             { DomainModel.DicomUid.UidString = seriesInstanceUid }
             |> repository.GetAggregateForKey
+            |> checkResult ((<>) Unchecked.defaultof<DomainModel.DicomSeries>)
             |> function 
-                existingSeries ->
+                series ->
+                    let sopInstanceUid =
+                        { DomainModel.DicomUid.UidString = 
+                            parsedAttributes
+                            |> findTag "DomainModel.DicomTag.SOPINSTANCEUID" }
 
-                //if existingSeries = null
-                //then raise(InvalidOperationException("SeriesInstanceUID not found in repository"))
-            
-                (sopInstanceUid, parsedAttributes)
-                |> DomainModel.DicomInstance
-                |> existingSeries.AddInstance |> ignore
+                    (sopInstanceUid, parsedAttributes)
+                    |> DomainModel.DicomInstance
+                    |> series.AddInstance |> ignore
 
-                existingSeries
-                |> repository.UpdateAsync |> ignore
+                    series
+                    |> repository.UpdateAsync |> ignore
 
-            sopInstanceUid
-            |> Task.FromResult
-
+                    sopInstanceUid
+                    |> Task.FromResult
