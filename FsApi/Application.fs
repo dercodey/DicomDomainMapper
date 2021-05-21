@@ -22,6 +22,14 @@ type DicomParser() =
 
 type DicomApplicationService(repository:Repository.IDicomSeriesRepository, 
                                 parser:IDicomParser) = 
+
+    let findTag tag (attributes:seq<DomainModel.DicomAttribute>) =
+        attributes
+        |> Seq.tryFind (fun da -> da.DicomTag.Equals(tag))
+        |> function
+            | None -> raise(Exception())
+            | Some(da) -> da.Value
+
     interface IDicomApplicationService with
         member this.CreateSeriesAsync (dmDicomSeries) =
             dmDicomSeries
@@ -43,47 +51,36 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
 #endif
 
         member this.AddInstanceFromStreamAsync(seriesInstanceUid: string) (dicomStream: Stream): Task<DomainModel.DicomUid> =             
-            let parsedElements =
+            let parsedAttributes =
                 dicomStream
                 |> parser.ParseStream
 
-            parsedElements
-            |> Seq.tryFind (fun da -> 
-                    da.DicomTag.Equals("DomainModel.DicomTag.SOPINSTANCEUID"))
-            |> function
-                | None -> 
-                    raise(Exception())
-                | Some(extractedSeriesInstanceUid) 
-                        when extractedSeriesInstanceUid.Value <> seriesInstanceUid ->
-                    raise(Exception())
+            let extractedSeriesInstanceUid =
+                parsedAttributes
+                |> findTag "DomainModel.DicomTag.SOPINSTANCEUID"
 
-            let existingSeries = 
-                { DomainModel.DicomUid.UidString = seriesInstanceUid }
-                |> repository.GetAggregateForKey
-                |> function
-                    //| null ->
-                    //    raise(InvalidOperationException("SeriesInstanceUID not found in repository"))
-                    | existingSeries -> existingSeries
+            if extractedSeriesInstanceUid <> seriesInstanceUid
+            then raise(Exception())
 
-            
             let sopInstanceUid =
-                parsedElements
-                |> Seq.tryFind (fun da -> 
-                    da.DicomTag.Equals("DomainModel.DicomTag.SOPINSTANCEUID"))
-                |> function
-                    | None -> 
-                        raise(Exception())
-                    | Some(sopInstanceUid) ->
-                        { DomainModel.DicomUid.UidString = sopInstanceUid.Value }
+                { DomainModel.DicomUid.UidString =
+                    parsedAttributes
+                    |> findTag "DomainModel.DicomTag.SOPINSTANCEUID" }
 
-            (sopInstanceUid, parsedElements)
-            |> DomainModel.DicomInstance
-            |> existingSeries.AddInstance
-            |> ignore
+            { DomainModel.DicomUid.UidString = seriesInstanceUid }
+            |> repository.GetAggregateForKey
+            |> function 
+                existingSeries ->
 
-            existingSeries
-            |> repository.UpdateAsync
-            |> ignore
+                //if existingSeries = null
+                //then raise(InvalidOperationException("SeriesInstanceUID not found in repository"))
+            
+                (sopInstanceUid, parsedAttributes)
+                |> DomainModel.DicomInstance
+                |> existingSeries.AddInstance |> ignore
+
+                existingSeries
+                |> repository.UpdateAsync |> ignore
 
             sopInstanceUid
             |> Task.FromResult
