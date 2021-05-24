@@ -55,8 +55,12 @@ type DicomController (service:IDicomApplicationService, mapper:IMapper,
 
                 return 
                     match result with
-                    | Ok result -> result |> ok
-                    | Error msg -> msg |> badRequest
+                    | Ok result -> 
+                        result 
+                        |> ok
+                    | Error msg -> 
+                        msg 
+                        |> badRequest
             } |> Async.StartAsTask
         with
         | ex -> 

@@ -47,9 +47,11 @@ type DicomSeries(seriesInstanceUid:DicomUid,
         if (seriesFromInstance.Value = seriesInstanceUid.ToString())
         then 
             dicomInstances <- dicomInstance :: dicomInstances
-            dicomInstances |> List.length |> Result.Ok
+            dicomInstance 
+            |> Result.Ok
         else
-            "seriesInstanceUid mismatch" |> Result.Error
+            "seriesInstanceUid mismatch" 
+            |> Result.Error
 
     interface Seedwork.IAggregateRoot<DicomUid> with
         member val RootKey : DicomUid = Unchecked.defaultof<DicomUid>

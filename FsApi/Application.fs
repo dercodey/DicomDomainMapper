@@ -41,11 +41,7 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
             |> repository.UpdateAsync
 
         member this.GetSeriesByUid (seriesInstanceUid) = 
-#if USE_ACTUAL
-            { DomainModel.DicomUid.UidString=seriesInstanceUid }
-            |> repository.GetAggregateForKey
-
-#else
+#if TEST_VALUE
             DomainModel.DicomSeries(
                 seriesInstanceUid = { DomainModel.DicomUid.UidString=seriesInstanceUid },
                 patientName = "Last, First",
@@ -55,6 +51,9 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
                 expectedInstanceCount = 3,
                 dicomInstances = []) 
             |> Some
+#else
+            { DomainModel.DicomUid.UidString=seriesInstanceUid }
+            |> repository.GetAggregateForKey
 #endif
 
         member this.AddInstanceFromStreamAsync(seriesInstanceUid: string) (dicomStream: Stream) =
