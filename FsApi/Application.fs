@@ -5,19 +5,19 @@ open System.IO
 open System
 
 type IDicomParser =
-    abstract member ParseStream : Stream -> seq<DomainModel.DicomAttribute>
+    abstract member ParseStreamAsync : Stream -> Async<seq<DomainModel.DicomAttribute>>
 
 type IDicomApplicationService =         
     abstract member GetSeriesByUid : string -> 
-        DomainModel.DicomSeries
+        option<DomainModel.DicomSeries>
     abstract member CreateSeriesAsync : DomainModel.DicomSeries -> 
-        Task
+        Async<Result<DomainModel.DicomUid, string>>
     abstract member AddInstanceFromStreamAsync : string -> Stream -> 
-        Task<DomainModel.DicomUid>
+        Async<Result<DomainModel.DicomUid, string>>
 
 type DicomParser() =    
     interface IDicomParser with
-        member this.ParseStream(arg1: Stream): seq<DomainModel.DicomAttribute> = 
+        member this.ParseStreamAsync(stream: Stream): Async<seq<DomainModel.DicomAttribute>> = 
             raise (System.NotImplementedException())
 
 type DicomApplicationService(repository:Repository.IDicomSeriesRepository, 
@@ -44,6 +44,7 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
 #if USE_ACTUAL
             { DomainModel.DicomUid.UidString=seriesInstanceUid }
             |> repository.GetAggregateForKey
+
 #else
             DomainModel.DicomSeries(
                 seriesInstanceUid = { DomainModel.DicomUid.UidString=seriesInstanceUid },
@@ -52,31 +53,38 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
                 modality = DomainModel.Modality.CT,
                 acquisitionDateTime = System.DateTime.Now,
                 expectedInstanceCount = 3,
-                dicomInstances = [])
+                dicomInstances = []) 
+            |> Some
 #endif
 
-        member this.AddInstanceFromStreamAsync(seriesInstanceUid: string) (dicomStream: Stream): Task<DomainModel.DicomUid> =             
-            let parsedAttributes =
-                dicomStream
-                |> parser.ParseStream
-                |> checkResult ((findTag "DomainModel.DicomTag.SOPINSTANCEUID") >> ((=) seriesInstanceUid))
+        member this.AddInstanceFromStreamAsync(seriesInstanceUid: string) (dicomStream: Stream) =
+            async {
+                let! parsedAttributes =
+                    dicomStream
+                    |> parser.ParseStreamAsync
 
-            { DomainModel.DicomUid.UidString = seriesInstanceUid }
-            |> repository.GetAggregateForKey
-            |> checkResult ((<>) Unchecked.defaultof<DomainModel.DicomSeries>)
-            |> function 
-                series ->
-                    let sopInstanceUid =
-                        { DomainModel.DicomUid.UidString = 
-                            parsedAttributes
-                            |> findTag "DomainModel.DicomTag.SOPINSTANCEUID" }
+                return parsedAttributes
+                    |> findTag "DomainModel.DicomTag.SOPINSTANCEUID"
+                    |> (<>) seriesInstanceUid
+                    |> function
+                        | true -> Error "no SOP instance UID"
+                        | false -> 
+                            { DomainModel.DicomUid.UidString = seriesInstanceUid }
+                            |> repository.GetAggregateForKey
+                            |> function
+                                | None -> Error "series not found"                            
+                                | Some(dicomSeries) ->
+                                    let sopInstanceUid =
+                                        { DomainModel.DicomUid.UidString = 
+                                            parsedAttributes
+                                            |> findTag "DomainModel.DicomTag.SOPINSTANCEUID" }
 
-                    (sopInstanceUid, parsedAttributes)
-                    |> DomainModel.DicomInstance
-                    |> series.AddInstance |> ignore
+                                    (sopInstanceUid, parsedAttributes)
+                                    |> DomainModel.DicomInstance
+                                    |> dicomSeries.AddInstance |> ignore
 
-                    series
-                    |> repository.UpdateAsync |> ignore
+                                    dicomSeries
+                                    |> repository.UpdateAsync |> ignore
 
-                    sopInstanceUid
-                    |> Task.FromResult
+                                    Ok sopInstanceUid
+            }
