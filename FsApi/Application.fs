@@ -64,14 +64,12 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
 
                 return parsedAttributes
                     |> findTag "DomainModel.DicomTag.SOPINSTANCEUID"
-                    |> (<>) seriesInstanceUid
+                    |> (=) seriesInstanceUid
                     |> function
-                        | true -> Error "no SOP instance UID"
-                        | false -> 
+                        | true -> 
                             { DomainModel.DicomUid.UidString = seriesInstanceUid }
                             |> repository.GetAggregateForKey
                             |> function
-                                | None -> Error "series not found"                            
                                 | Some(dicomSeries) ->
                                     let sopInstanceUid =
                                         { DomainModel.DicomUid.UidString = 
@@ -86,4 +84,8 @@ type DicomApplicationService(repository:Repository.IDicomSeriesRepository,
                                     |> repository.UpdateAsync |> ignore
 
                                     Ok sopInstanceUid
+                                | None -> 
+                                    Error "series not found"
+                        | false -> 
+                            Error "no SOP instance UID"
             }
