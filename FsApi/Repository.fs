@@ -4,9 +4,12 @@ open AutoMapper
 open AutoMapper.EntityFrameworkCore
 
 type IAggregateRepository<'entity, 'key> = 
-    abstract member GetAggregateForKey : 'key -> option<'entity>
-    abstract member UpdateAsync : 'entity -> Async<Result<'key, string>>
-    abstract member RemoveAsync : 'key -> Async<Result<'key, string>>
+    abstract member GetAggregateForKey : 'key -> 
+        option<'entity>
+    abstract member UpdateAsync : 'entity -> 
+        Async<Result<'key, string>>
+    abstract member RemoveAsync : 'key -> 
+        Async<Result<'key, string>>
 
 type IDicomSeriesRepository = 
     IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid>
