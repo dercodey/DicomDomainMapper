@@ -1,8 +1,5 @@
 ﻿namespace FsApi.Controllers
 
-open System
-open System.Collections.Generic
-open System.Linq
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Http
@@ -39,8 +36,8 @@ type DicomController (service:IDicomApplicationService, mapper:IMapper,
 
     [<HttpPost("patient/{patientId}/series")>]
     [<ProducesResponseType(200 (* HttpStatusCode.OK *))>]
-    // [<ProducesResponseType(HttpStatusCode.Conflict)>]
-    // [<ProducesResponseType(HttpStatusCode.BadRequest)>]
+    [<ProducesResponseType(000 (* HttpStatusCode.Conflict *))>]
+    [<ProducesResponseType(000 (* HttpStatusCode.BadRequest *))>]
     [<ApiConventionMethod(typedefof<DefaultApiConventions>, nameof(DefaultApiConventions.Post))>]
     member this.AddDicomSeriesAsync (patientId:string, [<FromBody>] abDicomSeries:DicomSeries) =
         try
@@ -71,10 +68,10 @@ type DicomController (service:IDicomApplicationService, mapper:IMapper,
 
     [<HttpPost("series/{seriesUid}/instances")>]
     [<ProducesResponseType(200 (* HttpStatusCode.OK *))>]
-    //[<ProducesResponseType(HttpStatusCode.Conflict)>]
-    //[<ProducesResponseType(HttpStatusCode.BadRequest)>]
+    [<ProducesResponseType(000 (* HttpStatusCode.Conflict *))>]
+    [<ProducesResponseType(000 (* HttpStatusCode.BadRequest *))>]
     [<ApiConventionMethod(typedefof<DefaultApiConventions>, nameof(DefaultApiConventions.Post))>]
-    member this.AddDicomInstance(seriesInstanceUid:string, dicomFile:IFormFile) : Task<ActionResult> =
+    member this.AddDicomInstanceAsync(seriesInstanceUid:string, dicomFile:IFormFile) =
         match dicomFile with
         | null ->
             "file is null or empty."
