@@ -1,5 +1,6 @@
 using AutoMapper.EquivalencyExpression;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -57,7 +58,8 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             var mapper = config.CreateMapper();
 
             // NOTE that the database needs to be clean to run the test
-            using (var context = new EFModel.DicomDbContext())
+            var optionsBuilder = new DbContextOptionsBuilder<EFModel.DicomDbContext>();
+            using (var context = new EFModel.DicomDbContext(optionsBuilder.Options, new NullLogger<EFModel.DicomDbContext>()))
             using (var repository = new Repositories.DicomSeriesRepository(context, mapper, new NullLogger<Repositories.DicomSeriesRepository>()))
             {
                 // perform an update to save it

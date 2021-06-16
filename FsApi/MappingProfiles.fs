@@ -14,13 +14,21 @@ let dicomUidStringFormatter =
 type DomainMappingProfile() as this =
     inherit Profile()
 
-    do this.CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>() |> ignore
+    do this.CreateMap<DomainModel.DicomAttribute, EFModel.DicomAttribute>() 
+        |> ignore
+    do this.CreateMap<DomainModel.DicomInstance, EFModel.DicomInstance>() 
+        |> ignore
+    do this.CreateMap<DomainModel.DicomSeries, EFModel.DicomSeries>() 
+        |> ignore
 
 
 type AbstractionMappingProfile() as this =
     inherit Profile()
 
-    // do this.CreateMap<DomainModel.DicomInstance, Abstractions.DicomInstance>() |> ignore
+    do this.CreateMap<DomainModel.DicomAttribute, Abstractions.DicomAttribute>() 
+        |> ignore
+    do this.CreateMap<DomainModel.DicomInstance, Abstractions.DicomInstance>() 
+        |> ignore
     do this.CreateMap<DomainModel.DicomSeries, Abstractions.DicomSeries>()
         .ForMember((fun abDicomSeries -> abDicomSeries.SeriesInstanceUid), 
             (fun (opt:IMemberConfigurationExpression<DomainModel.DicomSeries, Abstractions.DicomSeries, string>) -> 
