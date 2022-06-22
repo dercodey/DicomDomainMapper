@@ -4,10 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Elekta.Capability.Dicom.Application</AssemblyName>
     <RootNamespace>Elekta.Capability.Dicom.Application</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Application\Elekta.Capability.Dicom.Application.xml</DocumentationFile>
+    <DocumentationFile>.\Elekta.Capability.Dicom.Application.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
