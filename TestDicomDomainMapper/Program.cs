@@ -1,6 +1,6 @@
-﻿using DomainModel = Dicom.Domain.Model;
-using EFModel = Dicom.Infrastructure.EFModel;
-using Repositories = Dicom.Infrastructure.Repositories;
+﻿using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using EFModel = Elektrum.Capability.Dicom.Infrastructure.EFModel;
+using Repositories = Elektrum.Capability.Dicom.Infrastructure.Repositories;
 
 namespace TestDicomDomainMapper
 {
@@ -14,7 +14,7 @@ namespace TestDicomDomainMapper
             // 2.
             DomainModel.DicomUid newSeriesUid = null;
             {
-                var context = new EFModel.MyContext();
+                var context = new EFModel.DicomDbContext();
                 var repository = new Repositories.DicomSeriesRepository(context);
 
                 var newSeriesDomainModel = TestData.CreateSeries();
@@ -27,7 +27,7 @@ namespace TestDicomDomainMapper
 
             // 3.
             {
-                var context = new EFModel.MyContext();
+                var context = new EFModel.DicomDbContext();
                 var repository = new Repositories.DicomSeriesRepository(context);
 
                 var updateSeriesDomainModel = repository.GetAggregateForKey(newSeriesUid);

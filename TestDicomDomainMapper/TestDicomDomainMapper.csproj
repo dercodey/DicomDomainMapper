@@ -7,21 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dicom.Domain\Dicom.Domain.csproj" />
-    <ProjectReference Include="..\Dicom.Infrastructure\Dicom.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dicom.Domain\Domain.csproj" />
+    <ProjectReference Include="..\Dicom.Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

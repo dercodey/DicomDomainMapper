@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DomainModel = Dicom.Domain.Model;
-using EFModel = Dicom.Infrastructure.EFModel;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using EFModel = Elektrum.Capability.Dicom.Infrastructure.EFModel;
 
 namespace TestDicomDomainMapper
 {
