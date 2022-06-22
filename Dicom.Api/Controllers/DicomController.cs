@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
-using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
-using Elekta.Capability.Dicom.Application.Services;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using AbstractionModel = Elektrum.Capability.Dicom.Abstractions.Models;
+using Elektrum.Capability.Dicom.Application.Services;
 using AutoMapper;
 
-namespace Elekta.Capability.Dicom.Api.Controllers
+namespace Elektrum.Capability.Dicom.Api.Controllers
 {
     /// <summary>
     /// controller to handle DICOM requests

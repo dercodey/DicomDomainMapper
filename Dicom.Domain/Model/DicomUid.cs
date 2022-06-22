@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Elekta.Capability.Dicom.Domain.Seedwork;
+using Elektrum.Capability.Dicom.Domain.Seedwork;
 
-namespace Elekta.Capability.Dicom.Domain.Model
+namespace Elektrum.Capability.Dicom.Domain.Model
 {
     /// <summary>
     /// value object representing Dicom UID

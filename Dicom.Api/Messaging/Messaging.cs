@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Elekta.Capability.Dicom.Domain.Model;
-using AbstractionEvents = Elekta.Capability.Dicom.Abstractions.Events;
-using Elekta.Capability.Dicom.Application.Messaging;
+using Elektrum.Capability.Dicom.Domain.Model;
+using AbstractionEvents = Elektrum.Capability.Dicom.Abstractions.Events;
+using Elektrum.Capability.Dicom.Application.Messaging;
 
-namespace Elekta.Capability.Dicom.Api.Messaging
+namespace Elektrum.Capability.Dicom.Api.Messaging
 {
     public class Messaging : IMessaging
     {

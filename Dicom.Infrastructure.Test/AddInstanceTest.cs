@@ -6,9 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
 
-namespace Elekta.Capability.Dicom.Infrastructure.Test
+namespace Elektrum.Capability.Dicom.Infrastructure.Test
 {
     [TestClass]
     public class AddInstanceTest

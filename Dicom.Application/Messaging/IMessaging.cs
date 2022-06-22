@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
 
-namespace Elekta.Capability.Dicom.Application.Messaging
+namespace Elektrum.Capability.Dicom.Application.Messaging
 {
     /// <summary>
     /// 

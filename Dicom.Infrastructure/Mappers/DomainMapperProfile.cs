@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
 
-namespace Elekta.Capability.Dicom.Infrastructure.Mappers
+namespace Elektrum.Capability.Dicom.Infrastructure.Mappers
 {
     /// <summary>
     /// wrapper for Automapper configured to map between domain model and EF model

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Elekta.Capability.Dicom.Domain.Seedwork;
+using Elektrum.Capability.Dicom.Domain.Seedwork;
 
-namespace Elekta.Capability.Dicom.Domain.Model
+namespace Elektrum.Capability.Dicom.Domain.Model
 {
     /// <summary>
     /// A DicomAttribute is a value object in the DICOM domain model, which represents a single DICOM element.  It is an immutable representation of a particular attribute by tag and value.

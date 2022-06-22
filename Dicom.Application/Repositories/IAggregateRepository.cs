@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Seedwork = Elekta.Capability.Dicom.Domain.Seedwork;
+using Seedwork = Elektrum.Capability.Dicom.Domain.Seedwork;
 
-namespace Elekta.Capability.Dicom.Application.Repositories
+namespace Elektrum.Capability.Dicom.Application.Repositories
 {
     /// <summary>
     /// interface that represents an aggregate repository

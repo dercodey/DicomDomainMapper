@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Kaitai;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
 
-namespace Elekta.Capability.Dicom.Application.Helpers
+namespace Elektrum.Capability.Dicom.Application.Helpers
 {
     /// <summary>
     /// implements a DICOM parser using the kaitai DICOM definition

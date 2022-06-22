@@ -5,11 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper.EquivalencyExpression;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
-using Elekta.Capability.Dicom.Application.Repositories;
-using Elekta.Capability.Dicom.Application.Services;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using Elektrum.Capability.Dicom.Application.Repositories;
+using Elektrum.Capability.Dicom.Application.Services;
 
-namespace Elekta.Capability.Dicom.Api
+namespace Elektrum.Capability.Dicom.Api
 {
     public class Startup
     {

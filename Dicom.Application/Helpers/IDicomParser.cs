@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
 
-namespace Elekta.Capability.Dicom.Application.Helpers
+namespace Elektrum.Capability.Dicom.Application.Helpers
 {
     /// <summary>
     /// IDicomParser is a generic interface to some kind of parser engine

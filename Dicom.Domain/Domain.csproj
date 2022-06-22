@@ -2,17 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Elekta.Capability.Dicom.Domain</AssemblyName>
-    <RootNamespace>Elekta.Capability.Dicom.Domain</RootNamespace>
+    <AssemblyName>Elektrum.Capability.Dicom.Domain</AssemblyName>
+    <RootNamespace>Elektrum.Capability.Dicom.Domain</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>.\Elekta.Capability.Dicom.Domain.xml</DocumentationFile>
+    <DocumentationFile>.\Elektrum.Capability.Dicom.Domain.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Domain\Elekta.Capability.Dicom.Domain.xml</DocumentationFile>
+    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Domain\Elektrum.Capability.Dicom.Domain.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

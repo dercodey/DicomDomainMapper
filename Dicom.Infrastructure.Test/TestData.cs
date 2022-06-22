@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Elekta.Capability.Dicom.Domain.Model;
+using Elektrum.Capability.Dicom.Domain.Model;
 
-namespace Elekta.Capability.Dicom.Infrastructure.Test
+namespace Elektrum.Capability.Dicom.Infrastructure.Test
 {
     internal static class TestData
     {

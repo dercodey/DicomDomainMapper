@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Elekta.Capability.Dicom.Abstractions</AssemblyName>
-    <RootNamespace>Elekta.Capability.Dicom.Abstractions</RootNamespace>
+    <AssemblyName>Elektrum.Capability.Dicom.Abstractions</AssemblyName>
+    <RootNamespace>Elektrum.Capability.Dicom.Abstractions</RootNamespace>
   </PropertyGroup>
 
 </Project>

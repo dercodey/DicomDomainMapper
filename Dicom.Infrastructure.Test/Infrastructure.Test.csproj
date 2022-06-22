@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Elekta.Capability.Infrastructure.Test</AssemblyName>
+    <AssemblyName>Elektrum.Capability.Infrastructure.Test</AssemblyName>
 
-    <RootNamespace>Elekta.Capability.Infrastructure.Test</RootNamespace>
+    <RootNamespace>Elektrum.Capability.Infrastructure.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

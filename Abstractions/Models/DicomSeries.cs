@@ -1,6 +1,6 @@
 using System;
 
-namespace Elekta.Capability.Dicom.Abstractions.Models
+namespace Elektrum.Capability.Dicom.Abstractions.Models
 {
     public class DicomSeries
     {

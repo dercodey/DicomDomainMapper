@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Elekta.Capability.Dicom.Infrastructure</AssemblyName>
-    <RootNamespace>Elekta.Capability.Dicom.Infrastructure</RootNamespace>
+    <AssemblyName>Elektrum.Capability.Dicom.Infrastructure</AssemblyName>
+    <RootNamespace>Elektrum.Capability.Dicom.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

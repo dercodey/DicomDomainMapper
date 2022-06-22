@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Elekta.Capability.Dicom.Api.Test.Unit</AssemblyName>
+    <AssemblyName>Elektrum.Capability.Dicom.Api.Test.Unit</AssemblyName>
 
-    <RootNamespace>Elekta.Capability.Dicom.Api.Test.Unit</RootNamespace>
+    <RootNamespace>Elektrum.Capability.Dicom.Api.Test.Unit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

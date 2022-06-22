@@ -1,4 +1,4 @@
-﻿namespace Elekta.Capability.Dicom.Domain.Seedwork
+﻿namespace Elektrum.Capability.Dicom.Domain.Seedwork
 {
     /// <summary>
     /// interface representing an aggregate root with a particular key type

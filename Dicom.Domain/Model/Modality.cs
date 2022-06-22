@@ -1,4 +1,4 @@
-﻿namespace Elekta.Capability.Dicom.Domain.Model
+﻿namespace Elektrum.Capability.Dicom.Domain.Model
 {
     /// <summary>
     /// enum representing possible DICOM series modalities

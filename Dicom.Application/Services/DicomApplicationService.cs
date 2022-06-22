@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
-using Elekta.Capability.Dicom.Application.Repositories;
-using Elekta.Capability.Dicom.Application.Helpers;
-using Elekta.Capability.Dicom.Application.Messaging;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using Elektrum.Capability.Dicom.Application.Repositories;
+using Elektrum.Capability.Dicom.Application.Helpers;
+using Elektrum.Capability.Dicom.Application.Messaging;
 
-namespace Elekta.Capability.Dicom.Application.Services
+namespace Elektrum.Capability.Dicom.Application.Services
 {
     /// <summary>
     /// application service object for supporting calls in to the domain model

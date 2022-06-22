@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Elekta.Capability.Dicom.Domain.Seedwork;
+using Elektrum.Capability.Dicom.Domain.Seedwork;
 
-namespace Elekta.Capability.Dicom.Domain.Model
+namespace Elektrum.Capability.Dicom.Domain.Model
 {
     /// <summary>
     /// aggregate entity for a dicom series

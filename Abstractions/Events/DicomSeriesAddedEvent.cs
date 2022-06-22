@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Elekta.Capability.Dicom.Abstractions.Events
+namespace Elektrum.Capability.Dicom.Abstractions.Events
 {
     public class DicomSeriesAddedEvent
     {

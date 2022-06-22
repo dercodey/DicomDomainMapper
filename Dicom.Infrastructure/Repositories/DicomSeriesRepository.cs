@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
-using Elekta.Capability.Dicom.Application.Repositories;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using Elektrum.Capability.Dicom.Application.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace Elekta.Capability.Dicom.Infrastructure.Repositories
+namespace Elektrum.Capability.Dicom.Infrastructure.Repositories
 {
     /// <summary>
     /// an aggregate repository for DICOM series aggregates

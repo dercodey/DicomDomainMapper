@@ -1,4 +1,4 @@
-﻿namespace Elekta.Capability.Dicom.Infrastructure.EFModel
+﻿namespace Elektrum.Capability.Dicom.Infrastructure.EFModel
 {
     public class DicomAttribute
     {

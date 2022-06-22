@@ -1,9 +1,9 @@
 ﻿using System;
 using AutoMapper;
-using DomainModel = Elekta.Capability.Dicom.Domain.Model;
-using AbstractionModel = Elekta.Capability.Dicom.Abstractions.Models;
+using DomainModel = Elektrum.Capability.Dicom.Domain.Model;
+using AbstractionModel = Elektrum.Capability.Dicom.Abstractions.Models;
 
-namespace Elekta.Capability.Dicom.Api.Mappers
+namespace Elektrum.Capability.Dicom.Api.Mappers
 {
     public class AbstractionMapperProfile : Profile
     {
