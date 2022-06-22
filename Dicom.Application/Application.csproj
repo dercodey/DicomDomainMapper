@@ -6,6 +6,14 @@
     <RootNamespace>Elekta.Capability.Dicom.Application</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Application\Elekta.Capability.Dicom.Application.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Application\Elekta.Capability.Dicom.Application.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Dicom.Domain\Domain.csproj" />
   </ItemGroup>

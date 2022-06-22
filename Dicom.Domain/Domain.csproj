@@ -6,6 +6,14 @@
     <RootNamespace>Elekta.Capability.Dicom.Domain</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Domain\Elekta.Capability.Dicom.Domain.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>E:\github_dg1an3\TestDicomDomainMapper\Dicom.Domain\Elekta.Capability.Dicom.Domain.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AutoMapper.Collection" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />

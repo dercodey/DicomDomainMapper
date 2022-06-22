@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Elekta.Capability.Dicom.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Kaitai.Dicom">
+            <summary>
+            DICOM (Digital Imaging and Communications in Medicine), AKA NEMA
+            PS3, AKA ISO 12052:2006, is a file format and network protocol
+            standard for medical imaging purposes. This parser covers file
+            format, typically written by various medical equipment, such as
+            radiography, computer tomography scans, MRT, ultrasonography, etc.
+            
+            DICOM defines two transfer syntaxes: implicit and explicit. This
+            top-level parser attempts to autodetect and handle both of them. If
+            any problems arise, one can use `file_explicit` and `file_implicit`
+            subtypes to force parsing in particular transfer syntax.
+            </summary>
+            <remarks>
+            Reference: <a href="http://dicom.nema.org/medical/dicom/current/output/html/part10.html#chapter_7">Source</a>
+            </remarks>
+        </member>
+        <member name="T:Kaitai.Dicom.TDataElementExplicit">
+            <remarks>
+            Reference: <a href="http://dicom.nema.org/medical/dicom/current/output/html/part05.html#sect_7.1.2">Source</a>
+            </remarks>
+        </member>
+        <member name="T:Kaitai.Dicom.TDataElementImplicit">
+            <remarks>
+            Reference: <a href="http://dicom.nema.org/medical/dicom/current/output/html/part05.html#sect_7.1.2">Source</a>
+            </remarks>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Application.Helpers.DicomParser">
+            <summary>
+            implements a DICOM parser using the kaitai DICOM definition
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Helpers.DicomParser.ParseStream(System.IO.Stream)">
+            <summary>
+            reads a stream, that is assumed to be positioned at start
+            </summary>
+            <param name="dicomStream">the stream to be read</param>
+            <returns>collection of DICOM attributes read</returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2">
+            <summary>
+            interface that represents an aggregate repository
+            </summary>
+            <typeparam name="TEntity">aggregate entity type</typeparam>
+            <typeparam name="TKey">aggregate key type</typeparam>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2.GetAggregateForKey(`1)">
+            <summary>
+            gets the aggregate with the given key
+            </summary>
+            <param name="forKey">key to match</param>
+            <returns>the matching aggregate</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2.SelectAggregates(System.Func{`0,System.Boolean})">
+            <summary>
+            gets the aggregate with the given key
+            </summary>
+            <param name="forKey">key to match</param>
+            <returns>the matching aggregate</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2.UpdateAsync(`0)">
+            <summary>
+            updates an aggregate (or creates if it is new)
+            </summary>
+            <param name="updatedAggregate">aggregate to be updated</param>
+            <returns>Task representing the updation operation</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2.RemoveAsync(`1)">
+            <summary>
+            
+            </summary>
+            <param name="forKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Application.Services.DicomApplicationService">
+            <summary>
+            application service object for supporting calls in to the domain model
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.#ctor(Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository{Elekta.Capability.Dicom.Domain.Model.DicomSeries,Elekta.Capability.Dicom.Domain.Model.DicomUid},Elekta.Capability.Dicom.Application.Messaging.IMessaging,Elekta.Capability.Dicom.Application.Helpers.IDicomParser,Microsoft.Extensions.Logging.ILogger{Elekta.Capability.Dicom.Application.Services.DicomApplicationService})">
+            <summary>
+            
+            </summary>
+            <param name="repository"></param>
+            <param name="messaging"></param>
+            <param name="dicomParser"></param>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.GetAllSeriesForPatient(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="patientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.GetSeriesByUid(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.CreateSeriesAsync(Elekta.Capability.Dicom.Domain.Model.DicomSeries)">
+            <summary>
+            
+            </summary>
+            <param name="forSeries"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.AddInstanceFromStreamAsync(System.String,System.IO.Stream)">
+            <summary>
+            adds a DICOM instance represented as a stream
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <param name="readStream"></param>
+            <returns>the DICOM UID for the new instance, or null if not added</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.ReconcilePatientNameAsync(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <param name="oldPatientName"></param>
+            <param name="newPatientName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.GetDicomInstanceAsync(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <param name="sopInstanceUid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.DeleteDicomSeriesAsync(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="seriesUid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService">
+            <summary>
+            service interface for the DICOM application service
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.GetAllSeriesForPatient(System.String)">
+            <summary>
+            returns all series stored for the given patient
+            </summary>
+            <param name="patientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.GetSeriesByUid(System.String)">
+            <summary>
+            retrieves a series by key (i.e. DicomUid)
+            </summary>
+            <param name="seriesInstanceUid">the series instance UID to be retrieved</param>
+            <returns>the DicomSeries</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.CreateSeriesAsync(Elekta.Capability.Dicom.Domain.Model.DicomSeries)">
+            <summary>
+            creates a new series
+            </summary>
+            <param name="dmNewSeries"></param>
+            <returns>task representing status of operation</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.AddInstanceFromStreamAsync(System.String,System.IO.Stream)">
+            <summary>
+            add a dicom instance from a stream
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <param name="readStream"></param>
+            <returns>the Dicom UID of the series that the instance was added to</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.ReconcilePatientNameAsync(System.String,System.String,System.String)">
+            <summary>
+            perform a reconciliation of the instances in the series
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <param name="oldPatientName"></param>
+            <param name="newPatientName"></param>
+            <returns>task representing status of the asynchronous operation</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.GetDicomInstanceAsync(System.String,System.String)">
+            <summary>
+            retrieve a dicom instance
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <param name="sopInstanceUid"></param>
+            <returns>task representing status of the asynchronous operation</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService.DeleteDicomSeriesAsync(System.String)">
+            <summary>
+            delete the series
+            </summary>
+            <param name="seriesInstanceUid"></param>
+            <returns>task representing status of the asynchronous operation</returns>
+        </member>
+    </members>
+</doc>

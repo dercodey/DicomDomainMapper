@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Elekta.Capability.Dicom.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.DicomAttribute">
+            <summary>
+            A DicomAttribute is a value object in the DICOM domain model, which represents a single DICOM element.  It is an immutable representation of a particular attribute by tag and value.
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomAttribute.#ctor(Elekta.Capability.Dicom.Domain.Model.DicomTag,System.String)">
+            <summary>
+            The DicomAttribute constructor builds an attribute for a given tag and value.  The tag and value are immutable properties of the DicomAttribute (which is consistent with the definition of a value object)
+            </summary>
+            <param name="dicomTag">The DicomTag to use for the new attribute</param>
+            <param name="value">The DicomValue to use for the new attribute</param>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomAttribute.DicomTag">
+            <summary>
+            Each DicomAtribute has a DICOM tag that indicates the identity of the attribute.
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomAttribute.Value">
+            <summary>
+            The value for the attribute is encoded as a string, which is an easy approach for a prototype.
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomAttribute.Equals(Elekta.Capability.Dicom.Domain.Model.DicomAttribute)">
+            <summary>
+            A DicomAttribute can be compared to another DicomAttribute for structural equality, which is met if the tag and value both match.
+            </summary>
+            <param name="other">the other DicomAttribute to be compared to this one</param>
+            <returns>true if this DicomAttribute is equal to the other DicomAttribute</returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.DicomInstance">
+            <summary>
+            entity representing a dicom instance
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomInstance.#ctor(Elekta.Capability.Dicom.Domain.Model.DicomUid,System.Collections.Generic.IEnumerable{Elekta.Capability.Dicom.Domain.Model.DicomAttribute})">
+            <summary>
+            construct an instance with the given instance UID and the corresponding attributes
+            </summary>
+            <param name="sopInstanceUid"></param>
+            <param name="dicomAttributes"></param>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomInstance.EntityKey">
+            <summary>
+            entity key for the instance
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomInstance.SopInstanceUid">
+            <summary>
+            the SOP Instance UID
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomInstance.DicomAttributes">
+            <summary>
+            list of DICOM attributes for the instance
+            </summary>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.DicomSeries">
+            <summary>
+            aggregate entity for a dicom series
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomSeries.#ctor(Elekta.Capability.Dicom.Domain.Model.DicomUid,System.String,System.String,Elekta.Capability.Dicom.Domain.Model.Modality,System.DateTime,System.Int32,System.Collections.Generic.IEnumerable{Elekta.Capability.Dicom.Domain.Model.DicomInstance})">
+            <summary>
+            construct a series entity
+            </summary>
+            <param name="seriesInstanceUid">UID identifying the series</param>
+            <param name="patientName">patient name that the series belongs to</param>/// 
+            <param name="patientId">patient ID that the series belongs to</param>
+            <param name="modality">series modality</param>
+            <param name="acquisitionDateTime">when did the series get acquired</param>
+            <param name="dicomInstances">collection of initial dicom instances</param>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.RootKey">
+            <summary>
+            aggregate root key is the series instance UID
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.SeriesInstanceUid">
+            <summary>
+            this represents the key for the series in the domain model
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.PatientName">
+            <summary>
+            patient name to whom the series belongs
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.PatientId">
+            <summary>
+            patient ID to whom the series belongs
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.Modality">
+            <summary>
+            series modality
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.AcquisitionDateTime">
+            <summary>
+            acquisition date/time for the series
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.ExpectedInstanceCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.CurrentState">
+            <summary>
+            current state of the series
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.DicomInstances">
+            <summary>
+            collection of DICOM instances that belong to the series
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomSeries.AddInstance(Elekta.Capability.Dicom.Domain.Model.DicomInstance)">
+            <summary>
+            adds a new instance to the series, if it is consistant
+            </summary>
+            <param name="newInstance">the new instance to be added</param>
+            <returns>true if successful</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomSeries.ReconcilePatientName(System.String,System.String)">
+            <summary>
+            reconciles a series by updating the patient name
+            </summary>
+            <param name="oldPatientName"></param>
+            <param name="newPatientName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.DicomTag">
+            <summary>
+            value type for a Dicom Tag
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.#ctor(System.UInt16,System.UInt16,System.Type,System.Boolean)">
+            <summary>
+            construct a tag from the group/element representation
+            </summary>
+            <param name="group">group number for the tag</param>
+            <param name="element">element number for the tag</param>
+            <param name="valueRepresentation">type that the value must conform to</param>
+            <param name="allowPrivate">indicates whether private is allowed</param>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.#ctor(System.String,System.Type,System.Boolean)">
+            <summary>
+            converts a string to tag value
+            </summary>
+            <param name="strTag">tag in '(xxxx,xxxx)' format</param>
+            <param name="valueRepresentation">type that the value must conform to</param>
+            <param name="allowPrivate">indicates whether private is allowed</param>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomTag.Group">
+            <summary>
+            the group number for the tag
+            </summary>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomTag.Element">
+            <summary>
+            the element number for the tag
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.CheckValue(System.String)">
+            <summary>
+            helper to check if a value is valid for this tag
+            </summary>
+            <param name="value">value to be checked</param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.Equals(Elekta.Capability.Dicom.Domain.Model.DicomTag)">
+            <summary>
+            compares to another tag to see if they are equal
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.ToString">
+            <summary>
+            output the tag as '(XXXX,XXXX)' format string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.GetTag(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="matchTag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.GetTag(System.UInt32,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="group"></param>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.DicomUid">
+            <summary>
+            value object representing Dicom UID
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomUid.#ctor(System.String)">
+            <summary>
+            constructs from a string representing the UID.
+            this example requires the string to have four numeric fields
+            </summary>
+            <param name="uidString"></param>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomUid.Equals(Elekta.Capability.Dicom.Domain.Model.DicomUid)">
+            <summary>
+            perform equality test on two UIDs by comparing their string representation
+            </summary>
+            <param name="other">the other UID to compare</param>
+            <returns>true if the are equal</returns>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomUid.ToString">
+            <summary>
+            string representation of the UID
+            </summary>
+            <returns>UID as a string</returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.Modality">
+            <summary>
+            enum representing possible DICOM series modalities
+            </summary>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Seedwork.IAggregateRoot`1">
+            <summary>
+            interface representing an aggregate root with a particular key type
+            </summary>
+            <typeparam name="KeyType"></typeparam>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Seedwork.IAggregateRoot`1.RootKey">
+            <summary>
+            the root id is an alias for whatever property represents the root key
+            </summary>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Seedwork.IEntity`1">
+            <summary>
+            interface representing an ordinary (non-aggregate) entity
+            </summary>
+            <typeparam name="KeyType"></typeparam>
+        </member>
+        <member name="P:Elekta.Capability.Dicom.Domain.Seedwork.IEntity`1.EntityKey">
+            <summary>
+            alias for the key property
+            </summary>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Seedwork.IValueObject">
+            <summary>
+            sentinal to indicate value type
+            </summary>
+        </member>
+    </members>
+</doc>
