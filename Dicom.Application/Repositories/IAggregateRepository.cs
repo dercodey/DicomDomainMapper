@@ -23,7 +23,7 @@ namespace Elekta.Capability.Dicom.Application.Repositories
         /// <summary>
         /// gets the aggregate with the given key
         /// </summary>
-        /// <param name="forKey">key to match</param>
+        /// <param name="selectFunc">func to match keys</param>
         /// <returns>the matching aggregate</returns>
         IEnumerable<TEntity> SelectAggregates(Func<TEntity, bool> selectFunc);
 

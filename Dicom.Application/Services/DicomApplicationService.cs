@@ -26,6 +26,7 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// <param name="repository"></param>
         /// <param name="messaging"></param>
         /// <param name="dicomParser"></param>
+        /// <param name="logger"></param>
         public DicomApplicationService(IAggregateRepository<DomainModel.DicomSeries, DomainModel.DicomUid> repository, 
             IMessaging messaging, IDicomParser dicomParser, ILogger<DicomApplicationService> logger)
         {
@@ -155,7 +156,7 @@ namespace Elekta.Capability.Dicom.Application.Services
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="seriesUid"></param>
+        /// <param name="seriesInstanceUid"></param>
         /// <returns></returns>
         public async Task DeleteDicomSeriesAsync(string seriesInstanceUid)
         {

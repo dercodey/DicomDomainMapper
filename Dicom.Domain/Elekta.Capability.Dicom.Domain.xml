@@ -74,6 +74,7 @@
             <param name="patientId">patient ID that the series belongs to</param>
             <param name="modality">series modality</param>
             <param name="acquisitionDateTime">when did the series get acquired</param>
+            <param name="expectedInstanceCount"></param>
             <param name="dicomInstances">collection of initial dicom instances</param>
         </member>
         <member name="P:Elekta.Capability.Dicom.Domain.Model.DicomSeries.RootKey">
@@ -188,6 +189,36 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.DicomTag.MODALITY">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.DicomTag.PATIENTNAME">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.DicomTag.PATIENTID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.DicomTag.SOPINSTANCEUID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.DicomTag.SERIESINSTANCEUID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.DicomTag.ACQUISITIONDATETIME">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Elekta.Capability.Dicom.Domain.Model.DicomTag.GetTag(System.String)">
             <summary>
             
@@ -231,6 +262,66 @@
         <member name="T:Elekta.Capability.Dicom.Domain.Model.Modality">
             <summary>
             enum representing possible DICOM series modalities
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.DX">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.CT">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.MR">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.PT">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.RTIMAGE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.RTPLAN">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.Modality.RTSTRUCT">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Domain.Model.SeriesState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.SeriesState.Created">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.SeriesState.Incomplete">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.SeriesState.Complete">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Elekta.Capability.Dicom.Domain.Model.SeriesState.TooManyInstances">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:Elekta.Capability.Dicom.Domain.Seedwork.IAggregateRoot`1">

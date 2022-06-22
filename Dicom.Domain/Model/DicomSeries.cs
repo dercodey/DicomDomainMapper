@@ -18,6 +18,7 @@ namespace Elekta.Capability.Dicom.Domain.Model
         /// <param name="patientId">patient ID that the series belongs to</param>
         /// <param name="modality">series modality</param>
         /// <param name="acquisitionDateTime">when did the series get acquired</param>
+        /// <param name="expectedInstanceCount"></param>
         /// <param name="dicomInstances">collection of initial dicom instances</param>
         public DicomSeries(DicomUid seriesInstanceUid, 
             string patientName, string patientId, Modality modality, 

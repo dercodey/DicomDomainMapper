@@ -43,6 +43,30 @@
             <param name="dicomStream">the stream to be read</param>
             <returns>collection of DICOM attributes read</returns>
         </member>
+        <member name="T:Elekta.Capability.Dicom.Application.Helpers.IDicomParser">
+            <summary>
+            IDicomParser is a generic interface to some kind of parser engine
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Helpers.IDicomParser.ParseStream(System.IO.Stream)">
+            <summary>
+            ParseStream is the only entry point to an IDicomParser, that returns a collection of DicomAttributes
+            </summary>
+            <param name="dicomStream"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Elekta.Capability.Dicom.Application.Messaging.IMessaging">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Elekta.Capability.Dicom.Application.Messaging.IMessaging.SendNewSeriesEvent(Elekta.Capability.Dicom.Domain.Model.DicomSeries)">
+            <summary>
+            
+            </summary>
+            <param name="series"></param>
+            <returns></returns>
+        </member>
         <member name="T:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2">
             <summary>
             interface that represents an aggregate repository
@@ -61,7 +85,7 @@
             <summary>
             gets the aggregate with the given key
             </summary>
-            <param name="forKey">key to match</param>
+            <param name="selectFunc">func to match keys</param>
             <returns>the matching aggregate</returns>
         </member>
         <member name="M:Elekta.Capability.Dicom.Application.Repositories.IAggregateRepository`2.UpdateAsync(`0)">
@@ -90,6 +114,7 @@
             <param name="repository"></param>
             <param name="messaging"></param>
             <param name="dicomParser"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:Elekta.Capability.Dicom.Application.Services.DicomApplicationService.GetAllSeriesForPatient(System.String)">
             <summary>
@@ -141,7 +166,7 @@
             <summary>
             
             </summary>
-            <param name="seriesUid"></param>
+            <param name="seriesInstanceUid"></param>
             <returns></returns>
         </member>
         <member name="T:Elekta.Capability.Dicom.Application.Services.IDicomApplicationService">
