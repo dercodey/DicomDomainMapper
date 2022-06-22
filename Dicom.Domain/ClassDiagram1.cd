@@ -13,17 +13,17 @@
   </Class>
   <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomInstance">
     <Position X="4.5" Y="4.75" Width="1.5" />
-    <AssociationLine Name="DicomAttributes" Type="Elekta.Capability.Dicom.Domain.Model.DicomAttribute" FixedFromPoint="true">
-      <Path>
-        <Point X="6" Y="5.875" />
-        <Point X="7.5" Y="5.875" />
-      </Path>
-    </AssociationLine>
     <AssociationLine Name="SopInstanceUid" Type="Elekta.Capability.Dicom.Domain.Model.DicomUid" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="5.25" Y="6.305" />
         <Point X="5.25" Y="6.812" />
         <Point X="2.25" Y="6.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DicomAttributes" Type="Elekta.Capability.Dicom.Domain.Model.DicomAttribute" FixedFromPoint="true">
+      <Path>
+        <Point X="6" Y="5.875" />
+        <Point X="7.5" Y="5.875" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -40,6 +40,13 @@
   </Class>
   <Class Name="Elekta.Capability.Dicom.Domain.Model.DicomSeries">
     <Position X="4.25" Y="0.75" Width="2" />
+    <AssociationLine Name="SeriesInstanceUid" Type="Elekta.Capability.Dicom.Domain.Model.DicomUid" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.344" Y="3.911" />
+        <Point X="4.344" Y="5.438" />
+        <Point X="2.25" Y="5.438" />
+      </Path>
+    </AssociationLine>
     <AssociationLine Name="DicomInstances" Type="Elekta.Capability.Dicom.Domain.Model.DicomInstance" FixedToPoint="true">
       <Path>
         <Point X="5.812" Y="3.911" />
@@ -48,13 +55,6 @@
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-1.315" Y="0.402" />
       </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="SeriesInstanceUid" Type="Elekta.Capability.Dicom.Domain.Model.DicomUid" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.344" Y="3.911" />
-        <Point X="4.344" Y="5.438" />
-        <Point X="2.25" Y="5.438" />
-      </Path>
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAABCAwAAgAABAAAACCIAAgAAAAAAAIAAAAIAAAA=</HashCode>
@@ -86,22 +86,22 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IAggregateRoot&lt;KeyType&gt;" Collapsed="true">
-    <Position X="12.75" Y="0.75" Width="1.5" />
+  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IAggregateRoot&lt;KeyType&gt;">
+    <Position X="2" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>Seedwork\IAggregateRoot.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IEntity&lt;KeyType&gt;" Collapsed="true">
-    <Position X="14.5" Y="0.75" Width="1.5" />
+  <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IEntity&lt;KeyType&gt;">
+    <Position X="5.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Seedwork\IEntity.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Elekta.Capability.Dicom.Domain.Seedwork.IValueObject" Collapsed="true">
-    <Position X="12.75" Y="1.5" Width="1.5" />
+    <Position X="10.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Seedwork\IValueObject.cs</FileName>
@@ -115,7 +115,7 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="Elekta.Capability.Dicom.Domain.Model.SeriesState">
-    <Position X="2" Y="1.75" Width="1.5" />
+    <Position X="1.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAgAAAAAAAAAAAAAQAABAAAAAAAAA=</HashCode>
       <FileName>Model\SeriesState.cs</FileName>
