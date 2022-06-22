@@ -25,6 +25,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
             };
 
         [TestInitialize]
+        [Ignore]
         public void SetupTest()
         {            
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -44,6 +45,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
         /// testing creating a new series
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestCreatingSeries()
         {
             // construct a new series object and store the UID
@@ -89,6 +91,7 @@ namespace Elekta.Capability.Dicom.Infrastructure.Test
         /// test creating a series and adding instances to the series
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestAddingInstances()
         {
             // construct a new series object and store the UID
