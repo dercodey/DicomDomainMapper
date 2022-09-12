@@ -36,11 +36,6 @@ namespace Elektrum.Capability.Dicom.Domain.Model
                 throw new ArgumentException("PatientID must be a non-empty string");
             }
 
-            if (acquisitionDateTime == null)
-            {
-                throw new ArgumentNullException("Series Acquistion DateTime must be provided");
-            }
-
             SeriesInstanceUid = seriesInstanceUid;
             PatientName = patientName;
             PatientId = patientId;
