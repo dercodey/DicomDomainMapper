@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Collection" Version="7.0.1" />
-    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
